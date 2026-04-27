@@ -90,6 +90,16 @@
       "name": "monthly-calendar",
       "cron": "0 9 1 * *",
       "prompt": "Run the content-calendar-planner agent for the current month."
+    },
+    {
+      "name": "master-overseer-daily",
+      "cron": "30 9 * * 1-5",
+      "prompt": "Run the master-overseer agent in daily-health mode."
+    },
+    {
+      "name": "weekly-self-evolution",
+      "cron": "0 17 * * 5",
+      "prompt": "Run the master-overseer agent in weekly-evolution-kickoff mode. It will spawn self-evolution-proposer and write proposals/week-NN-improvements.md. NOTHING is applied automatically — the user runs /apply-proposal."
     }
   ],
   "_notes": {
