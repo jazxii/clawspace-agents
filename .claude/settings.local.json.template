@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_instructions": "Copy this file to settings.local.json (gitignored) and fill in per-machine secrets. Do NOT commit settings.local.json.",
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "OPENAPI_MCP_HEADERS": "{\"Authorization\":\"Bearer YOUR_NOTION_INTEGRATION_TOKEN\",\"Notion-Version\":\"2022-06-28\"}"
+      }
+    },
+    "notebooklm": {
+      "command": "npx",
+      "args": ["-y", "notebooklm-mcp-server"],
+      "env": {
+        "NOTEBOOKLM_AUTH": "<auth-per-server-docs>",
+        "_note": "Replace command/args with the exact invocation from notebooklm-mcp-server's docs. If unavailable on this machine, set CLAWSPACE_NOTEBOOKLM_MODE=manual and the notebooklm-bridge agent will fall back to staging-only mode."
+      }
+    }
+  },
+  "env": {
+    "CLAWSPACE_NOTEBOOKLM_MODE": "auto",
+    "CLAWSPACE_NOTION_DB_CONTENT": "<notion-database-id-for-content-queue>",
+    "CLAWSPACE_NOTION_DB_RESEARCH": "<notion-database-id-for-research-digests>"
+  }
+}

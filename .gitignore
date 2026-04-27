@@ -1,0 +1,37 @@
+# Per-machine secrets
+.claude/settings.local.json
+.env
+.env.local
+
+# Bus offsets are per-machine read pointers
+bus/offsets/
+
+# web-research-mcp citation ledgers (regenerable, machine-local)
+research/domains/*/_citations.jsonl
+
+# Audit log is append-only and machine-local
+audit/mutations.jsonl
+
+# Regenerable Graphify indexes
+graphify-indexes/
+
+# Notion sync state (per-workspace)
+content/notion-mirror.lock
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+*.log
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
