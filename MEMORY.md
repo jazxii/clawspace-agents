@@ -42,7 +42,8 @@ Hot-cached pointer index. Always read first. Never duplicate raw content here �
 - `/graphify` — knowledge graph from any input
 - `/new-project` — scaffold a dev project
 - `/new-research-domain` — scaffold a research domain
-- `/apply-proposal` — apply weekly self-evolution
+- `/apply-proposal` — review + apply weekly self-evolution diffs
+- `/rollback-proposal` — reverse applied diffs from a week's proposal
 - `/kanban-move` — move a card between columns
 - `/post-to-bus` — append to a bus channel
 - `/notion-sync` — push content queue to Notion
