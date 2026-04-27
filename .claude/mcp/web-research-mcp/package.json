@@ -1,0 +1,16 @@
+{
+  "name": "web-research-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Citation-capturing wrapper around fetch + DuckDuckGo HTML search for Clawspace research agents. Saves every fetched page's URL/title/timestamp/excerpt to a per-domain ledger so notes can cite without re-fetching.",
+  "bin": {
+    "web-research-mcp": "./index.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

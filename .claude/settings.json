@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "sonnet",
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Edit(~/.claude/settings.json)",
+      "Write(~/.claude/settings.json)"
+    ]
+  },
+  "mcpServers": {
+    "bus-mcp": {
+      "command": "node",
+      "args": [".claude/mcp/bus-mcp/index.mjs"],
+      "env": {
+        "CLAWSPACE_ROOT": "${workspaceFolder}"
+      }
+    },
+    "web-research-mcp": {
+      "command": "node",
+      "args": [".claude/mcp/web-research-mcp/index.mjs"],
+      "env": {
+        "CLAWSPACE_ROOT": "${workspaceFolder}"
+      }
+    }
+  },
+  "scheduledTasks": [
+    {
+      "name": "content-morning-sweep",
+      "cron": "0 9 * * 1-5",
+      "prompt": "Run the daily-content-supervisor agent in morning-sweep mode. Read MEMORY.md first, then proceed."
+    },
+    {
+      "name": "project-standup",
+      "cron": "15 9 * * 1-5",
+      "prompt": "Run the daily-project-supervisor agent in standup mode."
+    },
+    {
+      "name": "notion-mirror-daily",
+      "cron": "45 9 * * 1-5",
+      "prompt": "Run the notion-publisher agent in push mode. Mirror content/queue/ to Notion."
+    },
+    {
+      "name": "kanban-secretary-15min",
+      "cron": "*/15 9-18 * * 1-5",
+      "prompt": "Run the kanban-secretary agent. Read recent bus messages and sync card status across all boards."
+    },
+    {
+      "name": "content-eod-digest",
+      "cron": "0 18 * * 1-5",
+      "prompt": "Run the daily-content-supervisor agent in end-of-day mode."
+    },
+    {
+      "name": "project-eod-digest",
+      "cron": "5 18 * * 1-5",
+      "prompt": "Run the daily-project-supervisor agent in end-of-day mode."
+    },
+    {
+      "name": "research-morning-sweep",
+      "cron": "20 9 * * 1-5",
+      "prompt": "Run the daily-research-supervisor agent in morning-sweep mode."
+    },
+    {
+      "name": "research-eod-digest",
+      "cron": "10 18 * * 1-5",
+      "prompt": "Run the daily-research-supervisor agent in end-of-day mode."
+    },
+    {
+      "name": "research-monday-pull",
+      "cron": "0 9 * * 1",
+      "prompt": "Spawn the research-domain-lead with a request to run domain-researcher across all active domains, then notebooklm-bridge for staged prompts."
+    },
+    {
+      "name": "research-wed-trend-spot",
+      "cron": "0 14 * * 3",
+      "prompt": "Run the trend-spotter agent across all research domains."
+    },
+    {
+      "name": "weekly-research-digest",
+      "cron": "0 16 * * 5",
+      "prompt": "Run the weekly-digest-composer agent for the current ISO week."
+    },
+    {
+      "name": "weekly-newsletter-draft",
+      "cron": "30 16 * * 5",
+      "prompt": "Run the newsletter-writer agent for the current ISO week. Length: medium."
+    },
+    {
+      "name": "monthly-calendar",
+      "cron": "0 9 1 * *",
+      "prompt": "Run the content-calendar-planner agent for the current month."
+    }
+  ],
+  "_notes": {
+    "external_mcp_servers": "Notion MCP and notebooklm-mcp-server are configured in settings.local.json (gitignored). See settings.local.json.template.",
+    "agents_path": ".claude/agents/ is auto-discovered.",
+    "scheduled_tasks_install": "Run `claude scheduled-tasks register` after editing this file."
+  }
+}

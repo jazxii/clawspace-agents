@@ -1,0 +1,16 @@
+{
+  "name": "bus-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Slack-like append-only message bus for Clawspace agents. Exposes bus.post, bus.subscribe, bus.list, bus.dm as MCP tools.",
+  "bin": {
+    "bus-mcp": "./index.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
