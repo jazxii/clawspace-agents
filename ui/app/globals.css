@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----- Skip link (WCAG 2.4.1) ----- */
+.skip-link {
+  position: absolute;
+  left: 0;
+  top: -40px;
+  background: #ffffff;
+  color: #1e3a8a;
+  padding: 0.5rem 1rem;
+  border: 2px solid #2563eb;
+  z-index: 1000;
+  text-decoration: underline;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ----- :focus-visible ring (WCAG 2.4.7, 2.4.11, 1.4.11) ----- */
+*:focus-visible {
+  outline: 2px solid theme("colors.focusring");
+  outline-offset: 2px;
+}
+
+/* sr-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ----- Reduced motion (WCAG 2.3.3, 2.2.2) ----- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Body */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* Ensure all interactive targets ≥24×24 (WCAG 2.5.8) — Tailwind classes will handle most;
+   this is a safety net for unstyled buttons/links. */
+button, a, [role="button"] {
+  min-height: 24px;
+  min-width: 24px;
+}
