@@ -1,4 +1,5 @@
 import { listBusChannels } from "@/lib/fs-adapter";
+import Breadcrumbs from "../_components/Breadcrumbs";
 
 export const metadata = { title: "Channels — Clawspace" };
 export const dynamic = "force-dynamic";
@@ -7,7 +8,10 @@ export default async function ChannelsIndex() {
   const channels = await listBusChannels();
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Channels</h1>
+      <header className="page-chrome">
+        <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Channels" }]} />
+        <h1 className="text-2xl font-semibold">Channels</h1>
+      </header>
       {channels.length === 0 ? (
         <p>No channels yet.</p>
       ) : (

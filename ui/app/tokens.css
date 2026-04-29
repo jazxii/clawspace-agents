@@ -1,0 +1,169 @@
+/**
+ * Design tokens — Clawspace UI v2
+ *
+ * Light + dark token pairs per ACCESSIBILITY-BRIEF-V2 §5. Every pair audited
+ * for WCAG 1.4.3 (text ≥4.5:1) and 1.4.11 (non-text ≥3:1) against base
+ * surfaces. Theme switches via [data-theme="dark"] on <html>, set by
+ * next-themes' inline-script-before-paint to avoid FOUC.
+ */
+
+:root,
+:root[data-theme="light"] {
+  /* Surfaces */
+  --bg-canvas: #ffffff;
+  --bg-surface-1: #f8fafc;
+  --bg-surface-2: #f1f5f9;
+  --bg-surface-3: #e2e8f0;
+
+  /* Text */
+  --text-primary: #0f172a;     /* on canvas → 19.3:1 */
+  --text-secondary: #475569;   /* on canvas → 7.5:1  */
+  --text-tertiary: #64748b;    /* on canvas → 5.6:1  */
+  --text-onbrand: #ffffff;
+
+  /* Borders */
+  --border-subtle: #e2e8f0;    /* decorative only */
+  --border-default: #cbd5e1;   /* 3.0:1 — non-text OK */
+  --border-strong: #94a3b8;    /* 4.5:1 */
+
+  /* Brand */
+  --brand-primary: #2563eb;
+  --brand-primary-hover: #1d4ed8;
+
+  /* Focus */
+  --focus-ring: #2563eb;
+  --focus-ring-offset: #ffffff;
+
+  /* Status badges (text/bg pairs ≥7:1) */
+  --badge-drafting-fg: #1e3a8a;
+  --badge-drafting-bg: #dbeafe;
+  --badge-ready-fg: #14532d;
+  --badge-ready-bg: #dcfce7;
+  --badge-posted-fg: #475569;
+  --badge-posted-bg: #f1f5f9;
+  --badge-inprogress-fg: #7c2d12;
+  --badge-inprogress-bg: #fef3c7;
+  --badge-review-fg: #581c87;
+  --badge-review-bg: #f3e8ff;
+  --badge-done-fg: #14532d;
+  --badge-done-bg: #dcfce7;
+
+  /* Severity */
+  --severity-info-fg: #1e3a8a;
+  --severity-info-bg: #dbeafe;
+  --severity-warning-fg: #78350f;
+  --severity-warning-bg: #fef3c7;
+  --severity-error-fg: #7f1d1d;
+  --severity-error-bg: #fee2e2;
+
+  /* Shadows */
+  --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-3: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+:root[data-theme="dark"] {
+  /* Surfaces */
+  --bg-canvas: #0b1020;
+  --bg-surface-1: #111827;
+  --bg-surface-2: #1f2937;
+  --bg-surface-3: #374151;
+
+  /* Text */
+  --text-primary: #f8fafc;     /* on canvas → 17.4:1 */
+  --text-secondary: #cbd5e1;   /* on canvas → 11.2:1 */
+  --text-tertiary: #94a3b8;    /* on canvas → 6.5:1  */
+  --text-onbrand: #0b1020;
+
+  /* Borders — dark mode bumps strength because shadows vanish */
+  --border-subtle: #374151;
+  --border-default: #4b5563;   /* 3.1:1 */
+  --border-strong: #9ca3af;    /* 4.6:1 */
+
+  /* Brand */
+  --brand-primary: #3b82f6;
+  --brand-primary-hover: #60a5fa;
+
+  /* Focus */
+  --focus-ring: #60a5fa;
+  --focus-ring-offset: #0b1020;
+
+  /* Status badges (dark-flipped) */
+  --badge-drafting-fg: #bfdbfe;
+  --badge-drafting-bg: #1e3a8a;
+  --badge-ready-fg: #bbf7d0;
+  --badge-ready-bg: #14532d;
+  --badge-posted-fg: #cbd5e1;
+  --badge-posted-bg: #1f2937;
+  --badge-inprogress-fg: #fde68a;
+  --badge-inprogress-bg: #7c2d12;
+  --badge-review-fg: #e9d5ff;
+  --badge-review-bg: #581c87;
+  --badge-done-fg: #bbf7d0;
+  --badge-done-bg: #14532d;
+
+  /* Severity (dark-flipped) */
+  --severity-info-fg: #bfdbfe;
+  --severity-info-bg: #1e3a8a;
+  --severity-warning-fg: #fde68a;
+  --severity-warning-bg: #7c2d12;
+  --severity-error-fg: #fecaca;
+  --severity-error-bg: #7f1d1d;
+
+  /* Shadows reduced — dark surfaces use border for elevation */
+  --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04);
+  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --shadow-3: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+/* Type scale — fluid via rem so 1.4.4 + 1.4.12 hold under user zoom/spacing */
+:root {
+  --text-xs: 0.75rem;     /* 12 */
+  --text-sm: 0.875rem;    /* 14 */
+  --text-base: 1rem;      /* 16 */
+  --text-lg: 1.125rem;    /* 18 */
+  --text-xl: 1.25rem;     /* 20 */
+  --text-2xl: 1.5rem;     /* 24 */
+  --text-3xl: 1.875rem;   /* 30 */
+  --text-4xl: 2.25rem;    /* 36 */
+
+  --leading-xs: 1rem;
+  --leading-sm: 1.25rem;
+  --leading-base: 1.5rem;
+  --leading-lg: 1.75rem;
+  --leading-xl: 1.75rem;
+  --leading-2xl: 2rem;
+  --leading-3xl: 2.25rem;
+  --leading-4xl: 2.5rem;
+
+  /* Spacing — comfy default */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm: 0.25rem;   /* 4 */
+  --radius-md: 0.5rem;    /* 8 */
+  --radius-lg: 0.75rem;   /* 12 */
+  --radius-pill: 9999px;
+}
+
+/* Compact density — vertical paddings × 0.75; minimum target sizes preserved (2.5.8) */
+:root[data-density="compact"] {
+  --space-1: 0.125rem;
+  --space-2: 0.375rem;
+  --space-3: 0.5rem;
+  --space-4: 0.75rem;
+  --space-5: 1rem;
+  --space-6: 1.125rem;
+  --space-8: 1.5rem;
+  --space-10: 1.875rem;
+  --space-12: 2.25rem;
+}

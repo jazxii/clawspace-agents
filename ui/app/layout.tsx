@@ -1,6 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import RouteAnnouncer from "./_components/RouteAnnouncer";
+import Sidebar from "./_components/Sidebar";
+import CommandPalette from "./_components/CommandPalette";
+import ShortcutsOverlay from "./_components/ShortcutsOverlay";
+import UserMenu from "./_components/UserMenu";
+import Providers from "./_components/Providers";
 
 export const metadata: Metadata = {
   title: "Clawspace",
@@ -9,61 +14,51 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        {/* Skip link — first interactive element (WCAG 2.4.1) */}
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen">
+        {/* Skip link */}
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
 
-        <header role="banner" className="border-b border-slate-200 bg-slate-50">
-          <nav aria-label="Primary" className="mx-auto max-w-6xl px-4 py-3">
-            <ul className="flex flex-wrap gap-4 text-sm font-medium" role="list">
-              <li>
-                <a href="/" className="hover:underline">
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a href="/kanban" className="hover:underline">
-                  Kanban
-                </a>
-              </li>
-              <li>
-                <a href="/channels" className="hover:underline">
-                  Channels
-                </a>
-              </li>
-              <li>
-                <a href="/proposals" className="hover:underline">
-                  Proposals
-                </a>
-              </li>
-              <li>
-                <a href="/research/digests" className="hover:underline">
-                  Research
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </header>
+        <Providers>
+          <div className="grid md:grid-cols-[14rem_1fr] min-h-screen">
+            <Sidebar />
 
-        {/* `tabindex=-1` so the route announcer can move focus here on navigation (WCAG 2.4.3) */}
-        <main id="main" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 outline-none">
-          {children}
-        </main>
+            {/* The page-chrome's outer wrapper is the role="banner" landmark.
+                Removed from the v1 site-wide <header>. */}
+            <div className="flex flex-col">
+              <header role="banner" className="border-b border-subtle px-4 md:px-8 py-3 flex items-center justify-between" style={{ background: "var(--bg-canvas)" }}>
+                <div className="md:hidden font-semibold">Clawspace</div>
+                <div className="ml-auto flex items-center gap-2">
+                  <UserMenu />
+                </div>
+              </header>
 
-        {/* Two global live-region sentinels (per ACCESSIBILITY-BRIEF §0, §3) */}
-        <div id="live-region-polite" aria-live="polite" aria-atomic="false" className="sr-only" />
-        <div
-          id="live-region-assertive"
-          aria-live="assertive"
-          aria-atomic="false"
-          role="alert"
-          className="sr-only"
-        />
+              <main
+                id="main"
+                tabIndex={-1}
+                className="px-4 md:px-8 py-6 outline-none flex-1"
+              >
+                {children}
+              </main>
+            </div>
+          </div>
 
-        <RouteAnnouncer />
+          {/* Global live regions */}
+          <div id="live-region-polite" aria-live="polite" aria-atomic="false" className="sr-only" />
+          <div
+            id="live-region-assertive"
+            aria-live="assertive"
+            aria-atomic="false"
+            role="alert"
+            className="sr-only"
+          />
+
+          <RouteAnnouncer />
+          <CommandPalette />
+          <ShortcutsOverlay />
+        </Providers>
       </body>
     </html>
   );

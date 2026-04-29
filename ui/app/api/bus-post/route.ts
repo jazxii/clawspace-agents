@@ -17,10 +17,19 @@ const TYPE_OK = new Set(["task", "status", "question", "answer", "alert", "note"
  * to localhost by default; do NOT expose this route publicly without adding
  * authentication first.
  */
+interface PostBody {
+  channel?: string;
+  from?: string;
+  to?: string;
+  type?: string;
+  body?: string;
+  ref?: string;
+}
+
 export async function POST(req: NextRequest) {
-  let body: any;
+  let body: PostBody;
   try {
-    body = await req.json();
+    body = (await req.json()) as PostBody;
   } catch {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }

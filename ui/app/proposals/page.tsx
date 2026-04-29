@@ -1,5 +1,6 @@
 import { listProposals } from "@/lib/fs-adapter";
 import StatusBadge from "../_components/StatusBadge";
+import Breadcrumbs from "../_components/Breadcrumbs";
 
 export const metadata = { title: "Proposals — Clawspace" };
 export const dynamic = "force-dynamic";
@@ -8,7 +9,10 @@ export default async function ProposalsIndex() {
   const proposals = await listProposals();
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Self-evolution proposals</h1>
+      <header className="page-chrome">
+        <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Proposals" }]} />
+        <h1 className="text-2xl font-semibold">Self-evolution proposals</h1>
+      </header>
       {proposals.length === 0 ? (
         <p className="text-slate-700">
           No proposals yet. <code>self-evolution-proposer</code> writes one weekly on Friday at

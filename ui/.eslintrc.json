@@ -3,9 +3,7 @@
   "plugins": ["jsx-a11y"],
   "rules": {
     "jsx-a11y/anchor-is-valid": "off",
-    "_comment_redundant_roles": "ACCESSIBILITY-BRIEF §1 mandates explicit role='list' on <ul>/<ol> because Safari strips list semantics when list-style:none. Override the default lint rule.",
     "jsx-a11y/no-redundant-roles": "off",
-    "_comment_tabindex": "ACCESSIBILITY-BRIEF §5 mandates tabindex=0 on <pre> for keyboard-scrollable code blocks; §0 needs it on <main> for route focus; Kanban listbox uses tabindex=0 per §2.",
     "jsx-a11y/no-noninteractive-tabindex": "off",
     "@next/next/no-html-link-for-pages": "off",
     "react/no-unescaped-entities": "off"

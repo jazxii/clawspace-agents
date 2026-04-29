@@ -1,4 +1,5 @@
 import { listKanbanBoards } from "@/lib/fs-adapter";
+import Breadcrumbs from "../_components/Breadcrumbs";
 
 export const metadata = { title: "Kanban — Clawspace" };
 export const dynamic = "force-dynamic";
@@ -10,7 +11,10 @@ export default async function KanbanIndex() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Kanban boards</h1>
+      <header className="page-chrome">
+        <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Kanban" }]} />
+        <h1 className="text-2xl font-semibold">Kanban boards</h1>
+      </header>
 
       <section aria-labelledby="content-boards" className="mb-8">
         <h2 id="content-boards" className="text-lg font-semibold mb-3">

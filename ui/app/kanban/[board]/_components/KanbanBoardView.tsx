@@ -237,7 +237,16 @@ export default function KanbanBoardView({ board }: { board: KanbanBoard }) {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-2">Kanban — {board.slug}</h1>
+      <header className="page-chrome">
+        <nav aria-label="Breadcrumb" className="breadcrumb">
+          <ol>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/kanban">Kanban</a></li>
+            <li><span aria-current="page">{board.slug}</span></li>
+          </ol>
+        </nav>
+        <h1 className="text-2xl font-semibold">Kanban — {board.slug}</h1>
+      </header>
       <p className="sr-only" id={instructionsId}>
         Use arrow keys to move between cards. Press Enter or Space to open card details. Press M
         to pick up a card. While picking up, use arrow keys to move it. Press Enter or Space to

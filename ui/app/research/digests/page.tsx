@@ -1,4 +1,5 @@
 import { listResearchDigests } from "@/lib/fs-adapter";
+import Breadcrumbs from "../../_components/Breadcrumbs";
 
 export const metadata = { title: "Research digests — Clawspace" };
 export const dynamic = "force-dynamic";
@@ -7,7 +8,14 @@ export default async function ResearchDigests() {
   const digests = await listResearchDigests();
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Research digests</h1>
+      <header className="page-chrome">
+        <Breadcrumbs items={[
+          { label: "Dashboard", href: "/" },
+          { label: "Research", href: "/research/digests" },
+          { label: "Digests" },
+        ]} />
+        <h1 className="text-2xl font-semibold">Research digests</h1>
+      </header>
       {digests.length === 0 ? (
         <p className="text-slate-700">
           No digests yet. <code>weekly-digest-composer</code> writes one each Friday at 16:00.
