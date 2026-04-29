@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { BusMessage } from "@/lib/fs-adapter";
 
 /**
@@ -238,18 +238,27 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
       </aside>
 
       <section aria-labelledby="channel-h">
-        <header className="mb-4 flex items-center justify-between gap-4">
-          <h1 id="channel-h" className="text-2xl font-semibold">
-            #{channel}
-          </h1>
-          <button
-            type="button"
-            onClick={() => setPauseAnnouncements((p) => !p)}
-            aria-pressed={pauseAnnouncements}
-            className="rounded border border-slate-300 px-3 py-1 text-sm hover:bg-slate-100"
-          >
-            {pauseAnnouncements ? "Resume announcements" : "Pause announcements"}
-          </button>
+        <header className="page-chrome">
+          <nav aria-label="Breadcrumb" className="breadcrumb">
+            <ol>
+              <li><a href="/">Dashboard</a></li>
+              <li><a href="/channels">Channels</a></li>
+              <li><span aria-current="page">{channel}</span></li>
+            </ol>
+          </nav>
+          <div className="flex items-center justify-between gap-4">
+            <h1 id="channel-h" className="text-2xl font-semibold">
+              #{channel}
+            </h1>
+            <button
+              type="button"
+              onClick={() => setPauseAnnouncements((p) => !p)}
+              aria-pressed={pauseAnnouncements}
+              className="btn-secondary text-sm"
+            >
+              {pauseAnnouncements ? "Resume announcements" : "Pause announcements"}
+            </button>
+          </div>
         </header>
 
         <p id="history-instructions" className="sr-only">

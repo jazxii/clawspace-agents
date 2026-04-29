@@ -27,8 +27,18 @@ export default async function ConfirmApply({
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-2">Confirm apply</h1>
-      <p className="text-slate-700 mb-6">
+      <header className="page-chrome">
+        <nav aria-label="Breadcrumb" className="breadcrumb">
+          <ol>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/proposals">Proposals</a></li>
+            <li><a href={`/proposals/${week}`}>{week}</a></li>
+            <li><span aria-current="page">Confirm</span></li>
+          </ol>
+        </nav>
+        <h1 className="text-2xl font-semibold">Confirm apply</h1>
+      </header>
+      <p className="text-secondary mb-6">
         This UI does not run the apply for you. Run the command below from your Claude Code
         session. The <code>proposal-applier</code> agent will dry-run first, surface every
         diff, and wait for your <code>yes</code> before any write.

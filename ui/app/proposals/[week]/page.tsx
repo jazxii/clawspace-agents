@@ -21,11 +21,20 @@ export default async function ProposalDetail({ params }: { params: Promise<{ wee
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-2">{proposal.week} proposal review</h1>
-      <p className="text-sm text-slate-600 mb-6">
-        Status: {proposal.frontmatter.applied ? "Applied" : "Pending review"}
-        {proposal.frontmatter.window ? ` · Window: ${String(proposal.frontmatter.window)}` : ""}
-      </p>
+      <header className="page-chrome">
+        <nav aria-label="Breadcrumb" className="breadcrumb">
+          <ol>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/proposals">Proposals</a></li>
+            <li><span aria-current="page">{proposal.week}</span></li>
+          </ol>
+        </nav>
+        <h1 className="text-2xl font-semibold">{proposal.week} proposal review</h1>
+        <p className="text-sm text-secondary">
+          Status: {proposal.frontmatter.applied ? "Applied" : "Pending review"}
+          {proposal.frontmatter.window ? ` · Window: ${String(proposal.frontmatter.window)}` : ""}
+        </p>
+      </header>
 
       <section aria-labelledby="retro-h" className="mb-8">
         <h2 id="retro-h" className="text-lg font-semibold mb-3">

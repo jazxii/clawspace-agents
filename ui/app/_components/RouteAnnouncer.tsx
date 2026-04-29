@@ -2,15 +2,16 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { liveAnnounce } from "@/lib/live-announce";
 
 /**
- * Next.js App Router does NOT move focus or announce pages on client-side navigation.
- * This component:
- *   1. On pathname change, moves focus to <main id="main">.
- *   2. Pushes the document title into the polite live region so SR users hear it. (WCAG 2.4.3, 4.1.3)
+ * Route announcer — ACCESSIBILITY-BRIEF-V2 §0 (revised: announce title +
+ * breadcrumb tail). Moves focus to <main id="main"> on every client-side
+ * navigation, then announces "{title}".
  *
- * Skips the very first render (initial page load) — the browser handles that natively.
+ * Skips first render so initial load uses native browser announcement.
  */
+
 export default function RouteAnnouncer() {
   const pathname = usePathname();
   const firstRender = useRef(true);
@@ -22,15 +23,7 @@ export default function RouteAnnouncer() {
     }
     const main = document.getElementById("main");
     if (main) main.focus();
-    const title = document.title;
-    const polite = document.getElementById("live-region-polite");
-    if (polite) {
-      // Toggle textContent on a microtask boundary so SRs notice the mutation.
-      polite.textContent = "";
-      requestAnimationFrame(() => {
-        polite.textContent = `Navigated to ${title}`;
-      });
-    }
+    liveAnnounce.polite(`Navigated to ${document.title}`, "route-change");
   }, [pathname]);
 
   return null;

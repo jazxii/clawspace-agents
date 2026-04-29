@@ -55,19 +55,26 @@ export default async function DigestDetail({ params }: { params: Promise<{ week:
 
   return (
     <>
+      <header className="page-chrome">
+        <nav aria-label="Breadcrumb" className="breadcrumb">
+          <ol>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/research/digests">Research</a></li>
+            <li><span aria-current="page">{digest.week}</span></li>
+          </ol>
+        </nav>
+        <h1 id="digest-h" className="text-2xl font-semibold">
+          Research digest — {digest.week}
+        </h1>
+        {digest.frontmatter.window ? (
+          <p className="text-sm text-secondary">
+            <time dateTime={String(digest.frontmatter.window)}>
+              {String(digest.frontmatter.window)}
+            </time>
+          </p>
+        ) : null}
+      </header>
       <article aria-labelledby="digest-h" className="prose prose-slate max-w-none">
-        <header>
-          <h1 id="digest-h" className="text-2xl font-semibold">
-            Research digest — {digest.week}
-          </h1>
-          {digest.frontmatter.window ? (
-            <p className="text-sm text-slate-600">
-              <time dateTime={String(digest.frontmatter.window)}>
-                {String(digest.frontmatter.window)}
-              </time>
-            </p>
-          ) : null}
-        </header>
         <ReactMarkdown remarkPlugins={[remarkGfm]} components={headingDownshift} skipHtml>
           {digest.body}
         </ReactMarkdown>

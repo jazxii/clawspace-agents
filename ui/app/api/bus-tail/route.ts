@@ -6,6 +6,8 @@ import { existsSync, statSync } from "node:fs";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+interface BusMsg { ts: string; ch?: string; from?: string; to?: string; type?: string; body?: string; ref?: string }
+
 const PROJECT_ROOT = path.resolve(process.cwd(), "..");
 
 /**
@@ -53,11 +55,11 @@ export async function GET(req: NextRequest) {
                 return null;
               }
             })
-            .filter((m: any): m is { ts: string } => m && typeof m.ts === "string");
+            .filter((m: unknown): m is BusMsg => !!m && typeof (m as BusMsg).ts === "string");
           const fresh = since ? msgs.filter((m) => m.ts > since) : msgs.slice(-50);
           for (const m of fresh) {
             send("message", m);
-            lastSentTs = (m as any).ts;
+            lastSentTs = m.ts;
           }
           send("ready", { ts: new Date().toISOString() });
         } catch (e) {
@@ -83,11 +85,11 @@ export async function GET(req: NextRequest) {
                 return null;
               }
             })
-            .filter((m: any): m is { ts: string } => m && typeof m.ts === "string");
+            .filter((m: unknown): m is BusMsg => !!m && typeof (m as BusMsg).ts === "string");
           for (const m of msgs) {
-            if ((m as any).ts > lastSentTs) {
+            if (m.ts > lastSentTs) {
               send("message", m);
-              lastSentTs = (m as any).ts;
+              lastSentTs = m.ts;
             }
           }
         } catch {
