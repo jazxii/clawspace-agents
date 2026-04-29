@@ -6,6 +6,7 @@ import CommandPalette from "./_components/CommandPalette";
 import ShortcutsOverlay from "./_components/ShortcutsOverlay";
 import UserMenu from "./_components/UserMenu";
 import Providers from "./_components/Providers";
+import TweaksPanel from "./_components/TweaksPanel";
 
 export const metadata: Metadata = {
   title: "Clawspace",
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <RouteAnnouncer />
           <CommandPalette />
           <ShortcutsOverlay />
+          <TweaksPanel />
         </Providers>
       </body>
     </html>
