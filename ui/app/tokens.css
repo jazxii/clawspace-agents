@@ -1,142 +1,46 @@
 /**
- * Design tokens — Clawspace UI v2
+ * Design tokens — Clawspace UI v3 (Apple-native, multi-accent)
  *
- * Light + dark token pairs per ACCESSIBILITY-BRIEF-V2 §5. Every pair audited
- * for WCAG 1.4.3 (text ≥4.5:1) and 1.4.11 (non-text ≥3:1) against base
- * surfaces. Theme switches via [data-theme="dark"] on <html>, set by
- * next-themes' inline-script-before-paint to avoid FOUC.
+ * Ported from the design bundle's styles.css with v2 a11y guarantees
+ * preserved as fallback variables (`--bg-canvas`, `--text-primary`, etc.
+ * still resolve so v2 components keep working during migration).
+ *
+ * Theme:    [data-theme="light"|"dark"]   on <html>
+ * Density:  [data-density="compact"|"regular"|"spacious"]
+ * Radius:   [data-radius="sharp"|"regular"|"soft"]
+ * Sidebar:  [data-sidebar="full"|"rail"]
  */
 
-:root,
-:root[data-theme="light"] {
-  /* Surfaces */
-  --bg-canvas: #ffffff;
-  --bg-surface-1: #f8fafc;
-  --bg-surface-2: #f1f5f9;
-  --bg-surface-3: #e2e8f0;
-
-  /* Text */
-  --text-primary: #0f172a;     /* on canvas → 19.3:1 */
-  --text-secondary: #475569;   /* on canvas → 7.5:1  */
-  --text-tertiary: #64748b;    /* on canvas → 5.6:1  */
-  --text-onbrand: #ffffff;
-
-  /* Borders */
-  --border-subtle: #e2e8f0;    /* decorative only */
-  --border-default: #cbd5e1;   /* 3.0:1 — non-text OK */
-  --border-strong: #94a3b8;    /* 4.5:1 */
-
-  /* Brand */
-  --brand-primary: #2563eb;
-  --brand-primary-hover: #1d4ed8;
-
-  /* Focus */
-  --focus-ring: #2563eb;
-  --focus-ring-offset: #ffffff;
-
-  /* Status badges (text/bg pairs ≥7:1) */
-  --badge-drafting-fg: #1e3a8a;
-  --badge-drafting-bg: #dbeafe;
-  --badge-ready-fg: #14532d;
-  --badge-ready-bg: #dcfce7;
-  --badge-posted-fg: #475569;
-  --badge-posted-bg: #f1f5f9;
-  --badge-inprogress-fg: #7c2d12;
-  --badge-inprogress-bg: #fef3c7;
-  --badge-review-fg: #581c87;
-  --badge-review-bg: #f3e8ff;
-  --badge-done-fg: #14532d;
-  --badge-done-bg: #dcfce7;
-
-  /* Severity */
-  --severity-info-fg: #1e3a8a;
-  --severity-info-bg: #dbeafe;
-  --severity-warning-fg: #78350f;
-  --severity-warning-bg: #fef3c7;
-  --severity-error-fg: #7f1d1d;
-  --severity-error-bg: #fee2e2;
-
-  /* Shadows */
-  --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-3: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-:root[data-theme="dark"] {
-  /* Surfaces */
-  --bg-canvas: #0b1020;
-  --bg-surface-1: #111827;
-  --bg-surface-2: #1f2937;
-  --bg-surface-3: #374151;
-
-  /* Text */
-  --text-primary: #f8fafc;     /* on canvas → 17.4:1 */
-  --text-secondary: #cbd5e1;   /* on canvas → 11.2:1 */
-  --text-tertiary: #94a3b8;    /* on canvas → 6.5:1  */
-  --text-onbrand: #0b1020;
-
-  /* Borders — dark mode bumps strength because shadows vanish */
-  --border-subtle: #374151;
-  --border-default: #4b5563;   /* 3.1:1 */
-  --border-strong: #9ca3af;    /* 4.6:1 */
-
-  /* Brand */
-  --brand-primary: #3b82f6;
-  --brand-primary-hover: #60a5fa;
-
-  /* Focus */
-  --focus-ring: #60a5fa;
-  --focus-ring-offset: #0b1020;
-
-  /* Status badges (dark-flipped) */
-  --badge-drafting-fg: #bfdbfe;
-  --badge-drafting-bg: #1e3a8a;
-  --badge-ready-fg: #bbf7d0;
-  --badge-ready-bg: #14532d;
-  --badge-posted-fg: #cbd5e1;
-  --badge-posted-bg: #1f2937;
-  --badge-inprogress-fg: #fde68a;
-  --badge-inprogress-bg: #7c2d12;
-  --badge-review-fg: #e9d5ff;
-  --badge-review-bg: #581c87;
-  --badge-done-fg: #bbf7d0;
-  --badge-done-bg: #14532d;
-
-  /* Severity (dark-flipped) */
-  --severity-info-fg: #bfdbfe;
-  --severity-info-bg: #1e3a8a;
-  --severity-warning-fg: #fde68a;
-  --severity-warning-bg: #7c2d12;
-  --severity-error-fg: #fecaca;
-  --severity-error-bg: #7f1d1d;
-
-  /* Shadows reduced — dark surfaces use border for elevation */
-  --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04);
-  --shadow-2: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
-  --shadow-3: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.04);
-}
-
-/* Type scale — fluid via rem so 1.4.4 + 1.4.12 hold under user zoom/spacing */
 :root {
-  --text-xs: 0.75rem;     /* 12 */
-  --text-sm: 0.875rem;    /* 14 */
-  --text-base: 1rem;      /* 16 */
-  --text-lg: 1.125rem;    /* 18 */
-  --text-xl: 1.25rem;     /* 20 */
-  --text-2xl: 1.5rem;     /* 24 */
-  --text-3xl: 1.875rem;   /* 30 */
-  --text-4xl: 2.25rem;    /* 36 */
+  /* ─── Type ─── */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --font-serif: 'New York', 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-ui: var(--font-sans);
 
-  --leading-xs: 1rem;
-  --leading-sm: 1.25rem;
-  --leading-base: 1.5rem;
-  --leading-lg: 1.75rem;
-  --leading-xl: 1.75rem;
-  --leading-2xl: 2rem;
-  --leading-3xl: 2.25rem;
-  --leading-4xl: 2.5rem;
+  /* ─── Radius scale ─── */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+  --r-2xl: 22px;
 
-  /* Spacing — comfy default */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-pill: 9999px;
+
+  /* ─── Density-aware spacing (overridden by [data-density]) ─── */
+  --pad-1: 4px;
+  --pad-2: 8px;
+  --pad-3: 12px;
+  --pad-4: 16px;
+  --pad-5: 20px;
+  --pad-6: 24px;
+  --row-h: 32px;
+
+  /* v2 back-compat spacing scale */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -148,22 +52,177 @@
   --space-12: 3rem;
   --space-16: 4rem;
 
-  /* Radii */
-  --radius-sm: 0.25rem;   /* 4 */
-  --radius-md: 0.5rem;    /* 8 */
-  --radius-lg: 0.75rem;   /* 12 */
-  --radius-pill: 9999px;
+  /* ─── Domain accents (multi-accent — five hues) ─── */
+  --accent-content:   #ff9f0a; /* orange — content */
+  --accent-projects:  #0a84ff; /* blue   — projects */
+  --accent-research:  #bf5af2; /* violet — research */
+  --accent-meta:      #30d158; /* green  — meta */
+  --accent-system:    #ff453a; /* red    — alerts */
+
+  /* Primary accent — driven by Tweaks panel */
+  --accent: var(--accent-projects);
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-on: #ffffff;
+
+  /* ─── Type scale ─── */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  --leading-xs: 1rem;
+  --leading-sm: 1.25rem;
+  --leading-base: 1.5rem;
+  --leading-lg: 1.75rem;
+  --leading-xl: 1.75rem;
+  --leading-2xl: 2rem;
+  --leading-3xl: 2.25rem;
+  --leading-4xl: 2.5rem;
 }
 
-/* Compact density — vertical paddings × 0.75; minimum target sizes preserved (2.5.8) */
-:root[data-density="compact"] {
-  --space-1: 0.125rem;
-  --space-2: 0.375rem;
-  --space-3: 0.5rem;
-  --space-4: 0.75rem;
-  --space-5: 1rem;
-  --space-6: 1.125rem;
-  --space-8: 1.5rem;
-  --space-10: 1.875rem;
-  --space-12: 2.25rem;
+/* ─── Light (default) ─── */
+:root,
+:root[data-theme="light"] {
+  --bg:           #f5f5f7;
+  --bg-elev-1:    rgba(255,255,255,.72);
+  --bg-elev-2:    #ffffff;
+  --bg-sunken:    #efeff2;
+  --bg-hover:     rgba(0,0,0,.04);
+  --bg-active:    rgba(0,0,0,.07);
+
+  --bg-canvas:    #ffffff;
+  --bg-surface-1: var(--bg-elev-1);
+  --bg-surface-2: var(--bg-sunken);
+  --bg-surface-3: var(--bg);
+
+  --border:        rgba(0,0,0,.09);
+  --border-strong: rgba(0,0,0,.14);
+  --hairline:      rgba(0,0,0,.06);
+
+  --border-subtle:  var(--hairline);
+  --border-default: var(--border);
+
+  --text:    #1d1d1f;
+  --text-2:  #3a3a3c;
+  --text-3:  #6e6e73;
+  --text-4:  #8e8e93;
+
+  --text-primary:   var(--text);
+  --text-secondary: var(--text-2);
+  --text-tertiary:  var(--text-3);
+  --text-onbrand:   #ffffff;
+
+  /* Brand colors are AA-critical (skip-link, primary text-buttons). They use a
+     darker, contrast-verified blue, independent of the chrome --accent which
+     drives non-text affordances (3:1 is fine there). */
+  --brand-primary:       #2563eb;             /* 4.7:1 on #ffffff */
+  --brand-primary-hover: #1d4ed8;             /* 6.0:1 on #ffffff */
+
+  --focus-ring:        var(--accent);
+  --focus-ring-offset: var(--bg-canvas);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04), 0 0 0 .5px rgba(0,0,0,.05);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.08), 0 0 0 .5px rgba(0,0,0,.06);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.14), 0 0 0 .5px rgba(0,0,0,.06);
+  --shadow-1: var(--shadow-sm);
+  --shadow-2: var(--shadow-md);
+  --shadow-3: var(--shadow-lg);
+  --vibrancy:  rgba(245,245,247,.72);
+  --kbd-bg:    #ffffff;
+
+  /* v2 status badges (≥4.5:1 verified on light bg) */
+  --badge-drafting-fg: #1e3a8a; --badge-drafting-bg: #dbeafe;
+  --badge-ready-fg:    #14532d; --badge-ready-bg:    #dcfce7;
+  --badge-posted-fg:   #475569; --badge-posted-bg:   #f1f5f9;
+  --badge-inprogress-fg: #7c2d12; --badge-inprogress-bg: #fef3c7;
+  --badge-review-fg:   #581c87; --badge-review-bg:   #f3e8ff;
+  --badge-done-fg:     #14532d; --badge-done-bg:     #dcfce7;
+
+  --severity-info-fg: #1e3a8a;    --severity-info-bg: #dbeafe;
+  --severity-warning-fg: #78350f; --severity-warning-bg: #fef3c7;
+  --severity-error-fg: #7f1d1d;   --severity-error-bg: #fee2e2;
 }
+
+/* ─── Dark ─── */
+:root[data-theme="dark"] {
+  --bg:           #1c1c1e;
+  --bg-elev-1:    rgba(44,44,46,.72);
+  --bg-elev-2:    #2c2c2e;
+  --bg-sunken:    #131315;
+  --bg-hover:     rgba(255,255,255,.06);
+  --bg-active:    rgba(255,255,255,.10);
+
+  --bg-canvas:    #0b0b0d;
+  --bg-surface-1: var(--bg-elev-1);
+  --bg-surface-2: var(--bg-sunken);
+  --bg-surface-3: var(--bg);
+
+  --border:        rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.18);
+  --hairline:      rgba(255,255,255,.06);
+
+  --border-subtle:  var(--hairline);
+  --border-default: var(--border);
+
+  --text:   #f5f5f7;
+  --text-2: #d1d1d6;
+  --text-3: #98989d;
+  --text-4: #6e6e73;
+
+  --text-primary:   var(--text);
+  --text-secondary: var(--text-2);
+  --text-tertiary:  var(--text-3);
+  --text-onbrand:   #0b1020;
+
+  /* Dark-mode brand: lighter blue meets 4.5:1 on dark canvas */
+  --brand-primary:       #60a5fa;             /* 7.4:1 on #0b0b0d */
+  --brand-primary-hover: #93c5fd;             /* 10.6:1 on #0b0b0d */
+
+  --focus-ring:        var(--accent);
+  --focus-ring-offset: var(--bg-canvas);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4),  0 0 0 .5px rgba(255,255,255,.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.4), 0 0 0 .5px rgba(255,255,255,.06);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.06);
+  --shadow-1: var(--shadow-sm);
+  --shadow-2: var(--shadow-md);
+  --shadow-3: var(--shadow-lg);
+  --vibrancy:  rgba(28,28,30,.72);
+  --kbd-bg:    #2c2c2e;
+
+  --badge-drafting-fg: #bfdbfe;   --badge-drafting-bg: #1e3a8a;
+  --badge-ready-fg:    #bbf7d0;   --badge-ready-bg:    #14532d;
+  --badge-posted-fg:   #cbd5e1;   --badge-posted-bg:   #1f2937;
+  --badge-inprogress-fg: #fde68a; --badge-inprogress-bg: #7c2d12;
+  --badge-review-fg:   #e9d5ff;   --badge-review-bg:   #581c87;
+  --badge-done-fg:     #bbf7d0;   --badge-done-bg:     #14532d;
+
+  --severity-info-fg: #bfdbfe;    --severity-info-bg: #1e3a8a;
+  --severity-warning-fg: #fde68a; --severity-warning-bg: #7c2d12;
+  --severity-error-fg: #fecaca;   --severity-error-bg: #7f1d1d;
+}
+
+/* ─── Density ─── */
+:root[data-density="compact"] {
+  --pad-1: 2px; --pad-2: 6px; --pad-3: 10px; --pad-4: 12px; --pad-5: 16px; --pad-6: 20px;
+  --row-h: 28px;
+
+  --space-1: 0.125rem; --space-2: 0.375rem; --space-3: 0.5rem; --space-4: 0.75rem;
+  --space-5: 1rem;     --space-6: 1.125rem; --space-8: 1.5rem; --space-10: 1.875rem; --space-12: 2.25rem;
+}
+:root[data-density="spacious"] {
+  --pad-1: 6px; --pad-2: 12px; --pad-3: 16px; --pad-4: 22px; --pad-5: 28px; --pad-6: 36px;
+  --row-h: 38px;
+}
+
+/* ─── Radius ─── */
+:root[data-radius="sharp"] { --r-sm: 2px;  --r-md: 4px;  --r-lg: 6px;  --r-xl: 8px;  --r-2xl: 10px; }
+:root[data-radius="soft"]  { --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 28px; }
+
+/* ─── Sidebar style — used by v3 layout (Phase B) ─── */
+:root[data-sidebar="rail"]  .cs-rail-full { display: none; }
+:root[data-sidebar="full"]  .cs-rail-icon { display: none; }
