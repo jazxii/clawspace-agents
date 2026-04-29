@@ -18,6 +18,7 @@ Hot-cached pointer index. Always read first. Never duplicate raw content here â€
 - Instagram: [prds/content-instagram.md](prds/content-instagram.md)
 - X: [prds/content-x.md](prds/content-x.md)
 - Dev projects: `prds/projects/<slug>.md`
+  - [A11yAI Accessibility Defect Automation](prds/projects/a11yai-accessibility-defect-automation.md)
 - Research domains:
   - [Accessibility AI](research/domains/accessibility-ai/PRD.md)
 

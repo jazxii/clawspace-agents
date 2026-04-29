@@ -9,6 +9,9 @@ Move a card between columns in a Clawspace Kanban markdown file, then post a not
 
 ## Kanban file format
 
+
+**IMPORTANT:** All Kanban cards must use the `- [card-...]` format (e.g., `- [card-001] Title — meta`) for correct parsing and UI display. Plain list items will be ignored by the parser/UI.
+
 Each board is a single markdown file with H2 headings as columns and bullet items as cards:
 
 ```markdown

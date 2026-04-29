@@ -1,0 +1,2404 @@
+{
+  "nodes": [
+    {
+      "id": "ui_postcss_config_mjs",
+      "label": "postcss.config.mjs",
+      "file_type": "code",
+      "source_file": "ui/postcss.config.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_next_config_mjs",
+      "label": "next.config.mjs",
+      "file_type": "code",
+      "source_file": "ui/next.config.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_next_env_d_ts",
+      "label": "next-env.d.ts",
+      "file_type": "code",
+      "source_file": "ui/next-env.d.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_tailwind_config_ts",
+      "label": "tailwind.config.ts",
+      "file_type": "code",
+      "source_file": "ui/tailwind.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_playwright_config_ts",
+      "label": "playwright.config.ts",
+      "file_type": "code",
+      "source_file": "ui/playwright.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_layout_tsx",
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "layout_rootlayout",
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "ui_app_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_research_digests_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/research/digests/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_research_digests_week_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_generatemetadata",
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L8"
+    },
+    {
+      "id": "ui_app_components_routeannouncer_tsx",
+      "label": "RouteAnnouncer.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "routeannouncer_routeannouncer",
+      "label": "RouteAnnouncer()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "ui_app_components_shortcutsoverlay_tsx",
+      "label": "ShortcutsOverlay.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/ShortcutsOverlay.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_components_commandpalette_tsx",
+      "label": "CommandPalette.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "commandpalette_onselect",
+      "label": "onSelect()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L68"
+    },
+    {
+      "id": "ui_app_components_usermenu_tsx",
+      "label": "UserMenu.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "usermenu_togglepause",
+      "label": "togglePause()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "usermenu_onopen",
+      "label": "onOpen()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L41"
+    },
+    {
+      "id": "usermenu_ontogglepause",
+      "label": "onTogglePause()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L45"
+    },
+    {
+      "id": "ui_app_components_breadcrumbs_tsx",
+      "label": "Breadcrumbs.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Breadcrumbs.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_components_statusbadge_tsx",
+      "label": "StatusBadge.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/StatusBadge.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "statusbadge_statusbadge",
+      "label": "StatusBadge()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/StatusBadge.tsx",
+      "source_location": "L44"
+    },
+    {
+      "id": "ui_app_components_sidebar_tsx",
+      "label": "Sidebar.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "sidebar_isactive",
+      "label": "isActive()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L25"
+    },
+    {
+      "id": "sidebar_sidebar",
+      "label": "Sidebar()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L30"
+    },
+    {
+      "id": "ui_app_components_providers_tsx",
+      "label": "Providers.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "providers_shortcutsbinder",
+      "label": "ShortcutsBinder()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "providers_providers",
+      "label": "Providers()",
+      "file_type": "code",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L20"
+    },
+    {
+      "id": "ui_app_kanban_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_app_kanban_board_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_generatemetadata",
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "page_kanbanboardpage",
+      "label": "KanbanBoardPage()",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "label": "KanbanBoardView.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "kanbanboardview_announce",
+      "label": "announce()",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L31"
+    },
+    {
+      "id": "kanbanboardview_onblur",
+      "label": "onBlur()",
+      "file_type": "code",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L226"
+    },
+    {
+      "id": "ui_app_api_bus_post_route_ts",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "route_post",
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "ui_app_api_events_route_ts",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "route_get",
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "ui_app_api_bus_tail_route_ts",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "route_get",
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "ui_app_proposals_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_proposalsindex",
+      "label": "ProposalsIndex()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L8"
+    },
+    {
+      "id": "ui_app_proposals_week_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_generatemetadata",
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "ui_app_proposals_week_confirm_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_generatemetadata",
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "page_confirmapply",
+      "label": "ConfirmApply()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "ui_app_proposals_week_confirm_components_copycommand_tsx",
+      "label": "CopyCommand.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/confirm/_components/CopyCommand.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "copycommand_copycommand",
+      "label": "CopyCommand()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/confirm/_components/CopyCommand.tsx",
+      "source_location": "L10"
+    },
+    {
+      "id": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "label": "ProposalReviewForm.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "proposalreviewform_toggle",
+      "label": "toggle()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L33"
+    },
+    {
+      "id": "proposalreviewform_onsubmit",
+      "label": "onSubmit()",
+      "file_type": "code",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L43"
+    },
+    {
+      "id": "ui_app_channels_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_channelsindex",
+      "label": "ChannelsIndex()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "ui_app_channels_channel_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "page_generatemetadata",
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "page_channelpage",
+      "label": "ChannelPage()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "ui_app_channels_channel_components_channelview_tsx",
+      "label": "ChannelView.tsx",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "channelview_setpolitetext",
+      "label": "setPoliteText()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L20"
+    },
+    {
+      "id": "channelview_setpoliteoff",
+      "label": "setPoliteOff()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "channelview_usereducedmotion",
+      "label": "useReducedMotion()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L35"
+    },
+    {
+      "id": "channelview_channelview",
+      "label": "ChannelView()",
+      "file_type": "code",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L60"
+    },
+    {
+      "id": "ui_tests_a11y_spec_ts",
+      "label": "a11y.spec.ts",
+      "file_type": "code",
+      "source_file": "ui/tests/a11y.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_lib_use_density_tsx",
+      "label": "use-density.tsx",
+      "file_type": "code",
+      "source_file": "ui/lib/use-density.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "use_density_usedensity",
+      "label": "useDensity()",
+      "file_type": "code",
+      "source_file": "ui/lib/use-density.tsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "ui_lib_use_shortcuts_tsx",
+      "label": "use-shortcuts.tsx",
+      "file_type": "code",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "use_shortcuts_ineditable",
+      "label": "inEditable()",
+      "file_type": "code",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L24"
+    },
+    {
+      "id": "use_shortcuts_useglobalshortcuts",
+      "label": "useGlobalShortcuts()",
+      "file_type": "code",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L34"
+    },
+    {
+      "id": "ui_lib_use_mode_tsx",
+      "label": "use-mode.tsx",
+      "file_type": "code",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "use_mode_modeprovider",
+      "label": "ModeProvider()",
+      "file_type": "code",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L39"
+    },
+    {
+      "id": "use_mode_usemode",
+      "label": "useMode()",
+      "file_type": "code",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L68"
+    },
+    {
+      "id": "ui_lib_live_announce_ts",
+      "label": "live-announce.ts",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "live_announce_liveannouncer",
+      "label": "LiveAnnouncer",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L36"
+    },
+    {
+      "id": "live_announce_liveannouncer_regions",
+      "label": ".regions()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "live_announce_liveannouncer_setpaused",
+      "label": ".setPaused()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "live_announce_liveannouncer_setquietzone",
+      "label": ".setQuietZone()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L54"
+    },
+    {
+      "id": "live_announce_liveannouncer_polite",
+      "label": ".polite_()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "live_announce_liveannouncer_assertive",
+      "label": ".assertive_()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "live_announce_liveannouncer_enqueue",
+      "label": ".enqueue()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "live_announce_liveannouncer_scheduleflush",
+      "label": ".scheduleFlush()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L88"
+    },
+    {
+      "id": "live_announce_liveannouncer_flush",
+      "label": ".flush()",
+      "file_type": "code",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L96"
+    },
+    {
+      "id": "ui_lib_fs_adapter_ts",
+      "label": "fs-adapter.ts",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "fs_adapter_within",
+      "label": "within()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "fs_adapter_safejoin",
+      "label": "safeJoin()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "fs_adapter_listbuschannels",
+      "label": "listBusChannels()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L36"
+    },
+    {
+      "id": "fs_adapter_readbuschannel",
+      "label": "readBusChannel()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "fs_adapter_readlatestacrosschannels",
+      "label": "readLatestAcrossChannels()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "fs_adapter_listkanbanboards",
+      "label": "listKanbanBoards()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L92"
+    },
+    {
+      "id": "fs_adapter_readkanbanboard",
+      "label": "readKanbanBoard()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L114"
+    },
+    {
+      "id": "fs_adapter_parsekanbanmarkdown",
+      "label": "parseKanbanMarkdown()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L123"
+    },
+    {
+      "id": "fs_adapter_listproposals",
+      "label": "listProposals()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L170"
+    },
+    {
+      "id": "fs_adapter_readproposal",
+      "label": "readProposal()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L188"
+    },
+    {
+      "id": "fs_adapter_extractdiffs",
+      "label": "extractDiffs()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L209"
+    },
+    {
+      "id": "fs_adapter_listresearchdigests",
+      "label": "listResearchDigests()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L246"
+    },
+    {
+      "id": "fs_adapter_readresearchdigest",
+      "label": "readResearchDigest()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L264"
+    },
+    {
+      "id": "fs_adapter_readtodayslog",
+      "label": "readTodaysLog()",
+      "file_type": "code",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L275"
+    }
+  ],
+  "edges": [
+    {
+      "source": "ui_tailwind_config_ts",
+      "target": "tailwindcss",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/tailwind.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_playwright_config_ts",
+      "target": "test",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/playwright.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_globals_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "next",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_routeannouncer",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_sidebar",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_commandpalette",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_shortcutsoverlay",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_usermenu",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "ui_app_components_providers",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_layout_tsx",
+      "target": "layout_rootlayout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/layout.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_page_tsx",
+      "target": "ui_app_components_statusbadge",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_page_tsx",
+      "target": "ui_app_components_breadcrumbs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_week_page_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_week_page_tsx",
+      "target": "react_markdown",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_week_page_tsx",
+      "target": "remark_gfm",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_week_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_research_digests_week_page_tsx",
+      "target": "page_generatemetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/research/digests/[week]/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_routeannouncer_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_routeannouncer_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_routeannouncer_tsx",
+      "target": "live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_routeannouncer_tsx",
+      "target": "routeannouncer_routeannouncer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/RouteAnnouncer.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_shortcutsoverlay_tsx",
+      "target": "react_dialog",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/ShortcutsOverlay.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_shortcutsoverlay_tsx",
+      "target": "use_mode",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/ShortcutsOverlay.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_shortcutsoverlay_tsx",
+      "target": "use_shortcuts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/ShortcutsOverlay.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "cmdk",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "react_dialog",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "use_mode",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_commandpalette_tsx",
+      "target": "commandpalette_onselect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/CommandPalette.tsx",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "next_themes",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "use_density",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "use_shortcuts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "usermenu_togglepause",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "usermenu_onopen",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_usermenu_tsx",
+      "target": "usermenu_ontogglepause",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "usermenu_ontogglepause",
+      "target": "usermenu_togglepause",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_breadcrumbs_tsx",
+      "target": "link",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Breadcrumbs.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_statusbadge_tsx",
+      "target": "statusbadge_statusbadge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/StatusBadge.tsx",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_sidebar_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_sidebar_tsx",
+      "target": "link",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_sidebar_tsx",
+      "target": "sidebar_isactive",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_sidebar_tsx",
+      "target": "sidebar_sidebar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Sidebar.tsx",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "next_themes",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "use_mode",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "use_shortcuts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "providers_shortcutsbinder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_components_providers_tsx",
+      "target": "providers_providers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_page_tsx",
+      "target": "ui_app_components_breadcrumbs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_page_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_page_tsx",
+      "target": "ui_app_kanban_board_components_kanbanboardview",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_page_tsx",
+      "target": "page_generatemetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_page_tsx",
+      "target": "page_kanbanboardpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "target": "react_dialog",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "target": "kanbanboardview_announce",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_kanban_board_components_kanbanboardview_tsx",
+      "target": "kanbanboardview_onblur",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/kanban/[board]/_components/KanbanBoardView.tsx",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_post_route_ts",
+      "target": "server",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_post_route_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_post_route_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_post_route_ts",
+      "target": "route_post",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-post/route.ts",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_events_route_ts",
+      "target": "server",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_events_route_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_events_route_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_events_route_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_events_route_ts",
+      "target": "route_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/events/route.ts",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_tail_route_ts",
+      "target": "server",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_tail_route_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_tail_route_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_tail_route_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_api_bus_tail_route_ts",
+      "target": "route_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/api/bus-tail/route.ts",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_page_tsx",
+      "target": "ui_app_components_statusbadge",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_page_tsx",
+      "target": "ui_app_components_breadcrumbs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_page_tsx",
+      "target": "page_proposalsindex",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_page_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_page_tsx",
+      "target": "ui_app_proposals_week_components_proposalreviewform",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_page_tsx",
+      "target": "page_generatemetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_page_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_page_tsx",
+      "target": "ui_app_proposals_week_confirm_components_copycommand",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_page_tsx",
+      "target": "page_generatemetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_page_tsx",
+      "target": "page_confirmapply",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_components_copycommand_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/_components/CopyCommand.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_confirm_components_copycommand_tsx",
+      "target": "copycommand_copycommand",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/confirm/_components/CopyCommand.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "target": "proposalreviewform_toggle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_proposals_week_components_proposalreviewform_tsx",
+      "target": "proposalreviewform_onsubmit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/proposals/[week]/_components/ProposalReviewForm.tsx",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_page_tsx",
+      "target": "ui_app_components_breadcrumbs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_page_tsx",
+      "target": "page_channelsindex",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_page_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_page_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_page_tsx",
+      "target": "ui_app_channels_channel_components_channelview",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_page_tsx",
+      "target": "page_generatemetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_page_tsx",
+      "target": "page_channelpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "fs_adapter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "channelview_setpolitetext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "channelview_setpoliteoff",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "channelview_usereducedmotion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_app_channels_channel_components_channelview_tsx",
+      "target": "channelview_channelview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "channelview_channelview",
+      "target": "channelview_usereducedmotion",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/app/channels/[channel]/_components/ChannelView.tsx",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_tests_a11y_spec_ts",
+      "target": "test",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/tests/a11y.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_tests_a11y_spec_ts",
+      "target": "playwright",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/tests/a11y.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_density_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-density.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_density_tsx",
+      "target": "ui_lib_live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-density.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_density_tsx",
+      "target": "use_density_usedensity",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-density.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "navigation",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "ui_lib_use_mode",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "ui_lib_live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "use_shortcuts_ineditable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_shortcuts_tsx",
+      "target": "use_shortcuts_useglobalshortcuts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_mode_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_mode_tsx",
+      "target": "ui_lib_live_announce",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_mode_tsx",
+      "target": "use_mode_modeprovider",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_use_mode_tsx",
+      "target": "use_mode_usemode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/use-mode.tsx",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_live_announce_ts",
+      "target": "live_announce_liveannouncer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_regions",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_setpaused",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_setquietzone",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_polite",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_assertive",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_enqueue",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_scheduleflush",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer",
+      "target": "live_announce_liveannouncer_flush",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer_polite",
+      "target": "live_announce_liveannouncer_enqueue",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer_assertive",
+      "target": "live_announce_liveannouncer_regions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer_enqueue",
+      "target": "live_announce_liveannouncer_assertive",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer_enqueue",
+      "target": "live_announce_liveannouncer_scheduleflush",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "live_announce_liveannouncer_flush",
+      "target": "live_announce_liveannouncer_regions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/live-announce.ts",
+      "source_location": "L98",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "server_only",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "gray_matter",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_within",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_safejoin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_listbuschannels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readbuschannel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readlatestacrosschannels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_listkanbanboards",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readkanbanboard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_parsekanbanmarkdown",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_listproposals",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readproposal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_extractdiffs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_listresearchdigests",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L246",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readresearchdigest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L264",
+      "weight": 1.0
+    },
+    {
+      "source": "ui_lib_fs_adapter_ts",
+      "target": "fs_adapter_readtodayslog",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L275",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_listbuschannels",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readbuschannel",
+      "target": "fs_adapter_safejoin",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readbuschannel",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readlatestacrosschannels",
+      "target": "fs_adapter_listbuschannels",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readlatestacrosschannels",
+      "target": "fs_adapter_readbuschannel",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_listkanbanboards",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readkanbanboard",
+      "target": "fs_adapter_safejoin",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readkanbanboard",
+      "target": "fs_adapter_parsekanbanmarkdown",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_listproposals",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L171",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readproposal",
+      "target": "fs_adapter_safejoin",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readproposal",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_listresearchdigests",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L247",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readresearchdigest",
+      "target": "fs_adapter_safejoin",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L266",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readresearchdigest",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L266",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readtodayslog",
+      "target": "fs_adapter_safejoin",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L277",
+      "weight": 1.0
+    },
+    {
+      "source": "fs_adapter_readtodayslog",
+      "target": "fs_adapter_within",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "ui/lib/fs-adapter.ts",
+      "source_location": "L277",
+      "weight": 1.0
+    },
+    {
+      "source": "usermenu_togglepause",
+      "target": "live_announce_liveannouncer_setpaused",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/_components/UserMenu.tsx",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "providers_shortcutsbinder",
+      "target": "use_shortcuts_useglobalshortcuts",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/_components/Providers.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "page_kanbanboardpage",
+      "target": "fs_adapter_readkanbanboard",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/kanban/[board]/page.tsx",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "page_proposalsindex",
+      "target": "fs_adapter_listproposals",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/proposals/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "page_confirmapply",
+      "target": "fs_adapter_readproposal",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/proposals/[week]/confirm/page.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "page_channelsindex",
+      "target": "fs_adapter_listbuschannels",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/channels/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "page_channelpage",
+      "target": "fs_adapter_listbuschannels",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "page_channelpage",
+      "target": "fs_adapter_readbuschannel",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/app/channels/[channel]/page.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "use_shortcuts_useglobalshortcuts",
+      "target": "use_mode_usemode",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "ui/lib/use-shortcuts.tsx",
+      "source_location": "L36",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

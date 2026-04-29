@@ -67,7 +67,10 @@ export async function readLatestAcrossChannels(limit = 10): Promise<BusMessage[]
     const msgs = await readBusChannel(ch, { limit: 20 });
     all.push(...msgs);
   }
-  return all.sort((a, b) => b.ts.localeCompare(a.ts)).slice(0, limit);
+  return all
+    .filter((m) => typeof m.ts === "string")
+    .sort((a, b) => b.ts.localeCompare(a.ts))
+    .slice(0, limit);
 }
 
 // ---------- Kanban boards ----------
