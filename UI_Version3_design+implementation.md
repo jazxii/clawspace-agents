@@ -319,6 +319,160 @@ Even without specialist agents, every PR MUST:
 - Keyboard parity for every drag-drop (already specced in design with ←/→).
 - Live-region announce on state changes (already wired via `lib/live-announce.ts`).
 
+### 7.6 Action button registry
+
+Every interactive button in the design has one of three behaviours: **client** (local state only), **route** (Next.js navigation), or **stage** (POST to a server route that appends one bus message via the `bus.post` skill — never shell-execs). Plus a small **read** category (server route returns derived data).
+
+**Bus envelope** all `stage` buttons MUST emit (matches existing agent contract):
+```jsonc
+{
+  "ts":   "<ISO-8601>",          // server-set
+  "from": "web-ui",              // never spoof an agent name
+  "to":   "<agent-or-broadcast>",
+  "type": "<see column 'type'>", // controlled vocab
+  "body": "<short human prose>",
+  "ref":  "<optional file path or url>"
+}
+```
+
+**Server route convention:** `POST /api/actions/<verb>` returns `202 Accepted` after the bus append. Idempotency key in `Idempotency-Key` header (e.g., `sha1(verb+payload+minute-bucket)`); duplicate keys within 10 min return the original 202 without re-staging. Optimistic UI flips to "queued" state immediately; on failure, `lib/live-announce.ts` polite-announces the error and reverts.
+
+#### Top nav (Phase B)
+| Button | Kind | Target | Notes |
+|---|---|---|---|
+| Theme toggle (sun/moon) | client | `useTweaks setTweak('theme', …)` | — |
+| Bell (notifications) | route | `/notifications` (Phase E stub) | Pulse dot reads from `bus/all-hands.jsonl` `type:"alert"` |
+| Avatar | route | `/agents` (registry) — no real auth | — |
+| Search bar | client | opens Cmd-K palette | — |
+| Budget pill | route | `/cost` | Hover shows tooltip; click drills in |
+
+#### Cmd-K palette items (Phase B)
+| Item group / item | Kind | Target | Bus type |
+|---|---|---|---|
+| Navigate · Go to <route> | route | `/<route>` | — |
+| Agents · Run linkedin-writer | stage | `bus/content`, `to:"linkedin-writer"` | `"trigger"` |
+| Agents · Run scrum-master | stage | `bus/projects`, `to:"scrum-master"` | `"trigger"` |
+| Agents · Run notebooklm-bridge | stage | `bus/research`, `to:"notebooklm-bridge"` | `"trigger"` |
+| Agents · Run daily-content-supervisor | stage | `bus/content`, `to:"daily-content-supervisor"` | `"trigger"` |
+| Actions · New project | route | `/new-project` modal (D1) | — |
+| Actions · Apply proposal (week-NN) | client | toast "run `/apply-proposal week-NN` from Claude Code" | (apply is gated to Claude Code per CLAUDE.md) |
+| Actions · Sync content queue → Notion | stage | `bus/content`, `to:"notion-publisher"` | `"trigger"` |
+| Actions · Compose Wk-NN newsletter draft | stage | `bus/research`, `to:"newsletter-writer"` | `"trigger"` |
+| Settings · Toggle theme | client | `useTweaks` | — |
+| Settings · Open Tweaks panel | client | `setOpen(true)` on TweaksPanel | — |
+
+#### Dashboard (D1)
+| Button | Kind | Target | Bus type / notes |
+|---|---|---|---|
+| Run health check | stage | `bus/meta`, `to:"master-overseer"` | `"trigger"`, body `"web-ui requested daily-health"` |
+| + New project | route | `/new-project` modal route (server-rendered form) | Submit POSTs `/api/actions/new-project` → calls `new-project` skill via bus stage `bus/all-hands` `type:"trigger"` `to:"new-project-skill"` |
+| Open channels (bus headlines card) | route | `/channels` | — |
+| Review (weekly proposal card) | route | `/proposals/<week>` | — |
+| Skip this week (proposal card) | stage | `bus/meta` | `"proposal-skip"`, body `"week-NN skipped via web-ui"`, ref `proposals/week-NN.md` |
+| Resolve (notion sync card) | route | `/notion?conflict=<id>` | Opens conflict drawer on the Notion page |
+| View all (notion sync card) | route | `/notion` | — |
+| Click on stat tile (4 tiles) | route | corresponding domain page | content→`/queue`, projects→`/kanban`, research→`/research/digests`, meta→`/cost` |
+
+#### Kanban (C)
+| Button | Kind | Target | Notes |
+|---|---|---|---|
+| All owners (filter pill) | client | filter card list by `owner` frontmatter | URL-syncs as `?owner=…` |
+| + New card | client | inline form at column footer | Submit → `POST /api/kanban/<slug>` `op:"add"` |
+| Drag / arrow keys | stage+write | `POST /api/kanban/<slug>` `op:"move"` | Atomic .md write + bus stage `bus/proj-<slug>` `type:"kanban-update"` |
+| Inline edit (dblclick title) | stage+write | `op:"edit"` | Same envelope |
+| Right-click → Delete | stage+write | `op:"delete"` | Confirm modal first |
+| + Add (column footer) | client | same as "+ New card" but pre-fills column | — |
+| Card click | client | side drawer with full md (acceptance criteria, owner, links) | Read-only Phase C |
+
+#### Channels (D2)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Channel list item | client | switch active channel | URL-syncs `/channels/<id>` |
+| Pause / Resume tail | client | toggle SSE subscription | — |
+| Filter (icon button) | client | popover: by author, by type, by date range | — |
+| Composer Send | stage | `POST /api/bus-post` (already exists) → appends to `bus/<id>.jsonl` | `type:"note"`, from `"web-ui"` |
+| Composer Attach | client | file picker | Phase E only |
+| Composer @ Mention | client | autocomplete from `AGENTS` list | Inserts `@agent-id` token |
+
+#### Activity (D3)
+| Button | Kind | Target |
+|---|---|---|
+| Domain filter (all/content/projects/research/meta) | client | filter table; URL-sync `?domain=…` |
+
+#### Cost (D3)
+No interactive buttons in design. Stat tiles + bar list are read-only.
+
+#### Logs (D4)
+| Button | Kind | Target |
+|---|---|---|
+| Date `<select>` | client | route `/logs/<YYYY-MM-DD>` |
+| Sidebar date item | client | same as `<select>` |
+
+#### Graph (D4)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| All domains (filter) | client | filter visible nodes | — |
+| Re-index | stage | `bus/all-hands`, `to:"graphify-skill"` | `"trigger"`, body `"web-ui requested re-index"` |
+| Node hover | client | side panel updates | — |
+
+#### Digest (D4)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Stage newsletter | stage | `bus/research`, `to:"newsletter-writer"` | `"trigger"`, body `"stage Wk-NN newsletter draft"`, ref `research/weekly-digests/<week>.md` |
+| Approve | stage | `bus/research`, `to:"research-domain-lead"` | `"digest-approved"`, ref same week |
+
+#### Audit (D5)
+| Button | Kind | Target |
+|---|---|---|
+| All actors (filter) | client | filter table; URL-sync `?actor=…&action=…&file=…` |
+
+#### Content queue (D5)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Tabs (all/linkedin/instagram/x/newsletter) | client | filter card grid | URL-sync `?platform=…` |
+| Sync to Notion | stage | `bus/content`, `to:"notion-publisher"` | `"trigger"` (alias of D6 sync) |
+| + New draft | route | `/queue/new?platform=…` form (Phase D5) | Submit → writes new md to `content/queue/<platform>/<date>-<slug>.md` via fs-adapter |
+| Card click | route | `/queue/<id>` md viewer | Edit via inline `<textarea>` + Save → fs-adapter write |
+
+#### Notion sync (D6)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Sync now | stage | `bus/content`, `to:"notion-publisher"` | `"trigger"`, body `"web-ui requested manual sync"` |
+| Per-row → arrow | route | `/queue/<id>` (drill into the local md) | — |
+| Per-row Resolve (when conflict) | client+stage | opens drawer with local md vs remote snapshot, user picks side, Save → stage `"resolve-conflict"` to `bus/content` with chosen side | — |
+
+#### Proposals (D8)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Diff list item click | client | open diff in main pane | — |
+| Skip | stage | `bus/meta`, `to:"master-overseer"` | `"proposal-skip"` |
+| Plan-mode preview | read | `GET /api/proposals/<week>/preview` (server-side dry-run that calls `proposal-applier` agent in plan-only mode) | Returns rendered preview; no bus write |
+| Apply | client | toast "run `/apply-proposal <week>` from Claude Code" | NEVER staged from web — apply is gated to `/apply-proposal` per CLAUDE.md forbidden actions |
+| Per-diff Approve | client | mark diff `n` approved in local component state | Pre-flight list passed to `/apply-proposal` |
+| Per-diff Reject | client | mark diff `n` rejected | — |
+
+#### Agents registry (D5)
+| Button | Kind | Target |
+|---|---|---|
+| Domain filter (all/content/projects/research/meta) | client | filter cards; URL-sync `?domain=…` |
+| (Agent card body has no click action in design) | — | — |
+
+#### NotebookLM (D7 — not in design bundle, user-added)
+| Button | Kind | Target | Bus type |
+|---|---|---|---|
+| Run prompt (per row) | stage | `bus/research`, `to:"notebooklm-bridge"` | `"notebooklm-run"`, body `prompt-<n>`, ref `research/domains/<slug>/notebooklm-prompts.md` |
+| Domain accordion expand | client | open accordion | — |
+| Response viewer | route | `/research/notebooklm/<slug>/<prompt-id>` | Reads `research/domains/<slug>/notes/*-notebooklm.md` |
+
+### 7.7 Hard rules every action MUST follow
+
+1. **Never shell-exec from a web request.** No `child_process`, no `exec`, no `spawn`. Add a Playwright assertion in Phase E that greps `ui/app/api/**` for these tokens — should be zero.
+2. **Never write outside `PROJECT_ROOT`.** `fs-adapter`'s `safeJoin` already enforces; every new write helper must reuse it.
+3. **Never auto-post to LinkedIn/Instagram/X/Notion/NotebookLM.** Web layer only stages bus messages; agents handle the actual external calls under their own scheduled-task or watcher gating.
+4. **Never apply a proposal from web.** `Apply` button shows a toast directing the user to run `/apply-proposal` in Claude Code. Per CLAUDE.md forbidden actions.
+5. **Idempotency required for every `stage` button.** Duplicate clicks within 10 min are no-ops at the `/api/actions/<verb>` layer.
+6. **Optimistic UI must roll back.** Every `stage` button assumes success, but on 4xx/5xx reverts and announces via `live-announce.ts` polite region.
+
 ---
 
 ## 8. Phase execution checklist (per session)
@@ -372,3 +526,4 @@ Add new questions here as they surface during implementation.
 - **2026-04-30** — Plan drafted.
 - **2026-04-30** — A11y enforcement hooks disabled in `~/.claude/settings.json` (backup at `~/.claude/settings.json.a11y-backup-2026-04-30`).
 - **2026-04-30** — Phase A shipped in [PR #7](https://github.com/jazxii/clawspace-agents/pull/7) (`feat/ui-v3-phase-a-design-system` @ `ad3b054`). Tokens, `cs-*` utility layer, Tweaks panel, Icon set, `useTweaks` hook, Tailwind extension.
+- **2026-04-30** — §7.6 Action button registry added: every interactive button across 13 routes + Cmd-K + top nav now has a kind (`client` / `route` / `stage` / `read`), target, and bus message shape spec'd. §7.7 codifies the "no shell-exec / no auto-post / no auto-apply" hard rules with a Phase E grep test.
