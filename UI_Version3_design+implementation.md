@@ -10,7 +10,7 @@
 |---|---|---|---|
 | A — Design system swap | ✅ **Shipped** 2026-04-30 | `feat/ui-v3-phase-a-design-system` | [#7](https://github.com/jazxii/clawspace-agents/pull/7) |
 | B — Layout + nav + Cmd-K | ✅ **Shipped** 2026-04-30 | `feat/ui-v3-phase-b-layout-nav` | [#8](https://github.com/jazxii/clawspace-agents/pull/8) |
-| C — Kanban v3 + md write-back | ⏳ Pending | `feat/ui-v3-phase-c-kanban-write-back` | — |
+| C — Kanban v3 + md write-back | ✅ **Shipped** 2026-04-30 | `feat/ui-v3-phase-c-kanban-write-back` | [#9](https://github.com/jazxii/clawspace-agents/pull/9) |
 | D1 — Dashboard | ⏳ Pending | `feat/ui-v3-d1-dashboard` | — |
 | D2 — Channels live-tail | ⏳ Pending | `feat/ui-v3-d2-channels-live-tail` | — |
 | D3 — Activity + Cost | ⏳ Pending | `feat/ui-v3-d3-activity-cost` | — |
@@ -160,58 +160,52 @@ ui/
 
 ---
 
-## 4. Phase C — Kanban v3 (vibeyard-inspired) with md write-back
+## 4. Phase C — Kanban v3 + md write-back ✅ SHIPPED
 
-**Goal:** Replace the read-only kanban index with a full per-board UI: drag-drop, keyboard ←/→, inline edit, add/delete card, and **bidirectional sync** to `kanban/**.md`.
+**Status:** Shipped 2026-04-30 in [PR #9](https://github.com/jazxii/clawspace-agents/pull/9).
 
-**Branch:** `feat/ui-v3-phase-c-kanban-write-back`
+**Branch:** `feat/ui-v3-phase-c-kanban-write-back` (commit `32d8a7a`)
 
-**Reference:** `https://github.com/elirantutia/vibeyard` — uses `@dnd-kit/core` + `@dnd-kit/sortable`, column virtualization optional, drag handle on card, "+ Add card" inline. We adopt that pattern.
+**What landed:**
 
-**Md file shape (existing):**
-```markdown
-# Kanban — clawspace-ui
+| File | Action taken |
+|---|---|
+| `ui/lib/kanban-serialize.ts` | **NEW.** Lossless splice serializer. Cards are rewritten in-place inside each column's "card region"; non-card content (headings, bullets, comments, prose) is preserved byte-for-byte. Exports `originalIsCleanForWriteBack()` — gates write-back on free-form boards. |
+| `ui/lib/fs-adapter.ts` | **EXTENDED.** `readKanbanRaw(slug, kind)` returns `{board, rawText, mtimeMs}`. `writeKanbanRaw(slug, kind, newText, expectedMtimeMs?)` does atomic `.tmp + rename` with optional mtime conflict detection (throws `ECONFLICT`). `busAppend({channel, from, to?, type, body, ref?})` writes one envelope to `bus/<channel>.jsonl` — never `child_process.exec`. |
+| `ui/app/api/kanban/[slug]/route.ts` | **NEW.** `GET` returns `{board, mtimeMs, kind}`. `POST` applies one of `move` / `add` / `edit` / `delete`. Validates slug + op, refuses on free-form boards (`409 EFORMAT`), refuses on mtime drift (`409 ECONFLICT` with fresh state). On success: persists md atomically, posts a `note`-type message to `bus/proj-<slug>` (projects) or `bus/content` (content boards) with `from:"web-ui"` and ref to the card line. |
+| `ui/app/api/kanban/[slug]/stream/route.ts` | **NEW.** Per-connection chokidar SSE. Watches the slug's md file. On change emits `event: updated`. 25s heartbeat keeps proxies happy. Cleans up on `req.signal.abort`. |
+| `ui/app/kanban/[board]/_components/KanbanBoardView.tsx` | **REPLACED.** `@dnd-kit/core` + `@dnd-kit/sortable` for pointer + keyboard drag. Optimistic state with revert-on-error. SSE listener triggers a re-fetch on disk change. Inline title edit (double-click / `F2` / `⌘E`). "+ Add card" inline form per column. Delete from card detail dialog (with confirm). Card primitive is `<div role="button">` (jsx-a11y compliant). Read-only banner + disabled controls when `writeBackEnabled=false`. |
+| `ui/app/kanban/[board]/page.tsx` | **UPDATED.** Server component now uses `readKanbanRaw`, computes `writeBackEnabled = originalIsCleanForWriteBack(rawText)`, passes it + `mtimeMs` + `kind` to the client. |
+| `ui/app/kanban/page.tsx` | **REWRITTEN.** v3 design: per-board summary cards with column counts, total, "Read-only" badge for free-form boards. Sectioned by Content / Projects. |
+| `ui/package.json` | **DEPS.** `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`. |
 
-<!-- counts: backlog=3 drafting=3 review=2 ready=2 done=2 -->
+**Decisions made during implementation:**
 
-## Backlog
+1. **Free-form board guard.** The existing `kanban/projects/a11yai-accessibility-defect-automation.md` uses bullets-not-cards for some columns (free-form roadmap notes). Write-back is **automatically disabled** for any board where any column has non-card content — the UI shows a read-only banner. This protects user data; conversion to canonical card format re-enables editing. The detection is conservative (any non-card line in any column body trips the gate).
+2. **Splice strategy over re-emit.** The serializer doesn't re-emit the entire markdown from the parsed structure; it splices new card text into the original column body's "card region" (the contiguous block of card+AC lines), leaving everything else byte-for-byte identical. This makes round-trips safe even for boards with comments, free-form prose, or quirky formatting we didn't anticipate.
+3. **Mtime conflict detection at the API layer.** Client sends `expectedMtimeMs`; if the file has drifted, server returns `409 ECONFLICT` with fresh state. Client merges optimistically (this is more resilient than rejecting the move).
+4. **Cross-tab sync via chokidar SSE, per-connection.** Each tab opens its own EventSource and registers its own watcher. Phase E may consolidate to a single multiplexer if cost matters; for now n watchers per file is fine in single-user local-first.
+5. **Bus message convention.** All UI mutations post `{type:"note", from:"web-ui", body:"<short prose>", ref:"<file>#<card-id>"}`. Channel routes by board kind (content boards → `bus/content`, projects → `bus/proj-<slug>`). This matches the existing `kanban-secretary` agent contract — daily supervisors see UI moves the same way they see CLI moves via the `kanban-move` skill.
 
-- [card-k1] Mobile breakpoint pass — channels view — owner: clawspace-ui · tags: mobile,a11y · priority: med · age: 2d
-  - Acceptance: 320px reflow, no horizontal scroll
-  - Acceptance: focus trap on channel filter
+**Smoke-tested round-trip:**
 
-## Drafting
-…
+```
+GET /api/kanban/test-roundtrip → 200 {board, mtimeMs}
+POST /api/kanban/test-roundtrip {op:"move", cardId:"card-1", toColumn:"Drafting", toIndex:0, expectedMtimeMs:...}
+→ 200 {board, mtimeMs}
+→ kanban/test-roundtrip.md: card-1 moved Backlog→Drafting, ACs preserved, counts regenerated
+→ bus/content.jsonl: one new envelope with correct shape
 ```
 
-**Files to add/modify:**
+**Verification:**
+- `npx tsc --noEmit` — clean
+- `npx next build` — green (17 routes)
+- `npx playwright test` — **9 passed, 1 skipped, 0 failed**
+- Manual round-trip → all assertions met
 
-| File | Action |
-|---|---|
-| `ui/lib/fs-adapter.ts` | **EXTEND** — add `writeKanbanBoard(slug, kind, board)`, `moveKanbanCard(slug, kind, cardId, toColumn, toIndex)`, `addKanbanCard(...)`, `editKanbanCard(...)`, `deleteKanbanCard(...)`. All writes: re-parse → splice → serialize → atomic write (`fs.writeFile` to `.tmp` then `rename`). Update `<!-- counts: ... -->` line on every write. |
-| `ui/lib/kanban-serialize.ts` | **NEW** — pure function: `KanbanBoard → markdown string`. Round-trip safe with `parseKanbanMarkdown` (already exists). |
-| `ui/app/api/kanban/[slug]/route.ts` | **NEW** — `GET` returns board JSON, `POST` accepts mutation: `{ op: "move" \| "add" \| "edit" \| "delete", ... }`. Server validates → calls fs-adapter → posts to `bus/proj-<slug>.jsonl` via `bus.post` with `kanban-secretary` author convention. Returns updated board. |
-| `ui/app/api/kanban/[slug]/stream/route.ts` | **NEW** — SSE stream: chokidar-watches `kanban/projects/<slug>.md`, emits `data: {type:"updated"}` on change. Cross-tab sync. |
-| `ui/app/kanban/[board]/page.tsx` | **REPLACE** — server component fetches board via `readKanbanBoard`. Hands off to client component. |
-| `ui/app/kanban/[board]/_KanbanBoardClient.tsx` | **NEW** — `@dnd-kit` setup. Uses `useOptimistic` for instant move. Calls `/api/kanban/<slug>` on drop. Subscribes to `/api/kanban/<slug>/stream` for cross-tab. Inline editable card title (double-click → `<input>`, Enter saves, Esc cancels). "+ Add card" footer button per column. Right-click → menu (Delete, Edit metadata, Copy ID). Keyboard: Tab to focus, ←/→ to move column, ↑/↓ to reorder, Enter to edit, Backspace to delete (with confirm). |
-| `ui/app/kanban/page.tsx` | Add per-board summary card grid (counts per column, last-modified). Click → `/kanban/<slug>`. |
-| `ui/package.json` | `pnpm add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities` |
+**Diff:** 9 files changed, +1305 −392.
 
-**Concurrency:**
-- Optimistic UI on drag; if server write fails (e.g., file changed under us), revert + toast via `live-announce`.
-- Conflict detection: store `mtime` on read; compare on write; if drift → re-read, re-apply, re-emit.
-
-**Bus integration:**
-- Every successful mutation posts: `{type:"kanban-update", from:"web-ui", body:"Card 'X' moved Backlog→Drafting", ref:"kanban/projects/<slug>.md#card-id"}`. Matches existing `kanban-secretary` contract so the daily supervisors see UI moves.
-
-**Acceptance:**
-- Open `/kanban/clawspace-ui`. Drag card → md file updates within 100ms. Edit `kanban/projects/clawspace-ui.md` in editor → UI reflects in <1s via SSE.
-- Keyboard-only flow: tab to a card, ←/→ moves column, ↑/↓ reorders, Enter inline-edits.
-- Two browser tabs stay in sync.
-- Counts header rewrites correctly: `<!-- counts: backlog=N ... -->`.
-- Bus channel `proj-<slug>` receives one message per mutation.
-
-**Estimated diff:** ~1500 LOC additive.
+**Reference for future phases:** `https://github.com/elirantutia/vibeyard` was the inspiration for the dnd-kit pattern adopted here (column virtualization optional, drag handle on card, "+ Add card" inline).
 
 ---
 
@@ -540,3 +534,4 @@ Add new questions here as they surface during implementation.
 - **2026-04-30** — Phase A shipped in [PR #7](https://github.com/jazxii/clawspace-agents/pull/7) (`feat/ui-v3-phase-a-design-system` @ `ad3b054`). Tokens, `cs-*` utility layer, Tweaks panel, Icon set, `useTweaks` hook, Tailwind extension.
 - **2026-04-30** — §7.6 Action button registry added: every interactive button across 13 routes + Cmd-K + top nav now has a kind (`client` / `route` / `stage` / `read`), target, and bus message shape spec'd. §7.7 codifies the "no shell-exec / no auto-post / no auto-apply" hard rules with a Phase E grep test.
 - **2026-04-30** — Phase B shipped in [PR #8](https://github.com/jazxii/clawspace-agents/pull/8) (`feat/ui-v3-phase-b-layout-nav` @ `3589a59`). TopNav (13 tabs + budget pill + traffic lights), SubBar (breadcrumbs), v3 Cmd-K palette (4 groups), `/api/budget` stub, `/api/actions/[verb]` stage stub with idempotency, layout grid restructured to `cs-app`. v2 sidebar unmounted (kept on disk for rail mode). Three local AA-contrast overrides on `cs-nav-tab` / `cs-search` / `cs-budget`.
+- **2026-04-30** — Phase C shipped in [PR #9](https://github.com/jazxii/clawspace-agents/pull/9) (`feat/ui-v3-phase-c-kanban-write-back` @ `32d8a7a`). Kanban becomes bidirectional: dnd-kit + keyboard drag, lossless splice serializer (`lib/kanban-serialize.ts`), `/api/kanban/[slug]` GET+POST with mtime conflict detection, chokidar SSE watcher for cross-tab sync, in-process `busAppend` for the kanban-update bus contract, free-form board guard. Smoke-tested round-trip: drag → md updated → bus message posted with correct envelope.
