@@ -151,6 +151,93 @@ export function parseKanbanMarkdown(slug: string, p: string, txt: string): Kanba
   return board;
 }
 
+// ---------- Kanban write-back ----------
+
+export type KanbanKind = "content" | "project";
+
+export interface KanbanReadResult {
+  board: KanbanBoard;
+  rawText: string;
+  mtimeMs: number;
+}
+
+export async function readKanbanRaw(slug: string, kind: KanbanKind): Promise<KanbanReadResult | null> {
+  if (!/^[a-z0-9][a-z0-9_\-]{0,40}$/.test(slug)) throw new Error("invalid slug");
+  const rel = kind === "content" ? `kanban/${slug}.md` : `kanban/projects/${slug}.md`;
+  const file = safeJoin(PROJECT_ROOT, rel);
+  if (!existsSync(file)) return null;
+  const [rawText, stat] = await Promise.all([fs.readFile(file, "utf8"), fs.stat(file)]);
+  return {
+    board: parseKanbanMarkdown(slug, rel, rawText),
+    rawText,
+    mtimeMs: stat.mtimeMs,
+  };
+}
+
+/**
+ * Atomic write: stages to `<file>.tmp.<random>` then renames. If `expectedMtimeMs`
+ * is provided, throws if the file's mtime drifted (concurrent edit detected).
+ */
+export async function writeKanbanRaw(
+  slug: string,
+  kind: KanbanKind,
+  newText: string,
+  expectedMtimeMs?: number,
+): Promise<{ mtimeMs: number }> {
+  if (!/^[a-z0-9][a-z0-9_\-]{0,40}$/.test(slug)) throw new Error("invalid slug");
+  const rel = kind === "content" ? `kanban/${slug}.md` : `kanban/projects/${slug}.md`;
+  const file = safeJoin(PROJECT_ROOT, rel);
+  if (!existsSync(file)) throw new Error("board not found");
+
+  if (expectedMtimeMs != null) {
+    const stat = await fs.stat(file);
+    if (Math.abs(stat.mtimeMs - expectedMtimeMs) > 1) {
+      const err = new Error("conflict: file changed under us");
+      (err as Error & { code: string }).code = "ECONFLICT";
+      throw err;
+    }
+  }
+
+  const tmp = `${file}.tmp.${process.pid}.${Math.random().toString(36).slice(2, 10)}`;
+  await fs.writeFile(tmp, newText, "utf8");
+  await fs.rename(tmp, file);
+  const stat = await fs.stat(file);
+  return { mtimeMs: stat.mtimeMs };
+}
+
+// ---------- Bus append ----------
+
+const BUS_CHANNEL_RE = /^[a-z0-9][a-z0-9_\-]{0,63}$/;
+
+export interface BusPostInput {
+  channel: string;
+  from: string;
+  to?: string;
+  type: string;
+  body: string;
+  ref?: string;
+}
+
+/**
+ * Append one message to a bus channel. Mirrors the bus.post skill but
+ * runs in-process from the Next.js API layer. NEVER shell-execs.
+ */
+export async function busAppend(msg: BusPostInput): Promise<void> {
+  if (!BUS_CHANNEL_RE.test(msg.channel)) throw new Error("invalid channel");
+  const dir = within("bus");
+  if (!existsSync(dir)) await fs.mkdir(dir, { recursive: true });
+  const file = safeJoin(dir, `${msg.channel}.jsonl`);
+  const envelope = {
+    ts: new Date().toISOString(),
+    from: msg.from,
+    ...(msg.to ? { to: msg.to } : {}),
+    type: msg.type,
+    body: msg.body,
+    ...(msg.ref ? { ref: msg.ref } : {}),
+  };
+  await fs.appendFile(file, JSON.stringify(envelope) + "\n", "utf8");
+}
+
 // ---------- Proposals ----------
 
 export interface ProposalFrontmatter {
