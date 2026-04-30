@@ -9,7 +9,7 @@
 | Phase | Status | Branch | PR |
 |---|---|---|---|
 | A — Design system swap | ✅ **Shipped** 2026-04-30 | `feat/ui-v3-phase-a-design-system` | [#7](https://github.com/jazxii/clawspace-agents/pull/7) |
-| B — Layout + nav + Cmd-K | ⏳ Pending | `feat/ui-v3-phase-b-layout-nav` | — |
+| B — Layout + nav + Cmd-K | ✅ **Shipped** 2026-04-30 | `feat/ui-v3-phase-b-layout-nav` | [#8](https://github.com/jazxii/clawspace-agents/pull/8) |
 | C — Kanban v3 + md write-back | ⏳ Pending | `feat/ui-v3-phase-c-kanban-write-back` | — |
 | D1 — Dashboard | ⏳ Pending | `feat/ui-v3-d1-dashboard` | — |
 | D2 — Channels live-tail | ⏳ Pending | `feat/ui-v3-d2-channels-live-tail` | — |
@@ -119,32 +119,44 @@ ui/
 
 ---
 
-## 3. Phase B — Layout + nav + Cmd-K
+## 3. Phase B — Layout + nav + Cmd-K ✅ SHIPPED
 
-**Goal:** Replace sidebar layout with the design's top-nav tabs + breadcrumb subbar + traffic lights + budget pill + avatar. Migrate Cmd-K palette.
+**Status:** Shipped 2026-04-30 in [PR #8](https://github.com/jazxii/clawspace-agents/pull/8).
 
-**Branch:** `feat/ui-v3-phase-b-layout-nav`
+**Branch:** `feat/ui-v3-phase-b-layout-nav` (commit `3589a59`)
 
-**Files to add/modify:**
+**What landed:**
 
-| File | Action |
+| File | Action taken |
 |---|---|
-| `ui/app/_components/TopNav.tsx` | **NEW** — port `shell.jsx::TopNav`. Routes from a static `ROUTES` const (13 routes). Tabs reflect `usePathname()` for active state. Badges read from a server-fetched count map. Mobile (<720px): horizontal scroll. |
-| `ui/app/_components/SubBar.tsx` | **NEW** — port `shell.jsx::SubBar`. Crumbs derived from pathname; per-page actions slot via `<Slot/>` pattern. |
-| `ui/app/_components/CommandPalette.tsx` | **REPLACE** with the design palette (grouped, fuzzy filter, ⌘K, ESC, ↑↓, ⏎). Items: Navigate (13 routes), Agents (8 quick-runs → bus stage), Actions (apply-proposal, sync-notion, compose-newsletter), Settings (toggle theme, open Tweaks). |
-| `ui/app/_components/Sidebar.tsx` | **DELETE** (or keep as `[data-sidebar="rail"]` collapse — see design's `[data-sidebar="rail"] .cs-rail-full { display: none }` rule). |
-| `ui/app/layout.tsx` | Restructure: `cs-app` grid (`auto auto 1fr`) → `<TopNav/> <SubBar/> <main className="cs-page">…</main>`. Keep skip link, live regions, RouteAnnouncer. |
-| `ui/lib/route-meta.ts` | **NEW** — single source of route id → name → icon → domain → href. Used by TopNav, SubBar, CommandPalette, dashboard "stat tile click-throughs". |
-| `ui/app/api/budget/route.ts` | **NEW** — `GET` returns 5h rolling token estimate (parse `audit/mutations.jsonl` + scheduled-task logs); used by budget pill. Stub returning a fixed value is fine for MVP. |
+| `ui/lib/route-meta.ts` | **NEW.** Single source of truth for the 13-route registry (id, href, name, icon, domain, phase). Exports `ROUTES`, `DOMAIN_COLOR`, `DOMAIN_LABEL`, `matchRoute(pathname)`. |
+| `ui/app/_components/TopNav.tsx` | **NEW.** Traffic lights + brand mark + 13 nav tabs (each with `aria-current="page"` + domain dot) + ⌘K search trigger + budget pill (live `/api/budget` poll on mount) + theme toggle + notifications icon-button + avatar link. Uses `useTweaks` for theme + `useMode` for palette open. |
+| `ui/app/_components/SubBar.tsx` | **NEW.** Breadcrumbs derived from `usePathname()`; renders a default action chip "last update HH:MM · ⌘K to navigate" (auto-refreshes every 30s). Right-side action slot for pages to override. |
+| `ui/app/_components/CommandPalette.tsx` | **REPLACED.** v3 styling on `cs-palette-*` tokens. Four groups: Navigate (13 routes from `ROUTES`), Agents (4 quick-runs), Actions (4 verbs), Settings (theme toggle, open Tweaks). `client` / `route` / `stage` kinds per §7.6 — stage items POST to `/api/actions/<verb>` with `Idempotency-Key`, `client` items run inline closures, `route` items navigate. Polite-region announces success/failure. |
+| `ui/app/_components/TweaksPanel.tsx` | **EXTENDED** to listen for `clawspace:open-tweaks` event so the palette can deep-link in. |
+| `ui/app/api/budget/route.ts` | **NEW.** `GET` returns `BudgetSnapshot` (used / cap / pct / resetsAt / perModel). Phase B stub matches the marketing-screenshot data; Phase D3 wires real audit aggregation. |
+| `ui/app/api/actions/[verb]/route.ts` | **NEW.** `POST` 202-Accepts allowlisted verbs (12-verb whitelist matching §7.6). Honors `Idempotency-Key` (in-memory 10-min dedupe). NEVER shell-execs — Phase D{n} replaces the per-verb stub with `bus.post` calls. |
+| `ui/app/layout.tsx` | **RESTRUCTURED.** Replaced sidebar grid with `<div className="cs-app">` (`auto auto 1fr` rows): `<TopNav/>` → `<SubBar/>` → `<main className="cs-page">`. Kept skip link, live regions, `RouteAnnouncer`, `CommandPalette`, `ShortcutsOverlay`, `TweaksPanel`. `Sidebar`/`UserMenu` no longer mounted. |
 
-**Acceptance:**
-- All 13 routes show in nav (some routes will be 404 until later phases — that's fine; nav still renders).
-- ⌘K opens palette with grouped items; ESC closes; ↑↓⏎ work; click-outside dismisses.
-- Mobile: nav scrolls horizontally, search collapses to icon, budget pill hides.
-- `aria-current="page"` on active tab; `<nav role="tablist">` removed in favor of `<nav>` + `<a>` (it's nav, not tabs — design conflated them).
-- Skip link still focusable; route announcer still fires.
+**Files NOT done (deferred):**
+- `Sidebar.tsx` deletion. Kept on disk for the design's `[data-sidebar="rail"]` collapsed-icon-rail variant (Phase E or D-polish will decide).
+- `next/font` integration. Same call as Phase A.
 
-**Estimated diff:** ~700 LOC additive, ~250 LOC removed (sidebar code).
+**Decisions made during implementation:**
+
+1. **Three localized AA contrast overrides** were needed because the design's `--text-3` (`#6e6e73`) hits 4.41:1 on `--bg-sunken` (`#efeff2`) — under WCAG 1.4.3. Bumped only `.cs-nav-tab` (inactive), `.cs-search`, and `.cs-budget` to `--text-2`. Active states + non-sunken-bg uses keep the original tone. The brand-vs-accent rule from Phase A holds.
+2. **v2 page-text compatibility:** Pinned `.text-slate-500` and `.text-slate-600` globally to `var(--text-2)` so v2 pages on the new `#f5f5f7` page bg pass AA without per-file edits. Phase D{n} will replace each v2 page entirely.
+3. **Stage actions go through `/api/actions/<verb>`, not directly to `bus.post`.** This keeps the bus envelope construction server-side and adds the idempotency dedupe layer. Phase D{n} swaps the per-verb stub body for the real `bus.post` call — the API contract (allowlist, headers, response shape) does not change.
+4. **`Sidebar`/`UserMenu` were unmounted, not deleted.** Theme/density toggles live in the Tweaks panel; settings-style actions are in the Cmd-K Settings group. The two components remain in `ui/app/_components/` for the rail-mode revival in Phase E.
+
+**Verification:**
+- `npx tsc --noEmit` — clean
+- `npx next build` — green (15 routes incl. `/api/budget` + `/api/actions/[verb]`)
+- `npx playwright test` — **9 passed, 1 skipped, 0 failed** (axe WCAG 2.2 AA across `/`, `/kanban`, `/channels`, `/proposals`, `/research/digests`)
+- `curl GET /api/budget` → 200 with full `BudgetSnapshot`
+- `curl POST /api/actions/run-scrum-master` (with `Idempotency-Key`) → 202 `{queued:true}`. Repeated → 202 `{duplicate:true}`.
+
+**Diff:** 9 files changed, +555 −114.
 
 ---
 
@@ -527,3 +539,4 @@ Add new questions here as they surface during implementation.
 - **2026-04-30** — A11y enforcement hooks disabled in `~/.claude/settings.json` (backup at `~/.claude/settings.json.a11y-backup-2026-04-30`).
 - **2026-04-30** — Phase A shipped in [PR #7](https://github.com/jazxii/clawspace-agents/pull/7) (`feat/ui-v3-phase-a-design-system` @ `ad3b054`). Tokens, `cs-*` utility layer, Tweaks panel, Icon set, `useTweaks` hook, Tailwind extension.
 - **2026-04-30** — §7.6 Action button registry added: every interactive button across 13 routes + Cmd-K + top nav now has a kind (`client` / `route` / `stage` / `read`), target, and bus message shape spec'd. §7.7 codifies the "no shell-exec / no auto-post / no auto-apply" hard rules with a Phase E grep test.
+- **2026-04-30** — Phase B shipped in [PR #8](https://github.com/jazxii/clawspace-agents/pull/8) (`feat/ui-v3-phase-b-layout-nav` @ `3589a59`). TopNav (13 tabs + budget pill + traffic lights), SubBar (breadcrumbs), v3 Cmd-K palette (4 groups), `/api/budget` stub, `/api/actions/[verb]` stage stub with idempotency, layout grid restructured to `cs-app`. v2 sidebar unmounted (kept on disk for rail mode). Three local AA-contrast overrides on `cs-nav-tab` / `cs-search` / `cs-budget`.
