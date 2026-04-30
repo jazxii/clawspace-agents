@@ -104,7 +104,9 @@ export default function TweaksPanel() {
   const [t, setTweak] = useTweaks();
   const [open, setOpen] = React.useState(false);
 
-  // Cmd-/ toggle (avoid clashing with Cmd-K, kept by CommandPalette)
+  // Cmd-/ toggle (avoid clashing with Cmd-K, kept by CommandPalette).
+  // Also listen for the cross-component "clawspace:open-tweaks" event so
+  // the Cmd-K palette can deep-link here.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "/") {
@@ -112,8 +114,13 @@ export default function TweaksPanel() {
         setOpen((o) => !o);
       }
     };
+    const onOpenEvt = () => setOpen(true);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("clawspace:open-tweaks", onOpenEvt);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("clawspace:open-tweaks", onOpenEvt);
+    };
   }, []);
 
   if (!open) {
