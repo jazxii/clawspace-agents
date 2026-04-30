@@ -1,98 +1,145 @@
 "use client";
 
-/* eslint-disable jsx-a11y/no-autofocus -- The Cmd-K palette MUST move focus to its
+/* eslint-disable jsx-a11y/no-autofocus -- Cmd-K palette MUST move focus to its
    input on open per the modal-dialog contract (ACCESSIBILITY-BRIEF-V2 §11.2). */
 
+/**
+ * Cmd-K command palette — v3 (Apple-native).
+ *
+ * Built on cmdk + Radix Dialog. Items are grouped (Navigate / Agents /
+ * Actions / Settings) per the design's `shell.jsx::PALETTE_ITEMS`. Stage
+ * actions POST to /api/actions/<verb> per UI_v3 plan §7.6 — Phase B
+ * leaves the route-handler stubs as no-ops and announces via live-region.
+ *
+ * Keyboard: ↑↓ navigate, Enter selects, Esc closes.
+ * Result-count is announced to a polite role="status" inside the dialog
+ * (the palette's quiet-zone exception, ACCESSIBILITY-BRIEF-V2 §4.3).
+ */
+
+import * as React from "react";
 import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useMode } from "@/lib/use-mode";
 import { liveAnnounce } from "@/lib/live-announce";
+import { useTweaks } from "@/lib/use-tweaks";
+import { ROUTES } from "@/lib/route-meta";
+import { Icon, type IconName } from "./Icon";
 
-/**
- * Cmd-K command palette — ACCESSIBILITY-BRIEF-V2 §3.4 / §6.2 / §7.2 / §9.1.
- *
- * Radix Dialog wraps `cmdk` which handles combobox+listbox ARIA. cmdk renders
- * the input as role="combobox", the list as role="listbox", and items as
- * role="option" with aria-selected semantics. Group separators are rendered
- * with role="presentation" by cmdk.
- *
- * Layout: floating overlay, Linear-style. Escape, click backdrop, or Cmd-K
- * again to close. Selecting an item closes the palette.
- *
- * Result count is announced to a polite role="status" inside the dialog
- * (one of two regions — the dedicated palette context per §4.3) instead of
- * fighting the global live region with the brief's "quiet zone" rule.
- */
+type CommandKind = "route" | "stage" | "client";
 
-interface CommandItem {
+interface PaletteItem {
   id: string;
+  group: "Navigate" | "Agents" | "Actions" | "Settings";
   label: string;
-  group: string;
-  href?: string;
-  // Future: actions could trigger a callback instead of nav.
+  hint?: string;
+  icon: IconName;
+  kind: CommandKind;
+  href?: string;            // route
+  stage?: { verb: string }; // stage
+  client?: () => void;      // client (filled in component scope)
   keywords?: string[];
 }
-
-const STATIC_COMMANDS: CommandItem[] = [
-  // Sections
-  { id: "nav-dashboard", group: "Go to", label: "Dashboard", href: "/", keywords: ["home"] },
-  { id: "nav-kanban", group: "Go to", label: "Kanban", href: "/kanban" },
-  { id: "nav-channels", group: "Go to", label: "Channels", href: "/channels" },
-  { id: "nav-proposals", group: "Go to", label: "Proposals", href: "/proposals" },
-  { id: "nav-research", group: "Go to", label: "Research digests", href: "/research/digests" },
-  { id: "nav-timeline", group: "Go to", label: "Timeline", href: "/timeline", keywords: ["feed"] },
-  { id: "nav-agents", group: "Go to", label: "Agents", href: "/agents" },
-  { id: "nav-audit", group: "Go to", label: "Audit log", href: "/audit", keywords: ["history"] },
-  { id: "nav-logs", group: "Go to", label: "Daily reasoning logs", href: "/logs" },
-  { id: "nav-graphify", group: "Go to", label: "Graphify indexes", href: "/graphify" },
-  { id: "nav-search", group: "Go to", label: "Search", href: "/search" },
-  // Settings
-  { id: "settings-theme", group: "Settings", label: "Toggle theme (System / Light / Dark)" },
-  { id: "settings-density", group: "Settings", label: "Toggle density (Comfortable / Compact)" },
-  { id: "settings-shortcuts", group: "Settings", label: "Toggle single-character shortcuts" },
-  { id: "settings-pause", group: "Settings", label: "Pause announcements" },
-];
 
 export default function CommandPalette() {
   const { mode, setMode, clearMode } = useMode();
   const open = mode === "palette";
   const router = useRouter();
-  const [search, setSearch] = useState("");
+  const [t, setTweak] = useTweaks();
+  const [search, setSearch] = React.useState("");
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!open) setSearch("");
   }, [open]);
 
-  function onSelect(item: CommandItem) {
-    if (item.href) {
+  // Cmd-K toggle (idle <-> palette). Already handled by the Mode provider's
+  // global listener wherever it's wired; if not, register one here.
+  React.useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setMode("palette");
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [setMode]);
+
+  const items: PaletteItem[] = React.useMemo(() => {
+    const navItems: PaletteItem[] = ROUTES.map((r) => ({
+      id: `nav-${r.id}`,
+      group: "Navigate",
+      label: `Go to ${r.name}`,
+      hint: r.id,
+      icon: r.icon,
+      kind: "route",
+      href: r.href,
+    }));
+
+    const agentItems: PaletteItem[] = [
+      { id: "agent-linkedin",     group: "Agents", label: "Run linkedin-writer",          hint: "sonnet", icon: "linkedin", kind: "stage", stage: { verb: "run-linkedin-writer" } },
+      { id: "agent-scrum",        group: "Agents", label: "Run scrum-master",             hint: "opus",   icon: "kanban",   kind: "stage", stage: { verb: "run-scrum-master" } },
+      { id: "agent-notebooklm",   group: "Agents", label: "Run notebooklm-bridge",        hint: "sonnet", icon: "spark",    kind: "stage", stage: { verb: "run-notebooklm-bridge" } },
+      { id: "agent-content-sup",  group: "Agents", label: "Run daily-content-supervisor", hint: "sonnet", icon: "queue",    kind: "stage", stage: { verb: "run-daily-content-supervisor" } },
+    ];
+
+    const actionItems: PaletteItem[] = [
+      { id: "act-new-project",    group: "Actions", label: "New project (/new-project)",       hint: "⌘N", icon: "plus",   kind: "route", href: "/new-project" },
+      { id: "act-apply-proposal", group: "Actions", label: "Apply proposal (week-NN)",         hint: "⏎",  icon: "check",  kind: "client", client: () => liveAnnounce.polite("Run /apply-proposal week-NN from Claude Code — apply is gated to the CLI per CLAUDE.md.", "form-feedback") },
+      { id: "act-sync-notion",    group: "Actions", label: "Sync content queue → Notion",      hint: "⇧⌘S",icon: "notion", kind: "stage",  stage: { verb: "sync-content-to-notion" } },
+      { id: "act-newsletter",     group: "Actions", label: "Compose Wk-NN newsletter draft",   hint: "",   icon: "mail",   kind: "stage",  stage: { verb: "compose-newsletter" } },
+    ];
+
+    const settingsItems: PaletteItem[] = [
+      { id: "set-theme",   group: "Settings", label: "Toggle theme",       hint: "⌘⇧L", icon: "sun",     kind: "client", client: () => setTweak("theme", t.theme === "dark" ? "light" : "dark") },
+      { id: "set-tweaks",  group: "Settings", label: "Open Tweaks panel",  hint: "⌘.",  icon: "palette", kind: "client", client: () => window.dispatchEvent(new Event("clawspace:open-tweaks")) },
+    ];
+
+    return [...navItems, ...agentItems, ...actionItems, ...settingsItems];
+  }, [setTweak, t.theme]);
+
+  async function handleStage(verb: string, label: string) {
+    try {
+      const res = await fetch(`/api/actions/${verb}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "Idempotency-Key": `${verb}:${Math.floor(Date.now() / 60_000)}`,
+        },
+        body: JSON.stringify({ source: "command-palette" }),
+      });
+      if (res.ok) {
+        liveAnnounce.polite(`${label} queued`, "form-feedback");
+      } else {
+        liveAnnounce.assertive(`${label} failed: ${res.status}`);
+      }
+    } catch {
+      liveAnnounce.assertive(`${label} failed: network error`);
+    }
+  }
+
+  function onSelect(item: PaletteItem) {
+    if (item.kind === "route" && item.href) {
       router.push(item.href);
       liveAnnounce.polite(`Navigating to ${item.label}`, "route-change");
-      clearMode();
-      return;
-    }
-    // Other commands — surface that we got the intent; settings open the user menu (PR-A)
-    if (item.id === "settings-theme") {
-      window.dispatchEvent(new CustomEvent("clawspace:open-user-menu", { detail: { focus: "theme" } }));
-    } else if (item.id === "settings-density") {
-      window.dispatchEvent(new CustomEvent("clawspace:open-user-menu", { detail: { focus: "density" } }));
-    } else if (item.id === "settings-shortcuts") {
-      window.dispatchEvent(new CustomEvent("clawspace:open-user-menu", { detail: { focus: "shortcuts" } }));
-    } else if (item.id === "settings-pause") {
-      window.dispatchEvent(new CustomEvent("clawspace:toggle-pause"));
+    } else if (item.kind === "stage" && item.stage) {
+      void handleStage(item.stage.verb, item.label);
+    } else if (item.kind === "client" && item.client) {
+      item.client();
     }
     clearMode();
   }
 
+  const groups = ["Navigate", "Agents", "Actions", "Settings"] as const;
+
   return (
-    <Dialog.Root open={open} onOpenChange={(o) => (o ? setMode("palette") : clearMode())}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(o) => (o ? setMode("palette") : clearMode())}
+    >
       <Dialog.Portal>
-        <Dialog.Overlay className="cmdk-overlay" />
-        <Dialog.Content
-          className="cmdk-content"
-          aria-describedby={undefined}
-        >
+        <Dialog.Overlay className="cs-palette-scrim" />
+        <Dialog.Content className="cs-palette" aria-describedby={undefined}>
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
           <Command
             label="Command palette"
@@ -103,40 +150,45 @@ export default function CommandPalette() {
             }}
           >
             <Command.Input
-              className="cmdk-input"
               placeholder="Type a command or search…"
               value={search}
               onValueChange={(v) => setSearch(v)}
               autoFocus
             />
+            <Command.List className="cs-palette-list">
+              <Command.Empty className="cs-palette-grp" style={{ padding: 18, textAlign: "center" }}>
+                No matches
+              </Command.Empty>
 
-            <Command.List className="cmdk-list">
-              <Command.Empty className="cmdk-empty">No results.</Command.Empty>
-
-              {Array.from(new Set(STATIC_COMMANDS.map((c) => c.group))).map((group) => (
-                <Command.Group key={group} heading={group} className="cmdk-group">
-                  {STATIC_COMMANDS.filter((c) => c.group === group).map((c) => (
-                    <Command.Item
-                      key={c.id}
-                      value={`${c.label} ${c.keywords?.join(" ") ?? ""}`}
-                      className="cmdk-item"
-                      onSelect={() => onSelect(c)}
-                    >
-                      <span>{c.label}</span>
-                    </Command.Item>
-                  ))}
-                </Command.Group>
-              ))}
+              {groups.map((g) => {
+                const groupItems = items.filter((i) => i.group === g);
+                if (groupItems.length === 0) return null;
+                return (
+                  <Command.Group key={g} heading={g} className="cs-palette-grp">
+                    {groupItems.map((it) => (
+                      <Command.Item
+                        key={it.id}
+                        value={`${it.label} ${it.hint ?? ""} ${it.id}`}
+                        className="cs-palette-row"
+                        onSelect={() => onSelect(it)}
+                      >
+                        <span className="ico"><Icon name={it.icon} size={13} /></span>
+                        <span className="ttl">{it.label}</span>
+                        {it.hint && <span className="hint">{it.hint}</span>}
+                      </Command.Item>
+                    ))}
+                  </Command.Group>
+                );
+              })}
             </Command.List>
 
-            {/* Result count — polite role="status" inside palette (BRIEF §4.3 exception) */}
             <p
               role="status"
               aria-live="polite"
-              className="px-3 py-2 text-xs text-tertiary border-t border-subtle"
+              className="muted"
+              style={{ fontSize: 11, padding: "6px var(--pad-3)", borderTop: ".5px solid var(--hairline)" }}
             >
-              {/* cmdk doesn't expose a result count directly; we approximate. Refined in PR-B with a virtual count via Command's own item registry. */}
-              Press Enter to select · Esc to close
+              Press <kbd className="cs-kbd">⏎</kbd> to select · <kbd className="cs-kbd">Esc</kbd> to close
             </p>
           </Command>
         </Dialog.Content>
