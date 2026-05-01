@@ -214,52 +214,84 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
     }
   }
 
+  const channelDomain = (ch: string): string => {
+    if (ch === "content") return "content";
+    if (ch === "projects" || ch.startsWith("proj-")) return "projects";
+    if (ch === "research") return "research";
+    return "meta";
+  };
+
+  const domainColor: Record<string, string> = {
+    content: "var(--accent-content)",
+    projects: "var(--accent-projects)",
+    research: "var(--accent-research)",
+    meta: "var(--accent-meta)",
+  };
+
+  const domain = channelDomain(channel);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[14rem_1fr] gap-6">
-      <aside aria-label="Channels" className="md:sticky md:top-4 self-start">
+    <div className="cs-channel" style={{ flex: 1, minHeight: 0 }}>
+      <aside className="cs-ch-list" aria-label="Channel list">
         <h2 className="sr-only">Channel list</h2>
-        <nav aria-label="Channels">
-          <ul role="list" className="space-y-1 text-sm">
-            {allChannels.map((ch) => (
-              <li key={ch}>
-                <a
-                  href={`/channels/${encodeURIComponent(ch)}`}
-                  aria-current={ch === channel ? "page" : undefined}
-                  className={`block rounded px-2 py-1 ${
-                    ch === channel ? "bg-blue-100 font-semibold" : "hover:bg-slate-100"
-                  }`}
-                >
-                  #{ch}
-                </a>
-              </li>
+        <div className="cs-ch-grp">Channels</div>
+        {allChannels.filter((ch) => !ch.startsWith("dm-")).map((ch) => (
+          <a
+            key={ch}
+            href={`/channels/${encodeURIComponent(ch)}`}
+            aria-current={ch === channel ? "page" : undefined}
+            className="cs-ch-item"
+            data-active={ch === channel ? "1" : "0"}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <span className="hash">#</span>
+            <span className="ellipsis">{ch}</span>
+          </a>
+        ))}
+        {allChannels.some((ch) => ch.startsWith("dm-")) && (
+          <>
+            <div className="cs-ch-grp">Direct</div>
+            {allChannels.filter((ch) => ch.startsWith("dm-")).map((ch) => (
+              <a
+                key={ch}
+                href={`/channels/${encodeURIComponent(ch)}`}
+                className="cs-ch-item"
+                data-active={ch === channel ? "1" : "0"}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <span className="ellipsis">{ch.replace(/^dm-/, "")}</span>
+              </a>
             ))}
-          </ul>
-        </nav>
+          </>
+        )}
       </aside>
 
-      <section aria-labelledby="channel-h">
-        <header className="page-chrome">
-          <nav aria-label="Breadcrumb" className="breadcrumb">
-            <ol>
-              <li><a href="/">Dashboard</a></li>
-              <li><a href="/channels">Channels</a></li>
-              <li><span aria-current="page">{channel}</span></li>
-            </ol>
-          </nav>
-          <div className="flex items-center justify-between gap-4">
-            <h1 id="channel-h" className="text-2xl font-semibold">
-              #{channel}
+      <div className="cs-ch-main">
+        <div className="cs-ch-h">
+          <div>
+            <h1 id="channel-h" style={{ margin: 0, fontSize: 14, fontWeight: 600, display: "flex", alignItems: "center", gap: 6, color: domainColor[domain] }}>
+              <span style={{ color: "var(--text-3)" }}>#</span>{channel}
             </h1>
+            <div style={{ fontSize: 12, color: "var(--text-3)", marginTop: 2 }}>
+              {messages.length} messages · append-only JSONL
+            </div>
+          </div>
+          <div className="row gap-2">
+            <span className="cs-pill" data-tone={domain as "content" | "projects" | "research" | "meta"}>
+              <span className="dot" />
+              {pauseAnnouncements ? "paused" : "live tail"}
+            </span>
             <button
               type="button"
+              className="cs-icon-btn"
               onClick={() => setPauseAnnouncements((p) => !p)}
               aria-pressed={pauseAnnouncements}
-              className="btn-secondary text-sm"
+              aria-label={pauseAnnouncements ? "Resume announcements" : "Pause announcements"}
             >
-              {pauseAnnouncements ? "Resume announcements" : "Pause announcements"}
+              {pauseAnnouncements ? "▶" : "⏸"}
             </button>
           </div>
-        </header>
+        </div>
 
         <p id="history-instructions" className="sr-only">
           New messages appear at the bottom and are announced. Pause announcements with the
@@ -272,97 +304,110 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
           tabIndex={0}
           aria-labelledby="channel-h"
           aria-describedby="history-instructions"
-          className="h-[60vh] overflow-y-auto rounded border border-slate-200 bg-slate-50 p-3 space-y-3"
+          className="cs-msgs"
+          style={{ listStyle: "none", margin: 0, padding: "var(--pad-3) var(--pad-4)" }}
         >
           {messages.length === 0 ? (
-            <li className="text-slate-500 italic">No messages yet.</li>
+            <li style={{ color: "var(--text-3)", fontStyle: "italic", fontSize: 13 }}>No messages yet.</li>
           ) : (
-            messages.map((m, i) => (
-              <li key={`${m.ts}-${m.from}-${i}`} id={`msg-${m.ts}`}>
-                <article
-                  aria-labelledby={`msg-${m.ts}-from`}
-                  aria-describedby={`msg-${m.ts}-time`}
-                  className="rounded bg-white p-2 border border-slate-200"
-                >
-                  <header className="flex items-baseline gap-2 text-xs text-slate-500">
-                    <span id={`msg-${m.ts}-from`} className="font-semibold text-slate-900">
-                      {m.from}
-                    </span>
-                    <time id={`msg-${m.ts}-time`} dateTime={m.ts}>
-                      {m.ts.slice(11, 19)} UTC
+            messages.map((m, i) => {
+              const ts = m.ts ?? "";
+              const from = m.from ?? "??";
+              return (
+              <li key={`${ts}-${from}-${i}`} id={`msg-${ts || i}`} className="cs-msg">
+                <span className="av" style={{ background: domainColor[channelDomain(channel)] }}>
+                  {from.slice(0, 2).toUpperCase()}
+                </span>
+                <div className="body" style={{ minWidth: 0 }}>
+                  <div className="head" style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                    <span id={`msg-${ts || i}-from`} className="name" style={{ fontWeight: 600, fontSize: 13, color: "var(--text)" }}>{from}</span>
+                    <span className="agent-tag" style={{ font: "500 10.5px var(--font-mono)", color: "var(--text-3)" }}>{m.type}</span>
+                    <time id={`msg-${ts || i}-time`} dateTime={ts} className="ts" style={{ fontSize: 11, color: "var(--text-4)" }}>
+                      {ts ? `${ts.slice(11, 16)} UTC` : "—"}
                     </time>
-                    <span>·</span>
-                    <span>{m.type}</span>
                     {m.to && m.to !== "*" && (
-                      <>
-                        <span>→</span>
-                        <span>{m.to}</span>
-                      </>
+                      <span style={{ fontSize: 11, color: "var(--text-4)" }}>→ {m.to}</span>
                     )}
-                  </header>
-                  <p className="mt-1 whitespace-pre-wrap text-sm">{m.body}</p>
+                  </div>
+                  <div className="text" style={{ fontSize: 13, color: "var(--text-2)", marginTop: 2, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{m.body}</div>
                   {m.ref && (
-                    <p className="text-xs text-slate-500 mt-1">
-                      <span className="font-medium">ref:</span> {m.ref}
-                    </p>
+                    <div className="ref" style={{
+                      marginTop: 6, display: "inline-flex", alignItems: "center", gap: 6,
+                      padding: "4px 8px", background: "var(--bg-sunken)", border: ".5px solid var(--hairline)",
+                      borderRadius: "var(--r-sm)", font: "500 11px var(--font-mono)", color: "var(--text-3)"
+                    }}>
+                      {m.ref}
+                    </div>
                   )}
-                </article>
+                </div>
               </li>
-            ))
+              );
+            })
           )}
         </ol>
 
         {!isAtBottom && unread > 0 && (
-          <div className="mt-2">
+          <div style={{ padding: "0 var(--pad-4)" }}>
             <button
               ref={newCountBtnRef}
               type="button"
-              onClick={() => {
-                scrollToBottom("smooth");
-                setUnread(0);
-              }}
-              className="rounded bg-blue-600 px-3 py-1 text-white text-sm hover:bg-blue-700"
+              onClick={() => { scrollToBottom("smooth"); setUnread(0); }}
+              className="cs-btn"
+              data-variant="primary"
+              style={{ fontSize: 12 }}
             >
               {unread} new {unread === 1 ? "message" : "messages"} — jump to latest
             </button>
           </div>
         )}
 
-        <form
-          onSubmit={onSubmit}
-          aria-label={`Post message to #${channel}`}
-          className="mt-4 space-y-2"
-          id={formId}
-        >
-          <label htmlFor={`${formId}-body`} className="block text-sm font-medium">
-            Message
-          </label>
-          <textarea
-            id={`${formId}-body`}
-            name="body"
-            required
-            aria-describedby={`${formId}-help`}
-            aria-invalid={postError ? true : undefined}
-            className="w-full rounded border border-slate-300 p-2"
-            rows={3}
-          />
-          <p id={`${formId}-help`} className="text-xs text-slate-500">
-            Posts as <code>user</code> with type <code>note</code>.
-          </p>
-          {postError && (
-            <p id={`${formId}-error`} role="alert" className="text-sm text-[#7f1d1d]">
-              {postError}
-            </p>
-          )}
-          <button
-            type="submit"
-            disabled={posting}
-            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-60"
+        <div className="cs-composer">
+          <form
+            onSubmit={onSubmit}
+            aria-label={`Post message to #${channel}`}
+            id={formId}
           >
-            {posting ? "Sending…" : "Send"}
-          </button>
-        </form>
-      </section>
+            <div className="cs-composer-input">
+              <label htmlFor={`${formId}-body`} className="sr-only">Message</label>
+              <textarea
+                id={`${formId}-body`}
+                name="body"
+                required
+                placeholder={`Message #${channel}…`}
+                aria-describedby={`${formId}-help`}
+                aria-invalid={postError ? true : undefined}
+                style={{
+                  border: 0, outline: 0, resize: "none", background: "transparent",
+                  fontSize: 13, lineHeight: 1.5, minHeight: 28, fontFamily: "var(--font-ui)", width: "100%"
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    e.currentTarget.form?.requestSubmit();
+                  }
+                }}
+              />
+              <div className="cs-composer-row" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ flex: 1 }} />
+                <span className="muted" style={{ fontSize: 11 }}>
+                  <kbd className="cs-kbd">⌘</kbd> <kbd className="cs-kbd">↵</kbd> to send
+                </span>
+                <button type="submit" disabled={posting} className="cs-btn" data-variant="primary" style={{ height: 26 }}>
+                  {posting ? "Sending…" : "Send"}
+                </button>
+              </div>
+            </div>
+            <p id={`${formId}-help`} className="sr-only">
+              Posts as user with type note.
+            </p>
+            {postError && (
+              <p id={`${formId}-error`} role="alert" style={{ fontSize: 12, color: "var(--accent-system)", marginTop: 4 }}>
+                {postError}
+              </p>
+            )}
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

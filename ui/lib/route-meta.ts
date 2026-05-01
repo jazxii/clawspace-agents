@@ -40,6 +40,7 @@ export const ROUTES: readonly RouteMeta[] = [
   { id: "audit",     href: "/audit",                name: "Audit",      icon: "audit",    domain: "meta",     phase: "D5" },
   { id: "queue",     href: "/queue",                name: "Content",    icon: "queue",    domain: "content",  phase: "D5" },
   { id: "notion",    href: "/notion",               name: "Notion",     icon: "notion",   domain: "content",  phase: "D6" },
+  { id: "notebooklm", href: "/notebooklm",          name: "NotebookLM", icon: "sparkles", domain: "research", phase: "D7" },
   { id: "proposals", href: "/proposals",            name: "Proposals",  icon: "palette",  domain: "meta",     phase: "D8" },
   { id: "agents",    href: "/agents",               name: "Agents",     icon: "settings", domain: "meta",     phase: "D5" },
 ] as const;

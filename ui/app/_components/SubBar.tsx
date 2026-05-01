@@ -62,8 +62,9 @@ export default function SubBar({ actions }: { actions?: React.ReactNode }) {
 }
 
 function DefaultActions() {
-  const [time, setTime] = React.useState<string>(() => formatTime(new Date()));
+  const [time, setTime] = React.useState<string>("");
   React.useEffect(() => {
+    setTime(formatTime(new Date()));
     const t = setInterval(() => setTime(formatTime(new Date())), 30_000);
     return () => clearInterval(t);
   }, []);

@@ -34,9 +34,13 @@ hashtags: []  # usually empty for X — only if user requests
 
 For threads, the body uses `## 1`, `## 2`, … one tweet per heading.
 
-4. Run `hashtag-strategist` ONLY if the user/lead explicitly requested hashtags (X-native style avoids them).
-5. Flip `status: ready`.
-6. `bus_post(channel="content", from="x-writer", type="done", body="X <format> ready: <slug>", ref=...)`.
+4. **Add Kanban card**: Read `kanban/content-x.md`. Determine the next card ID by finding the highest existing `X-NNN` number and incrementing (start at `X-001` if none exist). Append a card line under `## Drafting`:
+   ```
+   - [X-NNN] <topic short title> — <format>, `content/queue/x/<file>`
+   ```
+5. Run `hashtag-strategist` ONLY if the user/lead explicitly requested hashtags (X-native style avoids them).
+6. Flip `status: ready`. Move the Kanban card from `## Drafting` to `## Ready`.
+7. `bus_post(channel="content", from="x-writer", type="done", body="X <format> ready: <slug>", ref=...)`.
 
 ## Voice rules (per PRD)
 

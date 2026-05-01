@@ -12,3 +12,10 @@ What WCAG success criteria are most frequently violated in v0 / Bolt / Lovable-g
 Are there published studies on screen reader users' preferences for AI-generated vs. human-authored alt text?
 What specific ARIA patterns from APG 1.3 are most often misused by LLM-generated component code?
 How does cognitive load (per COGA) shift when LLM-driven UIs use dynamic layout vs. static templates?
+
+# Staged 2026-05-02 — Cognitive load and Neurodiversity x Accessibility
+What does WCAG 2.2 SC 3.3.8 (Accessible Authentication, Minimum) explicitly require, and which auth patterns satisfy it without relying on cognitive function tests?
+What concrete practices from W3C COGA "Making Content Usable" are most often missing in AI-generated UIs (v0, Bolt, Lovable)?
+Which research studies in 2024–2025 measured cognitive load reduction from plain-language rewrites in product UI strings?
+What are the most cited UX patterns for ADHD-friendly form design (re-entry, autosave, progress indication)?
+How do dyslexia-friendly typography recommendations (line-height, line-length, font choice) hold up under recent empirical scrutiny?

@@ -23,6 +23,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import type { KanbanBoard, KanbanCard, KanbanColumn } from "@/lib/fs-adapter";
 import { Icon } from "@/app/_components/Icon";
+import { Pill } from "@/app/_components/Pill";
 
 /**
  * Phase C — Kanban v3.
@@ -269,13 +270,13 @@ export default function KanbanBoardView(props: Props) {
   }
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <div className="cs-page-inner" style={{ height: "100%", display: "flex", flexDirection: "column", maxWidth: "none" }}>
       <div className="cs-page-title">
         <div>
           <h1>Kanban · {board.slug}</h1>
           <p>
             {countAll(board)} cards
-            {writeBack ? " · drag with mouse, or Tab to a card and use Space + arrows" : " · read-only (free-form board)"}
+            {writeBack ? " · drag with mouse, or focus a card and use ←/→" : " · read-only (free-form board)"}
           </p>
           {!writeBack && props.formatNote && (
             <p className="muted" style={{ fontSize: 12, marginTop: 4 }}>
@@ -284,9 +285,10 @@ export default function KanbanBoardView(props: Props) {
           )}
         </div>
         <div className="row gap-2">
-          <a href="/kanban" className="cs-btn" data-variant="ghost">
-            <Icon name="arrow-right" size={12} style={{ transform: "rotate(180deg)" }} />Back
-          </a>
+          <button type="button" className="cs-btn"><Icon name="filter" size={13} />All owners</button>
+          {writeBack && (
+            <button type="button" className="cs-btn" data-variant="primary"><Icon name="plus" size={13} />New card</button>
+          )}
         </div>
       </div>
 
@@ -517,11 +519,15 @@ function CardView({ card, isEditing, writeBack, onOpen, onStartEdit, onCancelEdi
       aria-label={`${card.title}${card.meta ? `, ${card.meta}` : ""}`}
     >
       <h4>{card.title}</h4>
-      {card.meta && <p className="meta" style={{ fontSize: 11, color: "var(--text-3)" }}>{card.meta}</p>}
+      {card.meta && (
+        <div className="meta" style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+          <Pill tone="projects">{card.meta}</Pill>
+        </div>
+      )}
       {card.acceptance.length > 0 && (
-        <p className="meta" style={{ fontSize: 11, color: "var(--text-4)" }}>
-          {card.acceptance.length} {card.acceptance.length === 1 ? "AC" : "ACs"}
-        </p>
+        <div className="row" style={{ justifyContent: "space-between", fontSize: 11, color: "var(--text-3)" }}>
+          <span>{card.acceptance.length} {card.acceptance.length === 1 ? "AC" : "ACs"}</span>
+        </div>
       )}
     </div>
   );

@@ -1,0 +1,29 @@
+Automating WCAG audits using Agentic AI and GraphRAG.
+
+Let’s talk about scaling accessibility. Manual WCAG auditing is highly accurate, but it inherently bottlenecks deployment speeds. I’ve been heavily researching how we can bridge this gap using Agentic AI, and the architecture matters significantly more than the model itself.
+
+When building out platforms like Bug Craft AI to transform testing notes into validated documentation, I've found that relying on simple fine-tuning methods like LoRA just doesn't cut it for complex, contextual rule engines. Instead, implementing GraphRAG architectures with Large Multimodal Models (LMMs) is the key. By structuring WCAG guidelines as a knowledge graph, we can give autonomous agents the exact context they need to evaluate digital environments without hallucinating compliance requirements.
+
+We aren't just trying to automate a checklist; we are trying to build systems that fundamentally understand digital inclusivity. If you're working in the Non-Functional Testing (NFT) space, how are you integrating LMMs into your current pipelines?
+
+Differentiating A11y from standard automation and understanding smoke testing.
+
+There is still a lingering misconception in the QA world that accessibility testing can just be bundled under standard functional automation. Let’s clear that up.
+
+While knowing the business testing life cycle and having a foundation in tools like Selenium is great, true Digital Accessibility (A11y) engineering is a completely different beast. You can't just write a script to check if a button exists; you have to evaluate the semantic structure, the screen reader output, and the cognitive flow of the interface.
+
+It’s similar to how we need to be precise about terminology like smoke testing. A smoke test is a preliminary check to see if the build is stable enough to even bother testing. An accessibility audit is a deep dive into the human experience of the software. If we want to build better products, we need to stop treating A11y as an afterthought functional requirement and treat it as a core Non-Functional Testing pillar from day one.
+
+Automating the freelance video editing pipeline.
+
+Cinematic content isn't just about having an eye for visuals; it’s about having a relentless workflow. Balancing freelance video editing with my engineering day job means I have to rely on automation logic wherever possible.
+
+Lately, I’ve been refining the logic behind audio-synchronized captions in CapCut. By locking down the timing automation and pairing it with rapid prototyping in Figma and Canva for visual assets, the turnaround time for retainer clients drops dramatically. The goal is to spend less time manually adjusting keyframes and more time focusing on the actual narrative pacing and color grade.
+
+Whether it’s writing a WCAG rule engine or cutting a high-energy recap video, it all comes down to the same principle: build a reliable system, automate the repetitive tasks, and leave the creative problem-solving to the human.
+
+Autocross rallies and team coordination.
+
+You learn a lot about high-pressure coordination on the rally track. Whether it's managing the media pipeline or supporting the team during an Autocross event, motorsports demand the exact same rapid troubleshooting skills as a critical software blocker.
+
+Capturing the right cinematic shots while the cars are kicking up dirt is chaotic, but organizing that footage into a coherent narrative alongside teammates makes the weekend worth it. From the digital accessibility kiosk on a Thursday to the dirt tracks on a Sunday—it’s all about fast feedback loops and adapting to the environment in front of you.

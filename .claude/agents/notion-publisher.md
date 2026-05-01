@@ -1,7 +1,7 @@
 ---
 name: notion-publisher
-description: Mirrors `content/queue/**/*.md` posts to a Notion database via the Notion MCP server. Runs daily at 9:45am scheduled, or on-demand. Local md is source of truth. Notion is the mirror. On conflict (Notion edited after last sync), posts a note to bus/content rather than overwriting.
-tools: Read, Glob, Grep, Edit, Bash, mcp__bus-mcp__bus_post, mcp__notion__API-post-search, mcp__notion__API-post-database-query, mcp__notion__API-post-page, mcp__notion__API-patch-page, mcp__notion__API-retrieve-a-page
+description: Mirrors `content/queue/**/*.md` posts to a Notion database via the Notion MCP server (v2.3.0). Supports multi-DB sync (Content Queue + 5 auxiliary DBs via notion-db-manager). Local md is source of truth. Notion is the mirror. On conflict (Notion edited after last sync), posts a note to bus/content rather than overwriting.
+tools: Read, Glob, Grep, Edit, Bash, mcp__bus-mcp__bus_post, mcp__notion__search, mcp__notion__query-data-source, mcp__notion__create-a-page, mcp__notion__update-page-properties, mcp__notion__retrieve-a-page
 model: sonnet
 ---
 
@@ -24,6 +24,7 @@ Property names and types — these MUST exist in the target DB:
 - `Hashtags` (multi-select)
 - `Image Prompt` (rich text)
 - `Scheduled Date` (date)
+- `Humanized` (checkbox)
 - `Source Markdown` (URL — the local file path, prefixed `file://`)
 - `Last Synced` (date)
 
@@ -35,11 +36,11 @@ On first sync, query the DB schema. If any property is missing, post an alert to
 2. Read `content/notion-mirror.lock` — a JSON map of `{ "<source_path>": { "page_id": "...", "last_synced": "..." } }`. If absent, treat all files as new.
 3. For each queue file:
    - Parse frontmatter + body.
-   - **If new** (no entry in lock): create Notion page via `API-post-page`. Record `{page_id, last_synced}` in the lock.
+   - **If new** (no entry in lock): create Notion page via `create-a-page`. Record `{page_id, last_synced}` in the lock.
    - **If known**:
-     - Fetch the Notion page via `API-retrieve-a-page`. Compare `last_edited_time` against `last_synced`.
+     - Fetch the Notion page via `retrieve-a-page`. Compare `last_edited_time` against `last_synced`.
      - If `last_edited_time > last_synced` → **conflict**. Do NOT overwrite. `bus_post(channel="content", from="notion-publisher", type="alert", body="Notion edit conflict on <slug>. Resolve manually.", ref=<source_path>)`. Skip this file.
-     - Else → `API-patch-page` with current frontmatter+body. Update `last_synced`.
+     - Else → `update-page-properties` with current frontmatter+body. Update `last_synced`.
 4. Write the updated lock back to `content/notion-mirror.lock`.
 5. Summarize: `bus_post(channel="content", from="notion-publisher", type="done", body="<n> created, <m> updated, <c> conflicts", ref="content/notion-mirror.lock")`.
 
@@ -53,13 +54,14 @@ On first sync, query the DB schema. If any property is missing, post an alert to
 - `Hashtags` ← frontmatter `hashtags` array (multi-select options auto-added if absent — Notion does this natively)
 - `Image Prompt` ← frontmatter `image_prompt` or first entry of `image_prompts`
 - `Scheduled Date` ← frontmatter `date`
+- `Humanized` ← frontmatter `humanized` (checkbox, default false)
 - `Source Markdown` ← `file://${absolute-path}`
 - `Last Synced` ← now (ISO)
 
 ## Pull mode (called by daily-content-supervisor at 18:00)
 
 When invoked with arg `mode: pull`, instead of pushing:
-1. Query the Notion DB filtered by `Last Edited > <yesterday>`.
+1. Query the Notion DB filtered by `Last Edited > <yesterday>` using `query-data-source`.
 2. For each page where `last_edited_time > last_synced`, surface a conflict notice on bus/content and produce a side-by-side diff in `content/notion-conflicts/<date>-<slug>.md`. Do NOT mutate the local md.
 
 ## Forbidden

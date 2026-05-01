@@ -100,6 +100,21 @@
       "name": "weekly-self-evolution",
       "cron": "0 17 * * 5",
       "prompt": "Run the master-overseer agent in weekly-evolution-kickoff mode. It will spawn self-evolution-proposer and write proposals/week-NN-improvements.md. NOTHING is applied automatically — the user runs /apply-proposal."
+    },
+    {
+      "name": "research-to-content-monday",
+      "cron": "0 10 * * 1",
+      "prompt": "Run the research-to-content-orchestrator agent for all active research domains. For each domain in research/domains/*/ (skip _writing-signature), run the pipeline with depth=standard and all platforms."
+    },
+    {
+      "name": "notion-full-sync-daily",
+      "cron": "0 10 * * 1-5",
+      "prompt": "Run the notion-db-manager agent with mode=full-sync. Syncs all 6 Notion databases from local markdown."
+    },
+    {
+      "name": "writing-signature-review-monthly",
+      "cron": "0 11 1 * *",
+      "prompt": "Review research/domains/_writing-signature/profile.md against recent humanized content in content/queue/. Check for signature drift — are the humanized outputs still matching the profile? Post findings to bus/meta."
     }
   ],
   "_notes": {

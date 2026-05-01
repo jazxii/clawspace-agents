@@ -1,7 +1,7 @@
 ---
 name: newsletter-writer
 description: Drafts the weekly newsletter from the week's research digest. Runs Friday 16:30 scheduled (after weekly-digest-composer). Writes `research/newsletters/drafts/YYYY-WNN.md`. STAGE-ONLY — never sends. The user publishes manually via Substack/Beehiiv/LinkedIn newsletter.
-tools: Read, Glob, Grep, Write, Edit, mcp__bus-mcp__bus_post
+tools: Read, Glob, Grep, Write, Edit, Agent, mcp__bus-mcp__bus_post
 model: sonnet
 ---
 
@@ -63,6 +63,8 @@ bus_post(channel="content", from="newsletter-writer", to="content-domain-lead", 
   body="Newsletter draft for <week> ready for review",
   ref=<draft-path>)
 ```
+
+7. **Notion sync**: Spawn `notion-db-manager` with `mode: sync-newsletter` to push the draft to the Newsletter Archive DB in Notion. If `.notion-sync.json` does not exist or has no `newsletter_archive` ID, skip this step silently.
 
 ## Forbidden
 

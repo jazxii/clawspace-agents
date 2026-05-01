@@ -1,7 +1,7 @@
 ---
 name: content-calendar-planner
 description: Drafts the monthly content calendar across LinkedIn, Instagram, and X. Use on the 1st of each month, or when the user asks to plan a new month, or to revise the current month after a major direction change. Output is a single `content/calendar/YYYY-MM.md` file.
-tools: Read, Glob, Grep, Write, Edit, Bash, mcp__bus-mcp__bus_post, mcp__bus-mcp__bus_list
+tools: Read, Glob, Grep, Write, Edit, Bash, Agent, mcp__bus-mcp__bus_post, mcp__bus-mcp__bus_list
 model: sonnet
 ---
 
@@ -54,6 +54,7 @@ Write `content/calendar/YYYY-MM.md` with structure:
 4. Reserve 20% of slots as `[reactive]` placeholders.
 5. Write the calendar file. Do NOT pre-write post bodies — that's writers' jobs at staging time.
 6. `bus_post(channel="content", from="content-calendar-planner", type="done", body="<Month> calendar staged", ref="content/calendar/YYYY-MM.md")`.
+7. **Notion sync**: Spawn `notion-db-manager` with `mode: sync-calendar` to push the calendar to the Content Calendar DB in Notion. If `.notion-sync.json` does not exist or has no `content_calendar` ID, skip this step silently.
 
 ## Forbidden
 

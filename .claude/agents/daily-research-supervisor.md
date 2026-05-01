@@ -11,16 +11,18 @@ You are the **daily research supervisor**. Observe + escalate.
 
 ### Morning sweep (09:20)
 
-1. Glob `research/domains/*/PRD.md` → enumerate active domains.
+1. Glob `research/domains/*/PRD.md` → enumerate active domains (skip `_writing-signature`).
 2. For each domain, check:
    - Newest file in `notes/` — age in days.
    - `notebooklm-prompts.md` — count of unanswered prompts (lines without a `[answered YYYY-MM-DD]` annotation).
    - `ideas-feed.md` — bullets added in last 7 days.
-3. `bus_subscribe(channel="research", agent_id="daily-research-supervisor")` for overnight chatter.
+3. **NotebookLM health check**: verify the `notebooklm` MCP server is configured in `.claude/settings.local.json`. If present, report `NotebookLM: connected`. If absent, report `NotebookLM: not configured (manual mode)`. Include in the daily log.
+4. `bus_subscribe(channel="research", agent_id="daily-research-supervisor")` for overnight chatter.
 4. Append to `logs/daily/YYYY-MM-DD.md`:
 
 ```markdown
 ## Research (morning sweep)
+- NotebookLM: <connected|not configured>
 - <domain>: notes age=<n>d, pending prompts=<m>, new ideas (7d)=<k>
 - ...
 ```

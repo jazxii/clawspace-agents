@@ -1,4 +1,4 @@
-# Clawspace UI (Phase 6)
+# Clawspace UI (v3)
 
 Local Next.js 15 dashboard for the Clawspace personal workforce. Reads markdown and JSONL files from the parent project root via React Server Components — no API server, no DB.
 
@@ -14,15 +14,23 @@ npm run dev   # serves on http://localhost:3001
 
 | Path | Purpose |
 |---|---|
-| `/` | Dashboard — domain snapshots, latest bus headlines, today's log, pending proposals |
-| `/kanban` | List of all Kanban boards |
-| `/kanban/[board]` | Single board with accessible reorder pattern (listbox-with-grouping; press M to pick up a card) |
-| `/channels` | List of all bus channels |
+| `/` | Dashboard — stat tiles, today's log, bus headlines, scheduled agents, token budget, proposals, Notion sync, research seed |
+| `/kanban` | List of all Kanban boards with column counts and read-only badges |
+| `/kanban/[board]` | Full board with DnD + keyboard drag, inline edit, add/delete cards, write-back to md |
+| `/channels` | Channel index with v3 split layout (sidebar + main placeholder) |
 | `/channels/[channel]` | Slack-like channel view with live SSE tail and throttled polite-region announcements |
-| `/proposals` | List of weekly self-evolution proposals |
-| `/proposals/[week]` | Review form with one checkbox per diff, full rationale/risk/reversibility |
+| `/activity` | Activity timeline — domain-filtered table of agent actions across all bus channels |
+| `/cost` | Token cost breakdown — per-domain stat tiles + per-agent proportional bars |
+| `/logs` | Daily reasoning logs — date sidebar + markdown article viewer |
+| `/graph` | Graphify knowledge graph — interactive SVG with node hover + detail sidebar |
+| `/queue` | Content queue — tab-filtered card grid (linkedin/instagram/x/newsletter) |
+| `/audit` | Audit log — table of `audit/mutations.jsonl` entries with action pills |
+| `/agents` | Agent registry — tier-grouped grid (T4→T1) with domain filters |
+| `/notion` | Notion sync status — table with conflict indicators + sync-now button |
+| `/proposals` | List of weekly self-evolution proposals with status pills |
+| `/proposals/[week]` | Diff viewer with what-worked/dragged cards, hunks, risk pills, review form |
 | `/proposals/[week]/confirm` | Confirmation screen with the exact CLI command to run (no auto-apply) |
-| `/research/digests` | List of weekly research digests |
+| `/research/digests` | List of weekly research digests with body previews |
 | `/research/digests/[week]` | Single digest, markdown rendered with heading downshift |
 
 ## API routes
@@ -31,6 +39,12 @@ npm run dev   # serves on http://localhost:3001
 |---|---|---|
 | `/api/bus-tail?channel=…&since=…` | GET (SSE) | Server-Sent Events stream tailing a channel JSONL |
 | `/api/bus-post` | POST | Append a message to a channel (mirrors `bus-mcp` `bus_post`) |
+| `/api/budget` | GET | Token budget snapshot (used/cap/pct/resetsAt/perModel) |
+| `/api/actions/[verb]` | POST | Stage an action to the bus with idempotency (12-verb allowlist) |
+| `/api/kanban/[slug]` | GET/POST | Read board state or apply move/add/edit/delete ops with mtime conflict detection |
+| `/api/kanban/[slug]/stream` | GET (SSE) | Per-board chokidar file-watch SSE for cross-tab sync |
+| `/api/logs/[date]` | GET | Read a specific daily log markdown by date |
+| `/api/events` | GET (SSE) | General event stream |
 
 ## Accessibility
 
@@ -59,8 +73,8 @@ npm run test:a11y
 
 Test each view with NVDA + Firefox (Windows) and VoiceOver + Safari (macOS). The brief's §9 has the per-view checklist.
 
-## Persistence (NOT yet wired)
+## Persistence
 
-The Kanban view's reorder is local-only in v1 — drops do not write back to the markdown file. Persistence requires a route handler that calls the `kanban-move` skill via the `bus-mcp` `bus_post` tool. Deferred until Phase 7 once the bus-side flow is exercised.
+Kanban is fully bidirectional (Phase C) — drag-and-drop and inline edits write back to `.md` files atomically with mtime conflict detection. Bus messages are posted via `/api/bus-post`.
 
 The proposal review form **does not auto-apply**. It surfaces the exact CLI command for the user to run in Claude Code, where `proposal-applier` enforces the dry-run + user-confirmation contract.

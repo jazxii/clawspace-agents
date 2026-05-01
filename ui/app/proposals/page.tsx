@@ -1,57 +1,53 @@
 import { listProposals } from "@/lib/fs-adapter";
-import StatusBadge from "../_components/StatusBadge";
-import Breadcrumbs from "../_components/Breadcrumbs";
+import { Pill } from "../_components/Pill";
+import Link from "next/link";
 
 export const metadata = { title: "Proposals — Clawspace" };
 export const dynamic = "force-dynamic";
 
 export default async function ProposalsIndex() {
   const proposals = await listProposals();
+  const pending = proposals.filter((p) => !p.frontmatter.applied);
+
   return (
-    <>
-      <header className="page-chrome">
-        <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Proposals" }]} />
-        <h1 className="text-2xl font-semibold">Self-evolution proposals</h1>
-      </header>
+    <div className="cs-page-inner">
+      <div className="cs-page-title">
+        <div>
+          <h1>Proposals</h1>
+          <p>Self-evolution loop · {proposals.length} total · {pending.length} pending</p>
+        </div>
+      </div>
+
       {proposals.length === 0 ? (
-        <p className="text-slate-700">
-          No proposals yet. <code>self-evolution-proposer</code> writes one weekly on Friday at
-          17:00.
-        </p>
+        <div className="cs-card">
+          <div className="cs-card-body" style={{ color: "var(--text-3)" }}>
+            No proposals yet. <code style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>self-evolution-proposer</code> writes one weekly on Friday at 17:00.
+          </div>
+        </div>
       ) : (
-        <ul role="list" className="space-y-3">
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--pad-3)" }}>
           {proposals.map((p) => {
-            const applied = p.frontmatter.applied === true;
+            const isApplied = p.frontmatter.applied === true;
             return (
-              <li key={p.week}>
-                <article aria-labelledby={`prop-${p.week}-h`} className="rounded border border-slate-200 p-4">
-                  <h2 id={`prop-${p.week}-h`} className="font-semibold mb-1">
-                    <a className="text-blue-700 underline" href={`/proposals/${p.week}`}>
-                      {p.week}
-                    </a>
-                  </h2>
-                  <dl className="text-sm space-y-1">
-                    <div className="flex gap-2">
-                      <dt className="font-medium">Status:</dt>
-                      <dd>
-                        <StatusBadge tone={applied ? "done" : "warning"}>
-                          {applied ? "Applied" : "Pending review"}
-                        </StatusBadge>
-                      </dd>
+              <Link key={p.week} href={`/proposals/${p.week}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="cs-card" style={{ cursor: "pointer" }}>
+                  <div className="cs-card-h">
+                    <h3 style={{ fontFamily: "var(--font-mono)", fontSize: 13 }}>{p.week}</h3>
+                    <Pill tone={isApplied ? "meta" : "alert"} dot>
+                      {isApplied ? "Applied" : "Pending review"}
+                    </Pill>
+                  </div>
+                  {p.frontmatter.window && (
+                    <div className="cs-card-body" style={{ fontSize: 12, color: "var(--text-3)" }}>
+                      Window: {String(p.frontmatter.window)}
                     </div>
-                    {p.frontmatter.window ? (
-                      <div className="flex gap-2">
-                        <dt className="font-medium">Window:</dt>
-                        <dd>{String(p.frontmatter.window)}</dd>
-                      </div>
-                    ) : null}
-                  </dl>
-                </article>
-              </li>
+                  )}
+                </div>
+              </Link>
             );
           })}
-        </ul>
+        </div>
       )}
-    </>
+    </div>
   );
 }

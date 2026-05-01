@@ -40,9 +40,13 @@ image_prompt: ""
 ---
 ```
 
-5. Spawn (in parallel, single message) `hashtag-strategist` and (if visual) `image-prompt-writer`. Each updates the frontmatter via Edit.
-6. When both return, flip frontmatter `status: ready`.
-7. `bus_post(channel="content", from="linkedin-writer", type="done", body="LinkedIn post ready: <slug>", ref="content/queue/linkedin/<file>")`.
+5. **Add Kanban card**: Read `kanban/content-linkedin.md`. Determine the next card ID by finding the highest existing `LI-NNN` number and incrementing (start at `LI-001` if none exist). Append a card line under `## Drafting`:
+   ```
+   - [LI-NNN] <topic short title> — <format>, `content/queue/linkedin/<file>`
+   ```
+6. Spawn (in parallel, single message) `hashtag-strategist` and (if visual) `image-prompt-writer`. Each updates the frontmatter via Edit.
+7. When both return, flip frontmatter `status: ready`. Move the Kanban card from `## Drafting` to `## Ready` (cut the line from Drafting, paste under Ready).
+8. `bus_post(channel="content", from="linkedin-writer", type="done", body="LinkedIn post ready: <slug>", ref="content/queue/linkedin/<file>")`.
 
 ## Voice rules (per PRD)
 

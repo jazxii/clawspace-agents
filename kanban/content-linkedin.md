@@ -6,6 +6,8 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 
 ## Drafting
 
+- [LI-001] Cognitive Load & Neurodiversity — insight post, humanized ✓, `content/queue/linkedin/2026-05-02-cognitive-load-neurodiversity.md`
+
 ## Ready
 
 ## Posted

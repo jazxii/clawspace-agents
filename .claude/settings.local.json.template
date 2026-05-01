@@ -4,23 +4,77 @@
   "mcpServers": {
     "notion": {
       "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "args": ["-y", "@notionhq/notion-mcp-server@2.3.0"],
       "env": {
-        "OPENAPI_MCP_HEADERS": "{\"Authorization\":\"Bearer YOUR_NOTION_INTEGRATION_TOKEN\",\"Notion-Version\":\"2022-06-28\"}"
+        "NOTION_TOKEN": "YOUR_NOTION_INTEGRATION_TOKEN"
       }
     },
     "notebooklm": {
-      "command": "npx",
-      "args": ["-y", "notebooklm-mcp-server"],
+      "command": "notebooklm-mcp",
+      "args": ["--stdio"],
       "env": {
-        "NOTEBOOKLM_AUTH": "<auth-per-server-docs>",
-        "_note": "Replace command/args with the exact invocation from notebooklm-mcp-server's docs. If unavailable on this machine, set CLAWSPACE_NOTEBOOKLM_MODE=manual and the notebooklm-bridge agent will fall back to staging-only mode."
+        "_note": "Install via: uv tool install notebooklm-mcp-cli && nlm login && nlm setup add claude-code. If unavailable on this machine, set CLAWSPACE_NOTEBOOKLM_MODE=manual and the notebooklm-bridge agent will fall back to staging-only mode."
+      }
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "YOUR_EXA_API_KEY"
+      }
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "YOUR_FIRECRAWL_API_KEY"
+      }
+    },
+    "tavily": {
+      "command": "npx",
+      "args": ["-y", "tavily-mcp@0.1.4"],
+      "env": {
+        "TAVILY_API_KEY": "YOUR_TAVILY_API_KEY"
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/brave-search-mcp"],
+      "env": {
+        "BRAVE_API_KEY": "YOUR_BRAVE_SEARCH_API_KEY"
+      }
+    },
+    "youtube-transcript": {
+      "command": "npx",
+      "args": ["-y", "youtube-transcript-mcp"]
+    },
+    "arxiv": {
+      "command": "npx",
+      "args": ["-y", "arxiv-mcp-server"]
+    },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY"
+      }
+    },
+    "reddit": {
+      "command": "npx",
+      "args": ["-y", "reddit-mcp-server"],
+      "env": {
+        "REDDIT_CLIENT_ID": "YOUR_REDDIT_CLIENT_ID",
+        "REDDIT_CLIENT_SECRET": "YOUR_REDDIT_CLIENT_SECRET"
       }
     }
   },
   "env": {
     "CLAWSPACE_NOTEBOOKLM_MODE": "auto",
     "CLAWSPACE_NOTION_DB_CONTENT": "<notion-database-id-for-content-queue>",
-    "CLAWSPACE_NOTION_DB_RESEARCH": "<notion-database-id-for-research-digests>"
+    "CLAWSPACE_NOTION_DB_RESEARCH": "<notion-database-id-for-research-digests>",
+    "CLAWSPACE_NOTION_DB_CALENDAR": "<notion-database-id-for-content-calendar>",
+    "CLAWSPACE_NOTION_DB_SOURCES": "<notion-database-id-for-source-library>",
+    "CLAWSPACE_NOTION_DB_NEWSLETTER": "<notion-database-id-for-newsletter-archive>",
+    "CLAWSPACE_NOTION_DB_IDEAS": "<notion-database-id-for-ideas-board>"
   }
 }

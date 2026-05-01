@@ -1,6 +1,6 @@
 ---
 name: new-project
-description: Scaffold a new dev project in the workforce. Creates PRD, Kanban, project bus channel, and an empty Graphify index directory. Use when the user says "new project <name>", "add a project", or "/new-project <slug>". Optionally accepts `--from-research <domain>` to seed the PRD's Goal section from a research idea.
+description: Scaffold a new dev project in the workforce. Creates PRD, Kanban, project bus channel, and an empty Graphify index directory. Use when the user says "new project <name>", "add a project", or "/new-project <slug>". Optionally accepts `--from-research <domain>` to seed the PRD's Goal section from a research idea. When `docs_path` is provided, reads the documents to auto-populate the PRD AND auto-generate Kanban backlog cards.
 ---
 
 # New project
@@ -12,8 +12,9 @@ Scaffold a project in `~/Documents/clawspace-agents/` with all the artifacts the
 - `slug` (required) — kebab-case identifier, matches `^[a-z][a-z0-9\-]{0,40}$`
 - `name` (optional) — human-readable name (defaults to titleized slug)
 - `repo_path` (optional) — absolute path to the project's source repo (recorded in PRD; `dev-researcher` will graphify it on first run)
-- `docs_path` (optional) — absolute or relative path to a folder or file containing project documentation (e.g., a docs/ directory or README.md)
+- `docs_path` (optional) — absolute or relative path to a folder or file containing project documentation (e.g., a docs/ directory, README.md, or any folder with .md/.txt/.rst/.adoc files)
 - `--from-research <domain>` (optional) — seeds the PRD Goal from `research/domains/<domain>/ideas-feed.md`'s top idea
+- `--no-cards` (optional) — skip auto-generating Kanban cards from docs (only populate PRD)
 
 
 ## Procedure
@@ -22,22 +23,84 @@ Scaffold a project in `~/Documents/clawspace-agents/` with all the artifacts the
 2. Check for collisions. If any of these exist, abort and tell the user:
    - `prds/projects/<slug>.md`
    - `kanban/projects/<slug>.md`
+
 3. If `docs_path` is provided:
-   - Recursively read all markdown/text files in the given path (including subfolders like docs/).
-   - Extract project purpose, specifications, and forbidden actions from the docs.
-   - Use extracted content to fill in the PRD sections (Goal, Specifications, Forbidden actions). If a section is missing, fall back to the template.
-   - Attribute extracted content with a comment: "Auto-populated from <docs_path>/<filename>".
+   a. **Discover files**: Recursively find all readable doc files in the given path. Supported extensions: `.md`, `.txt`, `.rst`, `.adoc`, `.org`, `.json`, `.yaml`, `.yml`, `.toml`. Skip binary files, `node_modules/`, `.git/`, `dist/`, `build/`. Cap at 50 files; if more exist, prioritize by name: README > CONTRIBUTING > ARCHITECTURE > docs/ folder > others alphabetically.
+   b. **Read and extract**: Read each file. Extract:
+      - **Goal**: project purpose, mission, "what is this" sections
+      - **Specifications**: requirements, acceptance criteria, success metrics, user stories, features
+      - **Forbidden actions**: constraints, "do not", security requirements, compliance rules
+      - **Work items**: TODOs, tasks, milestones, phases, epics, user stories, feature lists, implementation steps
+   c. **Populate PRD**: Fill Goal, Specifications, Forbidden actions from extracted content. Attribute each block: `<!-- Auto-populated from <docs_path>/<filename> -->`. Fall back to template for missing sections.
+   d. **Generate Kanban cards** (unless `--no-cards`): From the extracted work items, generate Kanban backlog cards following these rules:
+      - Each card is **right-sized**: completable in one focused 2-4h session (split larger items)
+      - Each card has a **title** (imperative verb, <10 words) and **1-2 acceptance criteria**
+      - Group related items; deduplicate similar tasks
+      - Cap at 15 cards per scaffold (the user can run `scrum-master` for further breakdown)
+      - If docs contain phases/milestones, preserve ordering (earlier phases first in backlog)
+      - Card IDs start at `[card-001]`
+      - Format per card: `- [card-NNN] <title> — added YYYY-MM-DD by /new-project\n  - Acceptance: <criterion>`
+
 4. Create files in this exact order:
-   **a. `prds/projects/<slug>.md`** — as above, but with extracted content if available.
-   **b. `kanban/projects/<slug>.md`** — as before.
-   **c. `graphify-indexes/<slug>/.gitkeep`** — as before.
-5. Bus seed — as before.
-6. Update `MEMORY.md` — as before.
-7. Tell the user the next step: "Review and edit `prds/projects/<slug>.md` to finalize Goal/Specs/Forbidden, then run `scrum-master` to break down the first goal into cards."
+
+   **a. `prds/projects/<slug>.md`** — populated PRD (from docs or template).
+
+   **b. `kanban/projects/<slug>.md`** — Kanban board with this structure:
+   ```markdown
+   # <Project Name> — Kanban
+
+   <!-- project-slug: <slug> -->
+   <!-- Source docs: <docs_path> (if provided) -->
+
+   ## Backlog
+
+   <auto-generated cards here, or empty if no docs/--no-cards>
+
+   ## In Progress
+
+   ## Review
+
+   ## Done
+   ```
+
+   **c. `graphify-indexes/<slug>/.gitkeep`** — empty dir for future indexing.
+
+5. Bus seed: Post to `bus/proj-<slug>.jsonl`:
+   ```
+   bus_post(channel="proj-<slug>", from="/new-project", type="status",
+     body="Project <slug> scaffolded. PRD: prds/projects/<slug>.md | Kanban: <N> backlog cards | Docs ingested: <M> files from <docs_path>",
+     ref="kanban/projects/<slug>.md")
+   ```
+   Also a one-liner to `bus/projects.jsonl`.
+
+6. Update `MEMORY.md` — add project to the Dev projects list and Kanbans section.
+
+7. Tell the user:
+   - If cards were generated: "Created <N> backlog cards from <M> docs. Review `prds/projects/<slug>.md` and `kanban/projects/<slug>.md`, then run `scrum-master` to refine or add more cards."
+   - If no docs: "Review and edit `prds/projects/<slug>.md` to finalize Goal/Specs/Forbidden, then run `scrum-master` to break down the first goal into cards."
+
+## Card generation heuristics
+
+When extracting work items from docs, apply these heuristics:
+
+| Doc pattern | Card type |
+|---|---|
+| `- [ ] ...` (checkbox) | Direct card, one per checkbox |
+| `### Phase N: ...` or `## Milestone: ...` | Group header; items under it become cards |
+| `- Feature: ...` or `- FR-NNN: ...` | One card per feature |
+| User story (`As a ... I want ... so that ...`) | One card per story |
+| `TODO:` or `FIXME:` in code comments | One card per TODO (if code files are in docs_path) |
+| Architecture decisions / ADRs | One `research:` card to evaluate the decision |
+| Dependencies / integrations mentioned | One card per integration to set up |
+
+If the docs are unstructured prose (no lists, no headings), extract the 5-7 most concrete action items mentioned and generate cards from those. If truly no actionable items can be extracted, leave the backlog empty and note this to the user.
 
 ## Forbidden
 
-- Never create files outside the four locations listed above.
+- Never create files outside the four locations listed above (PRD, Kanban, graphify-indexes, bus).
 - Never auto-populate Goal/Specs/Forbidden with placeholder text beyond the template — only use content from docs or the template.
 - Never run `/graphify` on the user's source repo from this skill (project-domain-lead handles that on first dev-researcher invocation, with user awareness).
 - Never overwrite an existing project. Abort on collision.
+- Never generate more than 15 cards in a single scaffold. Recommend `scrum-master` for further breakdown.
+- Never modify source docs. This skill is read-only on `docs_path`.
+- Never read files outside `docs_path` when populating from docs (no path traversal).

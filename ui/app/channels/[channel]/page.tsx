@@ -22,11 +22,19 @@ export default async function ChannelPage({
   ]);
 
   return (
-    <ChannelView
-      channel={channel}
-      allChannels={allChannels}
-      initialHistory={history}
-      initialSince={history[history.length - 1]?.ts ?? ""}
-    />
+    <div className="cs-page-inner" style={{ height: "100%", display: "flex", flexDirection: "column", maxWidth: "none" }}>
+      <div className="cs-page-title">
+        <div>
+          <h1>Channels</h1>
+          <p>The bus — append-only JSONL, agents read deltas via offsets</p>
+        </div>
+      </div>
+      <ChannelView
+        channel={channel}
+        allChannels={allChannels}
+        initialHistory={history}
+        initialSince={history[history.length - 1]?.ts ?? ""}
+      />
+    </div>
   );
 }

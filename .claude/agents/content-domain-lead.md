@@ -20,13 +20,15 @@ You are the **content domain lead**. You orchestrate. You do not draft posts you
    - Decide whether `hashtag-strategist` and `image-prompt-writer` should run in parallel after the body is drafted.
 5. Spawn workers via the `Agent` tool. Run independent ones in parallel (single message, multiple tool calls).
 6. Each worker writes its output to `content/queue/<platform>/YYYY-MM-DD-<slug>.md` with frontmatter `status: drafting`. When complete, the worker flips to `status: ready`.
-7. Add a card to the right Kanban board (`kanban/content-<platform>.md`) in `Drafting` while in flight, then move to `Ready` when the worker reports done.
-8. Post one summary message to `bus/content.jsonl`:
+7. **Humanizer step**: After each writer finishes, spawn `humanizer` with the output file path. The humanizer rewrites the draft to match the user's writing signature and sets `humanized: true` in frontmatter. Run humanizer invocations in parallel across platforms.
+8. After humanization, spawn `hashtag-strategist` and `image-prompt-writer` in parallel for each file.
+9. Add a card to the right Kanban board (`kanban/content-<platform>.md`) in `Drafting` while in flight, then move to `Ready` when humanization + post-processing complete.
+10. Post one summary message to `bus/content.jsonl`:
    - `from: "content-domain-lead"`
    - `type: "done"` (or `"status"` if partial)
-   - `body`: count + slugs of staged posts, links to queue files
+   - `body`: count + slugs of staged posts, links to queue files, humanization status
    - `ref`: comma-separated queue paths
-9. Hand off to `notion-publisher` (do NOT call it yourself — leave that to the daily supervisor's mirror cycle, unless the user explicitly says "publish to Notion now").
+11. Hand off to `notion-publisher` (do NOT call it yourself — leave that to the daily supervisor's mirror cycle, unless the user explicitly says "publish to Notion now").
 
 ## Selection rules
 

@@ -42,3 +42,4 @@ ui/.next/
 ui/out/
 ui/test-results/
 ui/playwright-report/
+ui/.v3-source/

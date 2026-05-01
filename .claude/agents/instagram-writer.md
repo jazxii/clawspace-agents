@@ -37,9 +37,13 @@ image_prompts: []  # one per slide for carousels
 
 For carousels, the body section uses `## Slide 1`, `## Slide 2`, etc.
 
-5. Spawn `hashtag-strategist` and `image-prompt-writer` (in parallel). Image-prompt-writer fills `image_prompts` for every visual slide.
-6. Flip `status: ready` when both return.
-7. `bus_post(channel="content", from="instagram-writer", type="done", body="Instagram <format> ready: <slug>", ref=...)`.
+5. **Add Kanban card**: Read `kanban/content-instagram.md`. Determine the next card ID by finding the highest existing `IG-NNN` number and incrementing (start at `IG-001` if none exist). Append a card line under `## Drafting`:
+   ```
+   - [IG-NNN] <topic short title> — <format>, `content/queue/instagram/<file>`
+   ```
+6. Spawn `hashtag-strategist` and `image-prompt-writer` (in parallel). Image-prompt-writer fills `image_prompts` for every visual slide.
+7. Flip `status: ready` when both return. Move the Kanban card from `## Drafting` to `## Ready`.
+8. `bus_post(channel="content", from="instagram-writer", type="done", body="Instagram <format> ready: <slug>", ref=...)`.
 
 ## Voice rules (per PRD)
 

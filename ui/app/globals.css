@@ -18,18 +18,26 @@ body {
 
 /* ----- Skip link (WCAG 2.4.1) ----- */
 .skip-link {
-  position: absolute;
-  left: 0;
-  top: -40px;
-  background: var(--bg-canvas);
-  color: var(--brand-primary);
-  padding: 0.5rem 1rem;
-  border: 2px solid var(--brand-primary);
-  z-index: 1000;
-  text-decoration: underline;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  background: var(--bg-elev-2, #fff);
+  color: var(--brand-primary, #2563eb);
+  padding: 6px 16px;
+  border: .5px solid var(--border, rgba(0,0,0,.09));
+  border-radius: var(--r-md, 10px);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0,0,0,.08));
+  z-index: 200;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform .15s ease;
+  white-space: nowrap;
 }
 .skip-link:focus {
-  top: 0;
+  transform: translateX(-50%) translateY(8px);
+  outline: 2px solid var(--brand-primary, #2563eb);
+  outline-offset: 2px;
 }
 
 /* ----- :focus-visible ring (WCAG 2.4.7, 2.4.11, 1.4.11) ----- */
@@ -298,7 +306,7 @@ button, [role="button"], a.btn {
   gap: 1px;
   background: var(--bg-sunken);
   padding: 2px;
-  border-radius: var(--r-md);
+  border-radius: 999px;
   overflow-x: auto;
   scrollbar-width: none;
   flex: 1 1 0;
@@ -314,16 +322,17 @@ button, [role="button"], a.btn {
 .cs-nav-tab {
   appearance: none; border: 0; background: transparent;
   padding: 4px 10px; height: 26px;
-  border-radius: calc(var(--r-md) - 2px);
-  font-size: 12.5px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 500;
   /* AA-safe muted: 5.0:1 on var(--bg-sunken) #efeff2 (light), 4.7:1 in dark.
      Design's --text-3 #6e6e73 hits 4.41 — fails 1.4.3. We override here so
      --text-3 stays untouched for places where it sits on var(--bg-elev-2). */
   color: var(--text-2);
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 5px;
   cursor: default;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: color .12s, background .12s;
   text-decoration: none;
 }
@@ -334,7 +343,7 @@ button, [role="button"], a.btn {
   color: var(--text);
   box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 0 0 .5px var(--border);
 }
-.cs-nav-tab .dot { width: 6px; height: 6px; border-radius: 50%; }
+.cs-nav-tab .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .cs-nav-tab .badge {
   font-size: 10px; padding: 0 5px; min-width: 14px; height: 14px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -507,11 +516,11 @@ button, [role="button"], a.btn {
   border: .5px solid var(--hairline);
   white-space: nowrap;
 }
-.cs-pill[data-tone="content"]  { background: color-mix(in srgb, var(--accent-content)  14%, transparent); color: color-mix(in srgb, var(--accent-content)  80%, var(--text)); border-color: color-mix(in srgb, var(--accent-content)  25%, transparent); }
-.cs-pill[data-tone="projects"] { background: color-mix(in srgb, var(--accent-projects) 14%, transparent); color: color-mix(in srgb, var(--accent-projects) 80%, var(--text)); border-color: color-mix(in srgb, var(--accent-projects) 25%, transparent); }
-.cs-pill[data-tone="research"] { background: color-mix(in srgb, var(--accent-research) 14%, transparent); color: color-mix(in srgb, var(--accent-research) 80%, var(--text)); border-color: color-mix(in srgb, var(--accent-research) 25%, transparent); }
-.cs-pill[data-tone="meta"]     { background: color-mix(in srgb, var(--accent-meta)     14%, transparent); color: color-mix(in srgb, var(--accent-meta)     80%, var(--text)); border-color: color-mix(in srgb, var(--accent-meta)     25%, transparent); }
-.cs-pill[data-tone="alert"]    { background: color-mix(in srgb, var(--accent-system)   14%, transparent); color: color-mix(in srgb, var(--accent-system)   80%, var(--text)); border-color: color-mix(in srgb, var(--accent-system)   25%, transparent); }
+.cs-pill[data-tone="content"]  { background: color-mix(in srgb, var(--accent-content)  14%, transparent); color: color-mix(in srgb, var(--accent-content)  50%, var(--text)); border-color: color-mix(in srgb, var(--accent-content)  25%, transparent); }
+.cs-pill[data-tone="projects"] { background: color-mix(in srgb, var(--accent-projects) 14%, transparent); color: color-mix(in srgb, var(--accent-projects) 50%, var(--text)); border-color: color-mix(in srgb, var(--accent-projects) 25%, transparent); }
+.cs-pill[data-tone="research"] { background: color-mix(in srgb, var(--accent-research) 14%, transparent); color: color-mix(in srgb, var(--accent-research) 50%, var(--text)); border-color: color-mix(in srgb, var(--accent-research) 25%, transparent); }
+.cs-pill[data-tone="meta"]     { background: color-mix(in srgb, var(--accent-meta)     14%, transparent); color: color-mix(in srgb, var(--accent-meta)     50%, var(--text)); border-color: color-mix(in srgb, var(--accent-meta)     25%, transparent); }
+.cs-pill[data-tone="alert"]    { background: color-mix(in srgb, var(--accent-system)   14%, transparent); color: color-mix(in srgb, var(--accent-system)   50%, var(--text)); border-color: color-mix(in srgb, var(--accent-system)   25%, transparent); }
 .cs-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .7; }
 
 .cs-btn {
@@ -528,7 +537,7 @@ button, [role="button"], a.btn {
 .cs-btn:hover { background: var(--bg-elev-2); }
 .cs-btn:active { transform: translateY(.5px); }
 .cs-btn[data-variant="primary"] {
-  background: var(--accent); color: white; border-color: transparent;
+  background: var(--brand-primary); color: white; border-color: transparent;
   box-shadow: 0 1px 2px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.2);
 }
 .cs-btn[data-variant="primary"]:hover { filter: brightness(1.06); }
@@ -572,7 +581,7 @@ button, [role="button"], a.btn {
   font-size: 11.5px; color: var(--text-3);
   display: flex; align-items: center; gap: 4px;
 }
-.cs-stat .delta.up   { color: var(--accent-meta); }
+.cs-stat .delta.up   { color: #1a7d36; }
 .cs-stat .delta.down { color: var(--accent-system); }
 
 .cs-spark { display: block; width: 100%; height: 32px; }
@@ -656,7 +665,7 @@ button, [role="button"], a.btn {
 }
 .cs-ch-grp {
   font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
-  color: var(--text-4); font-weight: 600;
+  color: var(--text-3); font-weight: 600;
   padding: var(--pad-3) var(--pad-2) var(--pad-1);
 }
 .cs-ch-item {
@@ -773,12 +782,15 @@ button, [role="button"], a.btn {
   position: fixed; inset: 0; z-index: 100;
   background: rgba(0,0,0,.18);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  display: flex; align-items: flex-start; justify-content: center;
-  padding-top: 14vh;
   animation: cs-fade .12s ease-out;
 }
 :root[data-theme="dark"] .cs-palette-scrim { background: rgba(0,0,0,.5); }
 .cs-palette {
+  position: fixed;
+  top: 14vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 101;
   width: min(640px, 92vw);
   background: var(--bg-elev-2);
   border: .5px solid var(--border);
@@ -824,7 +836,7 @@ button, [role="button"], a.btn {
 .cs-palette-row[data-sel="1"] .ttl { color: var(--accent); }
 
 @keyframes cs-fade { from { opacity: 0 } to { opacity: 1 } }
-@keyframes cs-pop  { from { opacity: 0; transform: translateY(-8px) scale(.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
+@keyframes cs-pop  { from { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.98) } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) } }
 
 @media (prefers-reduced-motion: reduce) {
   .cs-palette-scrim, .cs-palette { animation: none !important; }

@@ -369,3 +369,412 @@ export async function readTodaysLog(): Promise<{ date: string; body: string } | 
   const body = await fs.readFile(file, "utf8");
   return { date: today, body };
 }
+
+export async function listDailyLogs(): Promise<string[]> {
+  const dir = within("logs/daily");
+  if (!existsSync(dir)) return [];
+  const files = (await fs.readdir(dir)).filter((f) => f.endsWith(".md"));
+  return files.map((f) => f.replace(/\.md$/, "")).sort().reverse();
+}
+
+export async function readDailyLog(date: string): Promise<{ date: string; body: string } | null> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const file = safeJoin(within("logs/daily"), `${date}.md`);
+  if (!existsSync(file)) return null;
+  const body = await fs.readFile(file, "utf8");
+  return { date, body };
+}
+
+// ---------- Content queue ----------
+
+export interface ContentQueueItem {
+  id: string;
+  channel: string;
+  title: string;
+  status: string;
+  date: string;
+  author: string;
+  hooks: number;
+  path: string;
+}
+
+export async function readContentQueue(): Promise<ContentQueueItem[]> {
+  const out: ContentQueueItem[] = [];
+  const platforms = ["linkedin", "instagram", "x", "newsletter"];
+  for (const platform of platforms) {
+    const dir = within(`content/queue/${platform}`);
+    if (!existsSync(dir)) continue;
+    const files = (await fs.readdir(dir)).filter((f) => f.endsWith(".md"));
+    for (const f of files) {
+      const txt = await fs.readFile(path.join(dir, f), "utf8");
+      const parsed = matter(txt);
+      const fm = parsed.data;
+      const channelName = platform === "x" ? "X" : platform.charAt(0).toUpperCase() + platform.slice(1);
+      out.push({
+        id: f.replace(/\.md$/, ""),
+        channel: channelName,
+        title: (fm.title as string) || f.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/-/g, " "),
+        status: (fm.status as string) || "Backlog",
+        date: (fm.scheduled as string) || (fm.date as string) || "—",
+        author: (fm.author as string) || `${platform}-writer`,
+        hooks: Array.isArray(fm.hooks) ? fm.hooks.length : typeof fm.hooks === "number" ? fm.hooks : 0,
+        path: `content/queue/${platform}/${f}`,
+      });
+    }
+  }
+  return out.sort((a, b) => b.date.localeCompare(a.date));
+}
+
+// ---------- Audit log ----------
+
+export interface AuditEntry {
+  ts: string;
+  actor: string;
+  action: string;
+  file: string;
+  lines: string;
+  prop: string;
+}
+
+export async function readAuditLog(): Promise<AuditEntry[]> {
+  const file = within("audit/mutations.jsonl");
+  if (!existsSync(file)) return [];
+  const txt = await fs.readFile(file, "utf8");
+  return txt
+    .split("\n")
+    .filter(Boolean)
+    .map((l) => {
+      try {
+        const raw = JSON.parse(l);
+        return {
+          ts: raw.ts || raw.timestamp || "",
+          actor: raw.actor || raw.agent || "unknown",
+          action: raw.action || "apply",
+          file: raw.file || raw.path || "",
+          lines: raw.lines || raw.diff_lines || "",
+          prop: raw.prop || raw.proposal || raw.week || "",
+        } as AuditEntry;
+      } catch {
+        return null;
+      }
+    })
+    .filter((e): e is AuditEntry => !!e)
+    .reverse();
+}
+
+// ---------- Activity (from bus) ----------
+
+export interface ActivityEntry {
+  t: string;
+  agent: string;
+  domain: string;
+  dur: number;
+  tokens: number;
+  status: string;
+  note: string;
+}
+
+export async function readActivity(): Promise<ActivityEntry[]> {
+  const channels = await listBusChannels();
+  const all: BusMessage[] = [];
+  for (const ch of channels) {
+    const msgs = await readBusChannel(ch, { limit: 50 });
+    all.push(...msgs);
+  }
+  return all
+    .filter((m) => typeof m.ts === "string")
+    .sort((a, b) => b.ts.localeCompare(a.ts))
+    .slice(0, 50)
+    .map((m) => {
+      const domain = inferDomain(m.ch);
+      return {
+        t: m.ts.slice(11, 16),
+        agent: m.from,
+        domain,
+        dur: 0,
+        tokens: 0,
+        status: "ok",
+        note: m.body.slice(0, 200),
+      };
+    });
+}
+
+function inferDomain(ch: string): string {
+  if (!ch) return "meta";
+  if (ch === "content" || ch.startsWith("dm-")) return "content";
+  if (ch === "projects" || ch.startsWith("proj-")) return "projects";
+  if (ch === "research") return "research";
+  return "meta";
+}
+
+// ---------- Agents registry ----------
+
+export interface AgentInfo {
+  id: string;
+  tier: number;
+  domain: string;
+  model: string;
+  desc: string;
+}
+
+export async function listAgents(): Promise<AgentInfo[]> {
+  // Try scanning .claude/agents/*.md for frontmatter
+  const agentsDir = within(".claude/agents");
+  if (existsSync(agentsDir)) {
+    const files = (await fs.readdir(agentsDir)).filter((f) => f.endsWith(".md") && !f.startsWith("_"));
+    if (files.length > 0) {
+      const out: AgentInfo[] = [];
+      for (const f of files) {
+        const txt = await fs.readFile(path.join(agentsDir, f), "utf8");
+        const parsed = matter(txt);
+        const fm = parsed.data;
+        out.push({
+          id: f.replace(/\.md$/, ""),
+          tier: typeof fm.tier === "number" ? fm.tier : 1,
+          domain: (fm.domain as string) || "meta",
+          model: (fm.model as string) || "sonnet",
+          desc: (fm.description as string) || (fm.desc as string) || parsed.content.slice(0, 120).trim(),
+        });
+      }
+      return out.sort((a, b) => b.tier - a.tier || a.id.localeCompare(b.id));
+    }
+  }
+  // Fallback: hardcoded agent list matching design data.jsx
+  return FALLBACK_AGENTS;
+}
+
+const FALLBACK_AGENTS: AgentInfo[] = [
+  { id: "master-overseer", tier: 4, domain: "meta", model: "opus", desc: "Daily health + weekly evolution kickoff" },
+  { id: "self-evolution-proposer", tier: 4, domain: "meta", model: "opus", desc: "Friday weekly self-evolution proposal" },
+  { id: "proposal-applier", tier: 4, domain: "meta", model: "sonnet", desc: "Plan-mode preview + apply diffs" },
+  { id: "daily-content-supervisor", tier: 3, domain: "content", model: "sonnet", desc: "Reviews queue + calendar; flags gaps" },
+  { id: "daily-project-supervisor", tier: 3, domain: "projects", model: "sonnet", desc: "Reads project Kanbans; posts standup" },
+  { id: "daily-research-supervisor", tier: 3, domain: "research", model: "sonnet", desc: "Flags stale domains; weekly digest" },
+  { id: "content-domain-lead", tier: 2, domain: "content", model: "opus", desc: "Routes content work across LI/IG/X" },
+  { id: "project-domain-lead", tier: 2, domain: "projects", model: "opus", desc: "Coordinates dev projects" },
+  { id: "research-domain-lead", tier: 2, domain: "research", model: "opus", desc: "Owns research domains end-to-end" },
+  { id: "linkedin-writer", tier: 1, domain: "content", model: "sonnet", desc: "Drafts LinkedIn posts (longform voice)" },
+  { id: "instagram-writer", tier: 1, domain: "content", model: "sonnet", desc: "Drafts IG captions + image briefs" },
+  { id: "x-writer", tier: 1, domain: "content", model: "sonnet", desc: "Drafts X threads + replies" },
+  { id: "hook-crafter", tier: 1, domain: "content", model: "sonnet", desc: "Generates 5-hook variants per draft" },
+  { id: "hashtag-strategist", tier: 1, domain: "content", model: "haiku", desc: "Trending tags + cluster ranking" },
+  { id: "image-prompt-writer", tier: 1, domain: "content", model: "sonnet", desc: "Image briefs for IG/LI banners" },
+  { id: "content-calendar-planner", tier: 1, domain: "content", model: "sonnet", desc: "Monthly cadence calendar" },
+  { id: "engagement-analyzer", tier: 1, domain: "content", model: "sonnet", desc: "Reads metrics; surfaces what worked" },
+  { id: "notion-publisher", tier: 1, domain: "content", model: "haiku", desc: "Mirrors queue → Notion DB" },
+  { id: "scrum-master", tier: 1, domain: "projects", model: "opus", desc: "Breaks goals → tickets; schedules sprints" },
+  { id: "prd-keeper", tier: 1, domain: "projects", model: "sonnet", desc: "Maintains PRDs + open questions" },
+  { id: "kanban-secretary", tier: 1, domain: "projects", model: "haiku", desc: "Updates Kanban headers; light cadence" },
+  { id: "dev-researcher", tier: 1, domain: "projects", model: "sonnet", desc: "Per-task technical research" },
+  { id: "scaling-ideator", tier: 1, domain: "projects", model: "opus", desc: "Weekly scaling-move proposals" },
+  { id: "domain-researcher", tier: 1, domain: "research", model: "sonnet", desc: "Pulls fresh sources per domain" },
+  { id: "notebooklm-bridge", tier: 1, domain: "research", model: "sonnet", desc: "Runs staged NotebookLM queries" },
+  { id: "source-curator", tier: 1, domain: "research", model: "haiku", desc: "Dedupes + reranks sources.md" },
+  { id: "trend-spotter", tier: 1, domain: "research", model: "sonnet", desc: "Cross-domain theme detection" },
+  { id: "weekly-digest-composer", tier: 1, domain: "research", model: "opus", desc: "Friday weekly digest" },
+  { id: "newsletter-writer", tier: 1, domain: "research", model: "opus", desc: "Polishes digest → newsletter" },
+];
+
+// ---------- Graphify index ----------
+
+export interface GraphNode {
+  id: string;
+  x: number;
+  y: number;
+  r: number;
+  label: string;
+  group: string;
+}
+
+export type GraphEdge = [string, string];
+
+export interface GraphData {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
+export async function readGraphifyIndex(): Promise<GraphData> {
+  // Try reading from graphify-out cache
+  const cacheDir = within("graphify-out/cache");
+  if (existsSync(cacheDir)) {
+    const files = (await fs.readdir(cacheDir)).filter((f) => f.endsWith(".json"));
+    if (files.length > 0) {
+      // Try to extract graph structure from cache files
+      const nodes: GraphNode[] = [];
+      const edgeSet = new Set<string>();
+      for (const f of files.slice(0, 20)) {
+        try {
+          const txt = await fs.readFile(path.join(cacheDir, f), "utf8");
+          const data = JSON.parse(txt);
+          if (data.nodes && Array.isArray(data.nodes)) {
+            for (const n of data.nodes) {
+              if (n.id && !nodes.find((x) => x.id === n.id)) {
+                nodes.push({
+                  id: n.id,
+                  x: n.x ?? Math.random(),
+                  y: n.y ?? Math.random(),
+                  r: n.r ?? 16,
+                  label: n.label || n.id,
+                  group: n.group || n.domain || "meta",
+                });
+              }
+            }
+          }
+          if (data.edges && Array.isArray(data.edges)) {
+            for (const e of data.edges) {
+              const key = Array.isArray(e) ? `${e[0]}:${e[1]}` : `${e.source}:${e.target}`;
+              edgeSet.add(key);
+            }
+          }
+        } catch { /* skip corrupt files */ }
+      }
+      if (nodes.length > 0) {
+        return { nodes, edges: [...edgeSet].map((k) => k.split(":") as GraphEdge) };
+      }
+    }
+  }
+  // Fallback: synthetic graph matching design
+  return FALLBACK_GRAPH;
+}
+
+const FALLBACK_GRAPH: GraphData = {
+  nodes: [
+    { id: "PRD", x: 0.5, y: 0.5, r: 28, label: "PRD", group: "core" },
+    { id: "KANBAN", x: 0.28, y: 0.34, r: 22, label: "Kanban", group: "core" },
+    { id: "BUS", x: 0.72, y: 0.34, r: 22, label: "Bus", group: "core" },
+    { id: "AGENTS", x: 0.5, y: 0.8, r: 22, label: "Agents", group: "core" },
+    { id: "a-content", x: 0.18, y: 0.7, r: 14, label: "content", group: "content" },
+    { id: "a-projects", x: 0.4, y: 0.95, r: 14, label: "projects", group: "projects" },
+    { id: "a-research", x: 0.62, y: 0.95, r: 14, label: "research", group: "research" },
+    { id: "a-meta", x: 0.84, y: 0.7, r: 14, label: "meta", group: "meta" },
+    { id: "NOTION", x: 0.12, y: 0.18, r: 16, label: "Notion", group: "content" },
+    { id: "NLM", x: 0.88, y: 0.18, r: 16, label: "NotebookLM", group: "research" },
+    { id: "WEB", x: 0.5, y: 0.12, r: 14, label: "web-research", group: "research" },
+    { id: "AUDIT", x: 0.12, y: 0.85, r: 12, label: "audit", group: "meta" },
+    { id: "PROP", x: 0.88, y: 0.85, r: 12, label: "proposals", group: "meta" },
+  ],
+  edges: [
+    ["PRD", "KANBAN"], ["PRD", "BUS"], ["PRD", "AGENTS"], ["KANBAN", "BUS"],
+    ["AGENTS", "a-content"], ["AGENTS", "a-projects"], ["AGENTS", "a-research"], ["AGENTS", "a-meta"],
+    ["a-content", "NOTION"], ["a-research", "NLM"], ["a-research", "WEB"],
+    ["a-meta", "AUDIT"], ["a-meta", "PROP"], ["BUS", "a-content"], ["BUS", "a-projects"],
+    ["BUS", "a-research"], ["BUS", "a-meta"],
+  ],
+};
+
+// ---------- Notion sync state ----------
+
+export interface NotionSyncItem {
+  id: string;
+  title: string;
+  channel: string;
+  status: string;
+  scheduled: string;
+  lastSynced: string;
+  conflict: boolean;
+}
+
+export async function readNotionSyncState(): Promise<NotionSyncItem[]> {
+  const queue = await readContentQueue();
+  // Check bus for conflict messages from notion-publisher
+  const busContent = await readBusChannel("content", { limit: 50 }).catch(() => [] as BusMessage[]);
+  const conflictTitles = new Set<string>();
+  for (const m of busContent) {
+    if (m.from === "notion-publisher" && (m.type === "conflict" || m.body.toLowerCase().includes("conflict"))) {
+      // Try to extract the conflicting item
+      const match = m.body.match(/(\S+-\d{4}-\d{2}-\d{2}\S*)/);
+      if (match) conflictTitles.add(match[1]);
+    }
+  }
+  return queue.map((q, i) => ({
+    id: `n${i}`,
+    title: q.title,
+    channel: q.channel,
+    status: q.status,
+    scheduled: q.date,
+    lastSynced: "—",
+    conflict: conflictTitles.has(q.id),
+  }));
+}
+
+// ---------- Research domains ----------
+
+export async function listResearchDomains(): Promise<string[]> {
+  const dir = within("research/domains");
+  if (!existsSync(dir)) return [];
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  return entries.filter((e) => e.isDirectory()).map((e) => e.name).sort();
+}
+
+// ---------- NotebookLM sync ----------
+
+export interface NotebookLMPrompt {
+  domain: string;
+  index: number;
+  text: string;
+  answered: boolean;
+  answeredDate?: string;
+}
+
+export interface NotebookLMDomainData {
+  domain: string;
+  prompts: NotebookLMPrompt[];
+  sourceCount: number;
+  noteCount: number;
+}
+
+export async function readNotebookLMData(): Promise<NotebookLMDomainData[]> {
+  const domains = await listResearchDomains();
+  const results: NotebookLMDomainData[] = [];
+
+  for (const domain of domains) {
+    const domainDir = within(`research/domains/${domain}`);
+    const promptsFile = path.join(domainDir, "notebooklm-prompts.md");
+    const sourcesFile = path.join(domainDir, "sources.md");
+    const notesDir = path.join(domainDir, "notes");
+
+    const prompts: NotebookLMPrompt[] = [];
+
+    if (existsSync(promptsFile)) {
+      const txt = await fs.readFile(promptsFile, "utf8");
+      const lines = txt.split("\n");
+      let idx = 0;
+      for (const line of lines) {
+        const trimmed = line.trim();
+        // Skip headings, comments, blank lines
+        if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("<!--") || trimmed.startsWith("-->") || trimmed.startsWith("Example format")) continue;
+        // Check if answered
+        const answeredMatch = trimmed.match(/\[answered\s+(\d{4}-\d{2}-\d{2})\]/);
+        const text = trimmed.replace(/\s*\[answered\s+\d{4}-\d{2}-\d{2}\]/, "").replace(/^-\s*/, "");
+        if (!text) continue;
+        prompts.push({
+          domain,
+          index: idx++,
+          text,
+          answered: !!answeredMatch,
+          answeredDate: answeredMatch?.[1],
+        });
+      }
+    }
+
+    // Count sources
+    let sourceCount = 0;
+    if (existsSync(sourcesFile)) {
+      const txt = await fs.readFile(sourcesFile, "utf8");
+      sourceCount = (txt.match(/^- \[/gm) || []).length;
+    }
+
+    // Count notes
+    let noteCount = 0;
+    if (existsSync(notesDir)) {
+      try {
+        const entries = await fs.readdir(notesDir);
+        noteCount = entries.filter((e) => e.endsWith(".md")).length;
+      } catch { /* empty */ }
+    }
+
+    results.push({ domain, prompts, sourceCount, noteCount });
+  }
+
+  return results;
+}
