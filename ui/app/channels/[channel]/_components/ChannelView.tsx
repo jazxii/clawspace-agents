@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import type { BusMessage } from "@/lib/fs-adapter";
+import Link from "next/link";
+import type { BusMessage, AgentInfo } from "@/lib/fs-adapter";
+import AgentAvatar from "@/app/_components/AgentAvatar";
 
 /**
  * Channels view — implements ACCESSIBILITY-BRIEF §3 in full.
@@ -49,6 +51,8 @@ interface Props {
   allChannels: string[];
   initialHistory: BusMessage[];
   initialSince: string;
+  teamAgents?: AgentInfo[];
+  channelDomainName?: string;
 }
 
 const COALESCE_WINDOW_MS = 2000;
@@ -57,7 +61,16 @@ const DEBOUNCE_MS = 1500;
 const MAX_ANNOUNCE_LEN = 200;
 const AT_BOTTOM_THRESHOLD = 50;
 
-export default function ChannelView({ channel, allChannels, initialHistory, initialSince }: Props) {
+const MSG_TYPE_CLASS: Record<string, string> = {
+  status: "cs-msg cs-msg--status",
+  done: "cs-msg cs-msg--done",
+  alert: "cs-msg cs-msg--alert",
+  task: "cs-msg cs-msg--task",
+  question: "cs-msg cs-msg--question",
+  answer: "cs-msg cs-msg--answer",
+};
+
+export default function ChannelView({ channel, allChannels, initialHistory, initialSince, teamAgents = [], channelDomainName = "meta" }: Props) {
   const [messages, setMessages] = useState<BusMessage[]>(initialHistory);
   const [pauseAnnouncements, setPauseAnnouncements] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -229,14 +242,24 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
   };
 
   const domain = channelDomain(channel);
+  const hasTeam = teamAgents.length > 0;
+
+  // Group team agents by tier
+  const teamByTier: Record<number, AgentInfo[]> = {};
+  for (const a of teamAgents) {
+    (teamByTier[a.tier] = teamByTier[a.tier] || []).push(a);
+  }
+  const tierOrder = Object.keys(teamByTier).map(Number).sort((a, b) => b - a);
+  const tierLabel = (t: number) =>
+    ({ 4: "Meta", 3: "Supervisors", 2: "Leads", 1: "Workers" }[t] || `Tier ${t}`);
 
   return (
-    <div className="cs-channel" style={{ flex: 1, minHeight: 0 }}>
+    <div className={`cs-channel${hasTeam ? " cs-channel--with-sidebar" : ""}`} style={{ flex: 1, minHeight: 0 }}>
       <aside className="cs-ch-list" aria-label="Channel list">
         <h2 className="sr-only">Channel list</h2>
         <div className="cs-ch-grp">Channels</div>
         {allChannels.filter((ch) => !ch.startsWith("dm-")).map((ch) => (
-          <a
+          <Link
             key={ch}
             href={`/channels/${encodeURIComponent(ch)}`}
             aria-current={ch === channel ? "page" : undefined}
@@ -246,13 +269,13 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
           >
             <span className="hash">#</span>
             <span className="ellipsis">{ch}</span>
-          </a>
+          </Link>
         ))}
         {allChannels.some((ch) => ch.startsWith("dm-")) && (
           <>
             <div className="cs-ch-grp">Direct</div>
             {allChannels.filter((ch) => ch.startsWith("dm-")).map((ch) => (
-              <a
+              <Link
                 key={ch}
                 href={`/channels/${encodeURIComponent(ch)}`}
                 className="cs-ch-item"
@@ -260,7 +283,7 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <span className="ellipsis">{ch.replace(/^dm-/, "")}</span>
-              </a>
+              </Link>
             ))}
           </>
         )}
@@ -314,10 +337,8 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
               const ts = m.ts ?? "";
               const from = m.from ?? "??";
               return (
-              <li key={`${ts}-${from}-${i}`} id={`msg-${ts || i}`} className="cs-msg">
-                <span className="av" style={{ background: domainColor[channelDomain(channel)] }}>
-                  {from.slice(0, 2).toUpperCase()}
-                </span>
+              <li key={`${ts}-${from}-${i}`} id={`msg-${ts || i}`} className={MSG_TYPE_CLASS[m.type] || "cs-msg"}>
+                <AgentAvatar name={from} domain={channelDomainName} size={32} />
                 <div className="body" style={{ minWidth: 0 }}>
                   <div className="head" style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                     <span id={`msg-${ts || i}-from`} className="name" style={{ fontWeight: 600, fontSize: 13, color: "var(--text)" }}>{from}</span>
@@ -408,6 +429,25 @@ export default function ChannelView({ channel, allChannels, initialHistory, init
           </form>
         </div>
       </div>
+
+      {hasTeam && (
+        <aside className="cs-team-sidebar" aria-label="Team members">
+          <h2 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: ".06em", fontWeight: 600, color: "var(--text-3)", margin: "0 0 8px" }}>
+            Team ({teamAgents.length})
+          </h2>
+          {tierOrder.map((tier) => (
+            <div key={tier}>
+              <div className="cs-team-grp">{tierLabel(tier)}</div>
+              {teamByTier[tier].map((a) => (
+                <div key={a.id} className="cs-agent-row">
+                  <AgentAvatar name={a.id} domain={a.domain} tier={a.tier} size={22} showTier />
+                  <span style={{ flex: 1, fontFamily: "var(--font-mono)", fontSize: 11.5 }}>{a.id}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </aside>
+      )}
     </div>
   );
 }

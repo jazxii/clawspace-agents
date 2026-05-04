@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { listBusChannels, readBusChannel } from "@/lib/fs-adapter";
+import { listBusChannels, readBusChannel, getChannelTeam } from "@/lib/fs-adapter";
 import ChannelView from "./_components/ChannelView";
 
 export const dynamic = "force-dynamic";
@@ -16,9 +16,10 @@ export default async function ChannelPage({
 }) {
   const { channel } = await params;
   if (!/^[a-z0-9][a-z0-9_\-]{0,63}$/.test(channel)) notFound();
-  const [allChannels, history] = await Promise.all([
+  const [allChannels, history, team] = await Promise.all([
     listBusChannels(),
     readBusChannel(channel, { limit: 100 }),
+    getChannelTeam(channel),
   ]);
 
   return (
@@ -34,6 +35,8 @@ export default async function ChannelPage({
         allChannels={allChannels}
         initialHistory={history}
         initialSince={history[history.length - 1]?.ts ?? ""}
+        teamAgents={team.agents}
+        channelDomainName={team.domain}
       />
     </div>
   );

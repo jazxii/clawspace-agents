@@ -573,7 +573,47 @@ const FALLBACK_AGENTS: AgentInfo[] = [
   { id: "trend-spotter", tier: 1, domain: "research", model: "sonnet", desc: "Cross-domain theme detection" },
   { id: "weekly-digest-composer", tier: 1, domain: "research", model: "opus", desc: "Friday weekly digest" },
   { id: "newsletter-writer", tier: 1, domain: "research", model: "opus", desc: "Polishes digest → newsletter" },
+  { id: "humanizer", tier: 1, domain: "content", model: "sonnet", desc: "Rewrites AI drafts to match writing signature" },
+  { id: "research-to-content-orchestrator", tier: 2, domain: "research", model: "opus", desc: "Full pipeline: research → content → humanize → Notion" },
+  { id: "notion-db-manager", tier: 1, domain: "content", model: "sonnet", desc: "Manages 6 Notion databases" },
+  { id: "content-repurposer", tier: 1, domain: "content", model: "sonnet", desc: "Adapts one insight across platforms" },
 ];
+
+// ---------- Channel team helpers ----------
+
+export interface ChannelTeam {
+  agents: AgentInfo[];
+  domain: string;
+  type: "public" | "team" | "pipeline" | "dm";
+}
+
+let cachedAgents: AgentInfo[] | null = null;
+
+async function getCachedAgents(): Promise<AgentInfo[]> {
+  if (!cachedAgents) cachedAgents = await listAgents();
+  return cachedAgents;
+}
+
+export async function getChannelTeam(channel: string): Promise<ChannelTeam> {
+  const agents = await getCachedAgents();
+  if (channel === "all-hands") return { agents, domain: "meta", type: "public" };
+  if (channel === "content") return { agents: agents.filter((a) => a.domain === "content"), domain: "content", type: "team" };
+  if (channel === "projects" || channel.startsWith("proj-")) return { agents: agents.filter((a) => a.domain === "projects"), domain: "projects", type: "team" };
+  if (channel === "research") return { agents: agents.filter((a) => a.domain === "research"), domain: "research", type: "team" };
+  if (channel === "meta") return { agents: agents.filter((a) => a.domain === "meta"), domain: "meta", type: "team" };
+  if (channel === "research-to-content" || channel === "humanizer") {
+    return { agents: agents.filter((a) => a.domain === "content" || a.domain === "research"), domain: "research", type: "pipeline" };
+  }
+  if (channel.startsWith("dm-")) return { agents: [], domain: "meta", type: "dm" };
+  return { agents, domain: "meta", type: "team" };
+}
+
+export async function inferAgentMeta(agentName: string): Promise<{ tier: number; domain: string; model: string } | null> {
+  const agents = await getCachedAgents();
+  const a = agents.find((x) => x.id === agentName);
+  if (!a) return null;
+  return { tier: a.tier, domain: a.domain, model: a.model };
+}
 
 // ---------- Graphify index ----------
 
@@ -664,6 +704,32 @@ const FALLBACK_GRAPH: GraphData = {
 
 // ---------- Notion sync state ----------
 
+export interface NotionConfig {
+  content_queue: string;
+  research_digests: string;
+  content_calendar: string;
+  source_library: string;
+  newsletter_archive: string;
+  ideas_board: string;
+  setup_at: string;
+}
+
+export interface NotionDBView {
+  key: string;
+  label: string;
+  dbId: string;
+  pendingCount: number;
+  totalCount: number;
+  items: NotionSyncItem[];
+}
+
+export interface NotionFullState {
+  config: NotionConfig | null;
+  dbs: NotionDBView[];
+  pendingTotal: number;
+  conflicts: number;
+}
+
 export interface NotionSyncItem {
   id: string;
   title: string;
@@ -672,6 +738,158 @@ export interface NotionSyncItem {
   scheduled: string;
   lastSynced: string;
   conflict: boolean;
+  notionPageId?: string;
+}
+
+export async function readNotionConfig(): Promise<NotionConfig | null> {
+  const configPath = within(".notion-sync.json");
+  if (!existsSync(configPath)) return null;
+  try {
+    const txt = await fs.readFile(configPath, "utf8");
+    return JSON.parse(txt) as NotionConfig;
+  } catch {
+    return null;
+  }
+}
+
+export async function readNotionFullState(): Promise<NotionFullState> {
+  const config = await readNotionConfig();
+  if (!config) return { config: null, dbs: [], pendingTotal: 0, conflicts: 0 };
+
+  const busContent = await readBusChannel("content", { limit: 50 }).catch(() => [] as BusMessage[]);
+  const conflictTitles = new Set<string>();
+  for (const m of busContent) {
+    if (m.from === "notion-publisher" && (m.type === "conflict" || m.body.toLowerCase().includes("conflict"))) {
+      const match = m.body.match(/(\S+-\d{4}-\d{2}-\d{2}\S*)/);
+      if (match) conflictTitles.add(match[1]);
+    }
+  }
+
+  const dbDefs: { key: string; label: string; dbId: string }[] = [
+    { key: "content_queue", label: "Content Queue", dbId: config.content_queue },
+    { key: "research_digests", label: "Research Digests", dbId: config.research_digests },
+    { key: "content_calendar", label: "Content Calendar", dbId: config.content_calendar },
+    { key: "source_library", label: "Source Library", dbId: config.source_library },
+    { key: "newsletter_archive", label: "Newsletter Archive", dbId: config.newsletter_archive },
+    { key: "ideas_board", label: "Ideas Board", dbId: config.ideas_board },
+  ];
+
+  const dbs: NotionDBView[] = [];
+
+  // Content Queue — from content/queue/**/*.md
+  const queue = await readContentQueue();
+  const queueItems: NotionSyncItem[] = queue.map((q, i) => ({
+    id: `cq-${i}`,
+    title: q.title,
+    channel: q.channel,
+    status: q.status,
+    scheduled: q.date,
+    lastSynced: "—",
+    conflict: conflictTitles.has(q.id),
+    notionPageId: (q as unknown as Record<string, unknown>).notion_page_id as string | undefined,
+  }));
+  const cqPending = queueItems.filter((i) => !i.notionPageId).length;
+  dbs.push({ ...dbDefs[0], pendingCount: cqPending, totalCount: queueItems.length, items: queueItems });
+
+  // Research Digests — from research/weekly-digests/*.md
+  const digestItems = await scanMarkdownDir("research/weekly-digests", "research");
+  dbs.push({ ...dbDefs[1], pendingCount: digestItems.filter((i) => !i.notionPageId).length, totalCount: digestItems.length, items: digestItems });
+
+  // Content Calendar — from content/calendar/*.md
+  const calItems = await scanMarkdownDir("content/calendar", "content");
+  dbs.push({ ...dbDefs[2], pendingCount: calItems.filter((i) => !i.notionPageId).length, totalCount: calItems.length, items: calItems });
+
+  // Source Library — count from sources.md files
+  const sourceItems = await scanSourceFiles();
+  dbs.push({ ...dbDefs[3], pendingCount: sourceItems.length, totalCount: sourceItems.length, items: sourceItems });
+
+  // Newsletter Archive — from research/newsletters/**/*.md
+  const nlItems = await scanNewsletterFiles();
+  dbs.push({ ...dbDefs[4], pendingCount: nlItems.filter((i) => !i.notionPageId).length, totalCount: nlItems.length, items: nlItems });
+
+  // Ideas Board — count from ideas-feed.md files
+  const ideaItems = await scanIdeasFiles();
+  dbs.push({ ...dbDefs[5], pendingCount: ideaItems.length, totalCount: ideaItems.length, items: ideaItems });
+
+  const pendingTotal = dbs.reduce((n, d) => n + d.pendingCount, 0);
+  const conflicts = queueItems.filter((i) => i.conflict).length;
+
+  return { config, dbs, pendingTotal, conflicts };
+}
+
+async function scanMarkdownDir(relDir: string, channel: string): Promise<NotionSyncItem[]> {
+  const dir = within(relDir);
+  if (!existsSync(dir)) return [];
+  const files = (await fs.readdir(dir)).filter((f) => f.endsWith(".md"));
+  const items: NotionSyncItem[] = [];
+  for (const f of files) {
+    const txt = await fs.readFile(path.join(dir, f), "utf8");
+    const parsed = matter(txt);
+    items.push({
+      id: f.replace(/\.md$/, ""),
+      title: (parsed.data.title as string) || f.replace(/\.md$/, ""),
+      channel,
+      status: (parsed.data.status as string) || "—",
+      scheduled: (parsed.data.date as string) || "—",
+      lastSynced: "—",
+      conflict: false,
+      notionPageId: parsed.data.notion_page_id as string | undefined,
+    });
+  }
+  return items;
+}
+
+async function scanSourceFiles(): Promise<NotionSyncItem[]> {
+  const domains = await listResearchDomains();
+  const items: NotionSyncItem[] = [];
+  for (const d of domains) {
+    if (d.startsWith("_")) continue;
+    const sourcesPath = within(`research/domains/${d}/sources.md`);
+    if (existsSync(sourcesPath)) {
+      items.push({
+        id: `src-${d}`, title: `${d} sources`, channel: "research",
+        status: "active", scheduled: "—", lastSynced: "—", conflict: false,
+      });
+    }
+  }
+  return items;
+}
+
+async function scanNewsletterFiles(): Promise<NotionSyncItem[]> {
+  const items: NotionSyncItem[] = [];
+  for (const sub of ["drafts", "archive"]) {
+    const dir = within(`research/newsletters/${sub}`);
+    if (!existsSync(dir)) continue;
+    const files = (await fs.readdir(dir)).filter((f) => f.endsWith(".md"));
+    for (const f of files) {
+      const txt = await fs.readFile(path.join(dir, f), "utf8");
+      const parsed = matter(txt);
+      items.push({
+        id: `nl-${sub}-${f.replace(/\.md$/, "")}`,
+        title: (parsed.data.title as string) || f.replace(/\.md$/, ""),
+        channel: "research", status: sub === "drafts" ? "draft" : "published",
+        scheduled: "—", lastSynced: "—", conflict: false,
+        notionPageId: parsed.data.notion_page_id as string | undefined,
+      });
+    }
+  }
+  return items;
+}
+
+async function scanIdeasFiles(): Promise<NotionSyncItem[]> {
+  const domains = await listResearchDomains();
+  const items: NotionSyncItem[] = [];
+  for (const d of domains) {
+    if (d.startsWith("_")) continue;
+    const ideasPath = within(`research/domains/${d}/ideas-feed.md`);
+    if (existsSync(ideasPath)) {
+      items.push({
+        id: `idea-${d}`, title: `${d} ideas`, channel: "research",
+        status: "active", scheduled: "—", lastSynced: "—", conflict: false,
+      });
+    }
+  }
+  return items;
 }
 
 export async function readNotionSyncState(): Promise<NotionSyncItem[]> {
@@ -721,6 +939,7 @@ export interface NotebookLMDomainData {
   prompts: NotebookLMPrompt[];
   sourceCount: number;
   noteCount: number;
+  notebookId?: string;
 }
 
 export async function readNotebookLMData(): Promise<NotebookLMDomainData[]> {
@@ -728,10 +947,22 @@ export async function readNotebookLMData(): Promise<NotebookLMDomainData[]> {
   const results: NotebookLMDomainData[] = [];
 
   for (const domain of domains) {
+    if (domain.startsWith("_")) continue; // skip _writing-signature etc.
     const domainDir = within(`research/domains/${domain}`);
     const promptsFile = path.join(domainDir, "notebooklm-prompts.md");
     const sourcesFile = path.join(domainDir, "sources.md");
     const notesDir = path.join(domainDir, "notes");
+    const prdFile = path.join(domainDir, "PRD.md");
+
+    // Read notebook_id from PRD frontmatter
+    let notebookId: string | undefined;
+    if (existsSync(prdFile)) {
+      try {
+        const prdTxt = await fs.readFile(prdFile, "utf8");
+        const prdParsed = matter(prdTxt);
+        notebookId = prdParsed.data.notebook_id as string | undefined;
+      } catch { /* ignore */ }
+    }
 
     const prompts: NotebookLMPrompt[] = [];
 
@@ -773,7 +1004,7 @@ export async function readNotebookLMData(): Promise<NotebookLMDomainData[]> {
       } catch { /* empty */ }
     }
 
-    results.push({ domain, prompts, sourceCount, noteCount });
+    results.push({ domain, prompts, sourceCount, noteCount, notebookId });
   }
 
   return results;

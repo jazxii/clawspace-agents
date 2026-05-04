@@ -1,7 +1,7 @@
 ---
 type: post
 platform: linkedin
-status: drafting
+status: ready
 topic: "Cognitive load and Neurodiversity: How it affects Accessibility"
 research_domain: accessibility-ai
 research_refs:

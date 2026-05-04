@@ -1,7 +1,7 @@
 ---
 type: post
 platform: instagram
-status: drafting
+status: ready
 format: carousel
 slides: 7
 topic: "Cognitive load and Neurodiversity: How it affects Accessibility"

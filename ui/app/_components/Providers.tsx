@@ -21,8 +21,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="dark"
       storageKey="clawspace.theme"
       themes={["light", "dark"]}
       disableTransitionOnChange

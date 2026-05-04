@@ -732,6 +732,59 @@ button, [role="button"], a.btn {
 }
 .cs-msg-day::before, .cs-msg-day::after { content: ""; flex: 1; height: .5px; background: var(--hairline); }
 
+/* ─── Channel with team sidebar ─── */
+.cs-channel--with-sidebar { grid-template-columns: 220px 1fr 240px; }
+.cs-team-sidebar {
+  background: var(--bg-elev-1);
+  border-left: .5px solid var(--hairline);
+  padding: var(--pad-2);
+  overflow-y: auto;
+}
+.cs-team-grp {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-3); font-weight: 600;
+  padding: var(--pad-2) var(--pad-2) var(--pad-1);
+}
+.cs-agent-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.cs-agent-row:hover { background: var(--bg-hover); }
+
+/* ─── Tier badges ─── */
+.cs-tier-badge { font: 600 9px var(--font-mono); padding: 1px 4px; border-radius: 3px; display: inline-flex; align-items: center; }
+.cs-tier-badge[data-tier="4"] { background: #ffd60a22; color: #ffd60a; }
+.cs-tier-badge[data-tier="3"] { background: #bf5af222; color: #bf5af2; }
+.cs-tier-badge[data-tier="2"] { background: #0a84ff22; color: #0a84ff; }
+.cs-tier-badge[data-tier="1"] { background: #8e8e9322; color: #8e8e93; }
+
+/* ─── Message type borders ─── */
+.cs-msg--status  { border-left: 3px solid var(--accent-projects); padding-left: var(--pad-2); }
+.cs-msg--done    { border-left: 3px solid var(--accent-meta);     padding-left: var(--pad-2); }
+.cs-msg--alert   { border-left: 3px solid var(--accent-system, #ff3b30); padding-left: var(--pad-2); }
+.cs-msg--task    { border-left: 3px solid var(--accent-research); padding-left: var(--pad-2); }
+.cs-msg--question { background: var(--bg-sunken); border-radius: var(--r-sm); padding: var(--pad-2); }
+.cs-msg--answer   { margin-left: 40px; border-left: 2px solid var(--hairline); padding-left: var(--pad-2); }
+
+/* ─── Channel index cards ─── */
+.cs-channel-card {
+  display: flex; align-items: center; gap: var(--pad-3);
+  padding: var(--pad-3) var(--pad-4);
+  border-radius: var(--r-md);
+  text-decoration: none; color: inherit;
+  transition: background .1s;
+}
+.cs-channel-card:hover { background: var(--bg-hover); }
+.cs-channel-card .preview {
+  font-size: 12px; color: var(--text-3);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  max-width: 300px;
+}
+
 .cs-composer {
   border-top: .5px solid var(--hairline);
   padding: var(--pad-3) var(--pad-4);

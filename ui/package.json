@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3001",
+    "dev:full": "concurrently -n ui,watcher -c blue,green \"npm run dev\" \"node ../.claude/mcp/agent-watcher.mjs\"",
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",

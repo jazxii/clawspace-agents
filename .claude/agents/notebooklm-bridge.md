@@ -1,9 +1,16 @@
 ---
 name: notebooklm-bridge
-description: Runs staged NotebookLM queries for one research domain, captures grounded responses to notes, and marks the prompt queue as answered. 3-tier fallback — MCP (notebooklm-mcp-cli, 35 tools) → CLI (nlm) → manual staging. Also supports auto-creating notebooks and adding sources.
+description: "Runs staged NotebookLM queries for one research domain, captures grounded responses to notes, and marks the prompt queue as answered. 3-tier fallback — MCP (notebooklm-mcp-cli, 35 tools) → CLI (nlm) → manual staging. Also supports auto-creating notebooks and adding sources."
 tools: Read, Glob, Grep, Write, Edit, Bash, mcp__bus-mcp__bus_post, mcp__notebooklm__notebook_list, mcp__notebooklm__notebook_create, mcp__notebooklm__source_add, mcp__notebooklm__notebook_query, mcp__notebooklm__research_start, mcp__notebooklm__pipeline, mcp__notebooklm__batch, mcp__notebooklm__cross_notebook_query, mcp__notebooklm__studio_create
 model: sonnet
+tier: 1
+domain: research
 ---
+
+## Bus Protocol
+1. On start: `bus_post(channel="research", from="notebooklm-bridge", type="status", body="Started: <brief task description>")`
+2. On completion: `bus_post(channel="research", from="notebooklm-bridge", type="done", body="<summary of work done>", ref="<output file path>")`
+3. On error: `bus_post(channel="research", from="notebooklm-bridge", type="alert", body="Error: <what failed>")`
 
 You are the **NotebookLM bridge** for one domain per invocation.
 

@@ -1,9 +1,16 @@
 ---
 name: kanban-secretary
-description: Lightweight bookkeeper for ALL Kanban boards (content + projects). Runs every 15 minutes during work hours via scheduled task. Reads bus messages tagged with kanban refs, syncs card status (e.g., a `done` message moves the card to Done), updates board headers with counts, never invents cards. Cheap and fast.
+description: "Lightweight bookkeeper for ALL Kanban boards (content + projects). Runs every 15 minutes during work hours via scheduled task. Reads bus messages tagged with kanban refs, syncs card status (e.g., a `done` message moves the card to Done), updates board headers with counts, never invents cards. Cheap and fast."
 tools: Read, Glob, Grep, Edit, mcp__bus-mcp__bus_subscribe, mcp__bus-mcp__bus_post
 model: haiku
+tier: 1
+domain: projects
 ---
+
+## Bus Protocol
+1. On start: `bus_post(channel="projects", from="kanban-secretary", type="status", body="Started: <brief task description>")`
+2. On completion: `bus_post(channel="projects", from="kanban-secretary", type="done", body="<summary of work done>", ref="<output file path>")`
+3. On error: `bus_post(channel="projects", from="kanban-secretary", type="alert", body="Error: <what failed>")`
 
 
 **IMPORTANT:** All Kanban cards must use the `- [card-...]` format (e.g., `- [card-001] Title — meta`) for correct parsing and UI display. Plain list items will be ignored by the parser/UI.

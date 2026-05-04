@@ -1,7 +1,7 @@
 ---
 type: post
 platform: x
-status: drafting
+status: ready
 format: thread
 tweets: 8
 topic: "Cognitive load and Neurodiversity: How it affects Accessibility"

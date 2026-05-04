@@ -1,83 +1,107 @@
-import { listBusChannels, readBusChannel } from "@/lib/fs-adapter";
+import { listBusChannels, readBusChannel, getChannelTeam } from "@/lib/fs-adapter";
 import { Icon } from "../_components/Icon";
 import Link from "next/link";
 
 export const metadata = { title: "Channels — Clawspace" };
 export const dynamic = "force-dynamic";
 
-const channelDomain = (ch: string): "content" | "projects" | "research" | "meta" => {
-  if (ch === "content") return "content";
-  if (ch === "projects" || ch.startsWith("proj-")) return "projects";
-  if (ch === "research") return "research";
-  return "meta";
+type Section = { label: string; icon: string; channels: ChannelRow[] };
+type ChannelRow = {
+  id: string;
+  domain: string;
+  msgCount: number;
+  lastPreview: string;
+  agentCount: number;
+  type: "public" | "team" | "pipeline" | "dm";
 };
 
 export default async function ChannelsIndex() {
   const channels = await listBusChannels();
 
-  // Get unread counts (last 50 messages per channel)
-  const channelInfo = await Promise.all(
+  const rows: ChannelRow[] = await Promise.all(
     channels.map(async (ch) => {
-      const msgs = await readBusChannel(ch, { limit: 5 });
-      return { id: ch, msgs: msgs.length, domain: channelDomain(ch), kind: ch.startsWith("dm-") ? "dm" as const : "channel" as const };
+      const msgs = await readBusChannel(ch, { limit: 3 });
+      const team = await getChannelTeam(ch);
+      const last = msgs[msgs.length - 1];
+      const preview = last ? `${last.from}: ${last.body?.slice(0, 80) || ""}` : "";
+      return {
+        id: ch,
+        domain: team.domain,
+        msgCount: msgs.length,
+        lastPreview: preview,
+        agentCount: team.agents.length,
+        type: team.type,
+      };
     }),
   );
 
-  const builtinChannels = channelInfo.filter((c) => c.kind === "channel");
-  const dmChannels = channelInfo.filter((c) => c.kind === "dm");
+  const sections: Section[] = [
+    { label: "Public", icon: "globe", channels: rows.filter((r) => r.type === "public") },
+    { label: "Team", icon: "users", channels: rows.filter((r) => r.type === "team") },
+    { label: "Pipeline", icon: "sparkles", channels: rows.filter((r) => r.type === "pipeline") },
+    { label: "Projects", icon: "folder", channels: rows.filter((r) => r.id.startsWith("proj-")) },
+    { label: "Direct Messages", icon: "at", channels: rows.filter((r) => r.type === "dm") },
+  ].filter((s) => s.channels.length > 0);
 
   return (
-    <div className="cs-page-inner" style={{ height: "100%", display: "flex", flexDirection: "column", maxWidth: "none" }}>
+    <div className="cs-page-inner">
       <div className="cs-page-title">
         <div>
           <h1>Channels</h1>
-          <p>The bus — append-only JSONL, agents read deltas via offsets</p>
+          <p>{channels.length} channels — append-only JSONL bus</p>
         </div>
       </div>
 
-      <div className="cs-channel" style={{ flex: 1, minHeight: 0 }}>
-        <aside className="cs-ch-list">
-          <div className="cs-ch-grp">Channels</div>
-          {builtinChannels.map((c) => (
-            <Link
-              key={c.id}
-              href={`/channels/${encodeURIComponent(c.id)}`}
-              className="cs-ch-item"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <span className="hash">#</span>
-              <span className="ellipsis">{c.id}</span>
-              {c.msgs > 0 && (
-                <span className="badge" style={{ background: `var(--accent-${c.domain})` }}>
-                  {c.msgs}
+      {sections.map((s) => (
+        <div key={s.label} style={{ marginBottom: "var(--pad-4)" }}>
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            fontSize: 11, textTransform: "uppercase", letterSpacing: ".06em",
+            fontWeight: 600, color: "var(--text-3)", padding: "var(--pad-2) 0",
+          }}>
+            <Icon name={s.icon as "globe"} size={12} />
+            {s.label}
+            <span style={{ color: "var(--text-4)", fontWeight: 400, fontSize: 11 }}>({s.channels.length})</span>
+          </div>
+          <div className="cs-card">
+            {s.channels.map((c, i) => (
+              <Link
+                key={c.id}
+                href={`/channels/${encodeURIComponent(c.id)}`}
+                className="cs-channel-card"
+                style={i > 0 ? { borderTop: ".5px solid var(--hairline)" } : undefined}
+              >
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: `var(--accent-${c.domain})`,
+                  flexShrink: 0,
+                }} />
+                <span style={{ fontWeight: 600, fontSize: 13, fontFamily: "var(--font-mono)", minWidth: 140 }}>
+                  #{c.id}
                 </span>
-              )}
-            </Link>
-          ))}
-          {dmChannels.length > 0 && (
-            <>
-              <div className="cs-ch-grp">Direct</div>
-              {dmChannels.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/channels/${encodeURIComponent(c.id)}`}
-                  className="cs-ch-item"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Icon name="at" size={11} />
-                  <span className="ellipsis">{c.id.replace(/^dm-/, "")}</span>
-                </Link>
-              ))}
-            </>
-          )}
-        </aside>
-
-        <div className="cs-ch-main">
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-3)", fontSize: 14 }}>
-            Select a channel to view messages
+                <span className="preview" style={{ flex: 1 }}>
+                  {c.lastPreview || "No messages yet"}
+                </span>
+                {c.agentCount > 0 && (
+                  <span style={{ fontSize: 11, color: "var(--text-3)" }}>
+                    {c.agentCount} agents
+                  </span>
+                )}
+                {c.msgCount > 0 && (
+                  <span style={{
+                    fontSize: 10, padding: "0 5px", height: 14,
+                    display: "inline-flex", alignItems: "center",
+                    borderRadius: 999, background: `var(--accent-${c.domain})`,
+                    color: "white", fontWeight: 600,
+                  }}>
+                    {c.msgCount}
+                  </span>
+                )}
+              </Link>
+            ))}
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

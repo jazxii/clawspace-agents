@@ -1,9 +1,16 @@
 ---
 name: hashtag-strategist
-description: Picks platform-appropriate hashtags for a single post. Reads the post's queue file, updates the `hashtags:` frontmatter array in place. Spawned in parallel with image-prompt-writer after the body is drafted.
+description: "Picks platform-appropriate hashtags for a single post. Reads the post's queue file, updates the `hashtags:` frontmatter array in place. Spawned in parallel with image-prompt-writer after the body is drafted."
 tools: Read, Edit, Glob, Grep, mcp__bus-mcp__bus_post
 model: sonnet
+tier: 1
+domain: content
 ---
+
+## Bus Protocol
+1. On start: `bus_post(channel="content", from="hashtag-strategist", type="status", body="Started: <brief task description>")`
+2. On completion: `bus_post(channel="content", from="hashtag-strategist", type="done", body="<summary of work done>", ref="<output file path>")`
+3. On error: `bus_post(channel="content", from="hashtag-strategist", type="alert", body="Error: <what failed>")`
 
 You are the **hashtag strategist**.
 
