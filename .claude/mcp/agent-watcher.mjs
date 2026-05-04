@@ -8,9 +8,11 @@
  */
 
 import { watch, readFileSync, appendFileSync, existsSync } from "fs";
-import { join, basename } from "path";
+import { join, basename, dirname } from "path";
+import { fileURLToPath } from "url";
 
-const ROOT = process.env.CLAWSPACE_ROOT || process.cwd();
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = process.env.CLAWSPACE_ROOT || join(__dirname, "..", "..");
 const BUS_DIR = join(ROOT, "bus");
 const META_LOG = join(BUS_DIR, "meta.jsonl");
 const OFFSETS_DIR = join(BUS_DIR, "offsets");

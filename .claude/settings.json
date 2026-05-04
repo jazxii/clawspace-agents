@@ -2,6 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "model": "sonnet",
   "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Write",
+      "Edit"
+    ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(sudo:*)",
