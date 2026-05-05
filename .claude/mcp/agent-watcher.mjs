@@ -75,7 +75,6 @@ function handleMessage(msg, channel) {
 
 // Initial scan
 if (existsSync(BUS_DIR)) {
-  const files = readFileSync(BUS_DIR, { withFileTypes: true }) || [];
   // Seed offsets to current file sizes (don't replay history)
   const { readdirSync } = await import("fs");
   for (const f of readdirSync(BUS_DIR)) {

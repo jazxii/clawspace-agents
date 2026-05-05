@@ -50,12 +50,14 @@ export async function readBusChannel(channel: string, opts?: { limit?: number; s
     .filter(Boolean)
     .map((l) => {
       try {
-        return JSON.parse(l) as BusMessage;
+        const raw = JSON.parse(l);
+        if (raw.timestamp && !raw.ts) raw.ts = raw.timestamp;
+        return raw as BusMessage;
       } catch {
         return null;
       }
     })
-    .filter((m): m is BusMessage => !!m);
+    .filter((m): m is BusMessage => !!m && typeof m.ts === "string");
   const filtered = opts?.sinceTs ? all.filter((m) => m.ts > opts.sinceTs!) : all;
   return opts?.limit ? filtered.slice(-opts.limit) : filtered;
 }
@@ -415,7 +417,7 @@ export async function readContentQueue(): Promise<ContentQueueItem[]> {
         channel: channelName,
         title: (fm.title as string) || f.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/-/g, " "),
         status: (fm.status as string) || "Backlog",
-        date: (fm.scheduled as string) || (fm.date as string) || "—",
+        date: String((fm.scheduled as string) || (fm.date as string) || "—"),
         author: (fm.author as string) || `${platform}-writer`,
         hooks: Array.isArray(fm.hooks) ? fm.hooks.length : typeof fm.hooks === "number" ? fm.hooks : 0,
         path: `content/queue/${platform}/${f}`,

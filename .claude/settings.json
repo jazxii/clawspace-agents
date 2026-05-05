@@ -15,19 +15,20 @@
       "Write(~/.claude/settings.json)"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "mcpServers": {
     "bus-mcp": {
       "command": "node",
-      "args": [".claude/mcp/bus-mcp/index.mjs"],
+      "args": ["/Users/nft_sharedservices/Documents/clawspace-agents/.claude/mcp/bus-mcp/index.mjs"],
       "env": {
-        "CLAWSPACE_ROOT": "${workspaceFolder}"
+        "CLAWSPACE_ROOT": "/Users/nft_sharedservices/Documents/clawspace-agents"
       }
     },
     "web-research-mcp": {
       "command": "node",
-      "args": [".claude/mcp/web-research-mcp/index.mjs"],
+      "args": ["/Users/nft_sharedservices/Documents/clawspace-agents/.claude/mcp/web-research-mcp/index.mjs"],
       "env": {
-        "CLAWSPACE_ROOT": "${workspaceFolder}"
+        "CLAWSPACE_ROOT": "/Users/nft_sharedservices/Documents/clawspace-agents"
       }
     }
   },
