@@ -1,6 +1,8 @@
 ---
 platform: instagram
-status: drafting
+status: archived
+archived_at: "2026-05-05T00:00:00Z"
+archived_reason: "Duplicate of 2026-05-02-cognitive-load-neurodiversity.md (already staged). Calendar 2026-05.md explicitly excludes this topic from any further slot. Saturday 05-09 is not a scheduled IG slot in Week 1. File preserved for humanizer work; do not publish."
 date: 2026-05-09
 slug: cognitive-load-checklist
 format: carousel

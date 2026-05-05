@@ -9,6 +9,7 @@ import {
   useSensor,
   useSensors,
   closestCorners,
+  useDroppable,
   type DragEndEvent,
   type DragOverEvent,
   type DragStartEvent,
@@ -397,6 +398,7 @@ interface ColumnViewProps {
 
 function ColumnView(p: ColumnViewProps) {
   const cardIds = p.column.cards.map((c) => c.id);
+  const { setNodeRef: setDropRef } = useDroppable({ id: p.column.name });
   return (
     <section
       className="cs-col"
@@ -411,7 +413,7 @@ function ColumnView(p: ColumnViewProps) {
         </span>
         <span className="muted tnum" style={{ fontSize: 11 }}>{p.column.cards.length}</span>
       </header>
-      <div className="cs-col-body">
+      <div className="cs-col-body" ref={setDropRef}>
         <SortableContext id={p.column.name} items={cardIds} strategy={verticalListSortingStrategy}>
           {p.column.cards.length === 0 && !p.addingHere && (
             <p className="muted" style={{ fontSize: 12, padding: "var(--pad-2)" }}>(empty)</p>

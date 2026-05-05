@@ -1,6 +1,6 @@
 ---
 platform: x
-status: drafting
+status: ready
 date: 2026-05-07
 slug: dialog-take
 format: standalone

@@ -1,6 +1,6 @@
 ---
 platform: x
-status: drafting
+status: ready
 date: 2026-05-08
 slug: screenreader-thread
 format: thread

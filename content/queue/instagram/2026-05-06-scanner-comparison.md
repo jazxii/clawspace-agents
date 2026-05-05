@@ -1,6 +1,6 @@
 ---
 platform: instagram
-status: drafting
+status: ready
 date: 2026-05-06
 slug: scanner-comparison
 format: carousel

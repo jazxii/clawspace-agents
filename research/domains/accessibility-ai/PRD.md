@@ -34,7 +34,10 @@ See `sources.md`.
 
 ## NotebookLM
 
-- notebook_id: TBD — set once notebook created in NotebookLM and the auth is wired
+- notebook_id: 82ca706a-9065-462f-9f1f-b6941b32f6b6
+- notebook_title: Accessibility AI — Research Domain
+- sources_to_add: 6 Tier 1 sources (see staging file Part 2)
+- prompts_staged: 13 (all marked `[staged for manual]` in notebooklm-prompts.md)
 
 ## Forbidden actions
 

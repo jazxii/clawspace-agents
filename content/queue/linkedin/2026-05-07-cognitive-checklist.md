@@ -1,6 +1,6 @@
 ---
 platform: linkedin
-status: drafting
+status: ready
 date: 2026-05-07
 slug: cognitive-checklist
 format: framework

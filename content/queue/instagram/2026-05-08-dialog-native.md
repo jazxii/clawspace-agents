@@ -1,6 +1,6 @@
 ---
 platform: instagram
-status: drafting
+status: ready
 date: 2026-05-08
 slug: dialog-native
 format: reel

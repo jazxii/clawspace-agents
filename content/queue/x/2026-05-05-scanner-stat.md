@@ -1,6 +1,6 @@
 ---
 platform: x
-status: drafting
+status: ready
 date: 2026-05-05
 slug: scanner-stat
 format: standalone
