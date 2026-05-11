@@ -1,13 +1,13 @@
 ---
 platform: x
 status: ready
-date: 2026-05-08
+date: 2026-05-16
 slug: screenreader-thread
 format: thread
 slot: afternoon
 research_ref: research/domains/accessibility-ai/notes/2026-05-04-weekly-themes.md
 topic: VoiceOver vs NVDA behavior gaps on the same markup
-hashtags: ["#a11y", "#screenreader"]
+hashtags: []
 humanized: true
 humanized_at: "2026-05-04T19:30:00Z"
 ---

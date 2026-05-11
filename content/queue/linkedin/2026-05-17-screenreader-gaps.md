@@ -1,7 +1,7 @@
 ---
 platform: linkedin
 status: ready
-date: 2026-05-08
+date: 2026-05-17
 slug: screenreader-gaps
 format: insight
 research_ref: research/domains/accessibility-ai/notes/2026-05-04-weekly-themes.md

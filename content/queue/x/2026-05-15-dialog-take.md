@@ -1,13 +1,13 @@
 ---
 platform: x
 status: ready
-date: 2026-05-07
+date: 2026-05-15
 slug: dialog-take
 format: standalone
 slot: morning
 research_ref: research/domains/accessibility-ai/notes/2026-05-04-weekly-themes.md
 topic: Hot take on native dialog vs div role=dialog
-hashtags: ["#a11y"]
+hashtags: []
 humanized: true
 humanized_at: "2026-05-04T19:30:00Z"
 ---

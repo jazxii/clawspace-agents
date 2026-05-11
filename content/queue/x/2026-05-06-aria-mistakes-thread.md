@@ -7,7 +7,7 @@ format: thread
 slot: afternoon
 research_ref: research/domains/accessibility-ai/notes/2026-05-04-weekly-themes.md
 topic: 6 ARIA mistakes AI code generators keep making
-hashtags: ["#a11y", "#aria"]
+hashtags: []
 humanized: true
 humanized_at: "2026-05-04T19:30:00Z"
 ---

@@ -1,7 +1,7 @@
 ---
 platform: instagram
 status: ready
-date: 2026-05-08
+date: 2026-05-13
 slug: dialog-native
 format: reel
 topic: "Stop using div role=dialog — use native <dialog> instead"

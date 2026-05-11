@@ -11,8 +11,7 @@ research_refs:
 created: 2026-05-02
 humanized: true
 humanized_against: research/domains/_writing-signature/profile.md
-hashtags: |
-  #a11y #Accessibility
+hashtags: []
 notion_page_id: 3530ee97-23c8-819d-9ba0-f0970983dc45
 notion_last_synced: "2026-05-02T00:00:00.000Z"
 ---

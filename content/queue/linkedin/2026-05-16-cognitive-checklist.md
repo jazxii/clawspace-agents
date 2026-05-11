@@ -1,7 +1,7 @@
 ---
 platform: linkedin
 status: ready
-date: 2026-05-07
+date: 2026-05-16
 slug: cognitive-checklist
 format: framework
 research_ref: research/domains/accessibility-ai/notes/2026-05-02-cognitive-load-neurodiversity.md

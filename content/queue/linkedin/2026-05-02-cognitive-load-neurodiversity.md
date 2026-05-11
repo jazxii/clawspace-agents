@@ -9,8 +9,8 @@ research_refs:
 created: 2026-05-02
 humanized: true
 humanized_against: research/domains/_writing-signature/profile.md
-hashtags_block: |
-  #Accessibility #Neurodiversity #UXDesign #WCAG #InclusiveDesign #CognitiveAccessibility
+hashtags: ["#cognitiveaccessibility", "#a11y", "#wcag22", "#neurodiversity", "#inclusivedesign"]
+image_prompt: "Clean split-screen: left side shows a cluttered, small-font form with unlabelled fields and a blinking captcha puzzle; right side shows the same form redesigned with generous spacing, clear labels, large touch targets, and a paste-able OTP field. Warm neutral background, no people, accessibility-first aesthetic, subtle green checkmark on the right panel."
 notion_page_id: 3530ee97-23c8-812a-a605-e7c249584585
 notion_last_synced: "2026-05-02T00:00:00.000Z"
 ---
