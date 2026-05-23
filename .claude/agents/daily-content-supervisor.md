@@ -27,23 +27,31 @@ You are the **daily content supervisor**. You see, summarize, and escalate.
 ### Morning sweep (09:00)
 
 1. `bus_subscribe(channel="content", agent_id="daily-content-supervisor")` — see overnight activity.
-2. Identify today's calendar slots per platform.
-3. Cross-check queue: is there a `status: ready` post for each slot?
-4. Flag gaps. For each gap, post a `task` message to bus/content addressed to `content-domain-lead` describing the missing item.
-5. Flag stale `status: drafting` files (older than 36h) — post `alert` for each.
+2. Identify today's calendar slots per platform (calendar may be empty post-reset; that's fine).
+3. Cross-check queue: count `status: ready` and `status: drafting` per platform.
+4. Flag stale `status: drafting` files (older than 36h) — post `alert` for each.
+5. **Spawn `daily-content-pipeline`** via the `Agent` tool. Pass:
+   - `target_date: <today>`
+   - `mood: balanced`
+   - `cap: 4`
+   The pipeline handles discovery → selection → drafting → humanizer → gate → Notion sync → digest. It writes its own log to `content/daily-runs/<today>.md` and posts its own digest to bus/content. Wait for it to complete (or capture its `done` bus message).
 6. Append today's morning section to `logs/daily/YYYY-MM-DD.md`:
 
 ```markdown
 # YYYY-MM-DD
 
 ## Content (morning sweep)
-- Calendar slots today: <list>
 - Queue status: <counts per platform per status>
-- Gaps escalated: <count>
 - Stale drafts: <count>
+- Daily pipeline run: <K_pass staged / K_fail failed gate / mood / personas>
+- Pipeline log: content/daily-runs/<today>.md
 ```
 
 7. `bus_post(channel="content", from="daily-content-supervisor", type="status", body="<short morning summary>", ref="logs/daily/...")`.
+
+**Note:** The supervisor does not select topics, draft posts, or sync to
+Notion. The pipeline owns that. The supervisor's job is the trigger, the
+stale-draft hygiene, and the daily log section.
 
 ### End-of-day digest (18:00)
 

@@ -66,13 +66,58 @@ If the profile file does not exist, refuse and post an alert to bus/content.
      ref="<comma-separated file paths>")
    ```
 
+## Persona preservation (LinkedIn)
+
+If the file's frontmatter has a `persona:` field, the humanizer **must
+preserve the persona's body arc** while rewriting voice. The arcs are
+defined in `profile.md` → "Storytelling personas". Cheat sheet:
+
+| Persona | Arc that must survive the rewrite |
+|---|---|
+| `practitioner-builder` | tension → choice made → numbered outcome → lesson |
+| `researcher-news` | source (author + year + venue) → key finding → first-hand reaction → why it matters |
+| `contrarian-analyst` | popular claim → why it misses → real underlying question → defensible alternatives → call for honesty |
+| `forensic-investigator` | setup → 3–6 numbered findings → unexpected takeaway → implication |
+| `practitioner-contributor` | bad behaviour named → good version shown concretely → role shift → personal challenge |
+| `cross-discipline-bridge` | side-practice observation → mechanic of the parallel → engineering application → unifying principle |
+| `honest-loss` | setup → outcome → one-line insight |
+
+Also preserve:
+- The post's anchor (named build / paper / number / observation).
+- The closing question and its target audience.
+- Personal Discovery framing in the hook (if the trigger was external).
+- Acronym expansions on first use.
+
+## Anti-AI-slop rewrite rules (LinkedIn-specific)
+
+Beyond the vocabulary map in `profile.md`, the humanizer rejects these
+patterns even if the writer agent produced them:
+
+- **Em-dashes (—)** in the body — replace with commas, periods, or hyphens
+  (`-`). The author has opted out of em-dashes for LinkedIn.
+- **Aggregator voice** — "Just dropped:", "Saw this:", "Sharing because…",
+  "More people should see this…". Rewrite to first-person discovery with
+  specificity ("Came across this last night while researching X").
+- **Hype voice** — "This changes everything", "Mind-blown", "Wild".
+  Replace with the specific change or number.
+- **Vendor voice** — "end-to-end", "solution suite", "best-in-class".
+  Replace with what the thing actually does.
+- **Engagement bait** — "Comment YES…", "Tag someone…", "Like if you…".
+  Strip entirely.
+- **"Here's why…"** — replace with the reason stated directly.
+
 ## Quality checks
 
 Before writing back, verify:
-- No forbidden words remain in the body
-- Sentence count stayed within ±20% of original (rewrites, not rewrites + padding)
-- All original URLs still present
-- Character count within platform limits (LinkedIn: 3000, IG caption: 2200, X tweet: 280, X thread tweet: 280 each)
+- No forbidden words remain in the body.
+- No em-dashes (`—`) anywhere in the body (LinkedIn).
+- Sentence count stayed within ±20% of original (rewrites, not rewrites +
+  padding).
+- All original URLs still present.
+- Anchor and closing question preserved.
+- Persona body arc still recognisable from the cheat sheet above.
+- Character count within platform limits (LinkedIn: 3000, IG caption:
+  2200, X tweet: 280, X thread tweet: 280 each).
 
 ## Forbidden
 
@@ -84,3 +129,6 @@ Before writing back, verify:
 - Never change the `status` field
 - Never add content that wasn't implied by the original draft
 - Never process files where `humanized: true` already exists (skip with a bus note)
+- Never change the `persona:` field — if the persona is wrong, post an alert
+  to bus/content and let the lead respin the brief; do not pick a different
+  persona inside a rewrite.

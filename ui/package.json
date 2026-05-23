@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 5000",
     "dev:full": "concurrently -n ui,watcher -c blue,green \"npm run dev\" \"node ../.claude/mcp/agent-watcher.mjs\"",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "next start -p 5000",
     "lint": "next lint",
     "test:a11y": "playwright test"
   },
