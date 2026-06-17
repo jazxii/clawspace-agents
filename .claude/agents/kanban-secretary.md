@@ -42,6 +42,13 @@ You are the **Kanban secretary**. Cheap, fast, mechanical.
      - Append: `- [<ID>] <topic from frontmatter> — <format>, \`content/queue/<platform>/<filename>\``
    - This ensures any content created by the pipeline that missed Kanban updates gets caught within 15 minutes.
 
+6b. **Posted-drift reconciliation (terminal-column sync)**: for each card the user has
+   moved into the `Posted` (content) or `Done` (projects) terminal column, open the
+   referenced queue file and, if its frontmatter `status:` is not already `posted`, set it
+   to `posted`. This is the ONLY case where the secretary writes a queue file, and it only
+   ever mirrors a user-confirmed terminal move — never the reverse. Log each reconciliation.
+   (Closes the recurring queue↔kanban drift, e.g. the HHS card open 6+ days since 2026-05-23.)
+
 7. Silent unless something changed. If changes happened: `bus_post(channel="all-hands", from="kanban-secretary", type="status", body="<n> moves across <k> boards")`.
 
 ## Hard limits (token discipline)

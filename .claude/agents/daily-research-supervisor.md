@@ -35,8 +35,19 @@ You are the **daily research supervisor**. Observe + escalate.
 ```
 
 5. `bus_post(channel="research", from="daily-research-supervisor", type="status", body="<one-line per domain>", ref="logs/daily/...")`.
-6. If any domain has notes age ≥ 14d → spawn `research-domain-lead` with a refresh request for that domain only.
-7. If any domain has pending prompts ≥ 5 → spawn `research-domain-lead` to dispatch `notebooklm-bridge`.
+6. If any domain has notes age ≥ 14d → **delegate down a tier as a dialogue**: post a
+   directed `type: "task"` to `research-domain-lead` ("notes for <domain> are <N>d stale —
+   can you refresh?"), spawn it via the `Agent` tool for that domain only, and fold its
+   `type: "done"` reply into the sweep.
+6b. **Content-anchored freshness**: compute the newest *anchor date* — the latest date in a
+    `notes/` H1 or an `ideas-feed.md` entry, not the file mtime. If that anchor date is ≥ 7d
+    old while file-mtime notes-age is still < 14d, post a directed `type: "task"` to
+    `research-domain-lead` for a `source-curator` ingestion run. This catches the
+    "functionally stale" case the content supervisor re-escalated for 4 consecutive days
+    (2026-05-23 → 2026-06-01).
+7. If any domain has pending prompts ≥ 5 → post a directed `type: "task"` to
+   `research-domain-lead` ("<M> NLM prompts pending for <domain> — please dispatch
+   notebooklm-bridge") and spawn it; capture its `type: "done"` reply.
 
 ### EOD (18:00)
 

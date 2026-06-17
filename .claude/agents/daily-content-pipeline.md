@@ -102,8 +102,11 @@ Stop selecting once `cap` is reached.
 
 ### Step 5 — Dispatch writers in parallel
 
-In **one** `Agent` tool message, spawn all writers in parallel. For each
-selected topic, the brief MUST include:
+Open each hand-off on the bus first: post a directed `type: "task"` to each writer
+(`to: "linkedin-writer"`, etc.) with the slug in `ref`, phrased as a real ask. Then, in
+**one** `Agent` tool message, spawn all writers in parallel. Each writer replies
+`type: "status"` on accept and `type: "done"` with its file `ref`, directed back to
+`daily-content-pipeline`. For each selected topic, the brief MUST include:
 
 ```
 topic, format, persona, tone, target_date, research_ref,
@@ -126,8 +129,10 @@ per its own spec. Do not call those agents from the pipeline directly.
 Wait for all writers to return. For each file, verify:
 
 - File exists at `content/queue/<platform>/<target_date>-<slug>.md`.
-- Frontmatter has `status: ready`, `humanized: true`, `persona`,
-  `topic_lane`, `anchor`, `char_count`.
+- Frontmatter has `status: ready`, `humanized: true`, `persona`, `topic_lane`,
+  `anchor`, `char_count`. Accept **either** schema — legacy `persona` + `format` + `mood`
+  OR the newer `persona: a11y-ai-engineer` + `voice` (both live in the queue since
+  2026-05-29). The gate keys off `persona` + `humanized`, present in both.
 - The pre-publish gate from `profile.md` answers yes to all 10 questions.
 
 If any draft fails: post an alert to `bus/content` with the failing item,
@@ -258,3 +263,5 @@ are spawned cold with their own caches.
 | Humanizer not run (no `humanized: true`) | Spawn humanizer manually with that file path, retry gate. |
 | Notion sync errors | Log to daily-runs, continue. User can re-run `notion-sync` skill later. |
 | Mix ratio extremely skewed | Allow this run to be skewed; nudge in the daily-runs "next-run" note. |
+| Writer/pipeline subagents not spawnable (scheduled runtime) | Run discovery → dedup → selection **inline** in the supervisor. If the gate yields candidates that need drafting, write a `needs-writer` flag into the daily-runs log instead of a silent no-dispatch, so the next interactive run picks them up. |
+| `bus-mcp` tools not exposed this run | Drive `bus_post`/`bus_subscribe` via the bus-mcp server's own append/offset code path; never write `bus/*.jsonl` directly. Record the degraded mode in the daily log. |

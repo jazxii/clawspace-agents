@@ -47,6 +47,37 @@ Every agent MUST refuse to:
 
 Every workforce agent reads `MEMORY.md`, posts a "started" message to `bus/<channel>.jsonl` via `bus.post`, does its work, posts "done" with a summary + ref to outputs, then returns. Long-running agents post progress every ~5 actions.
 
+### Down-tier delegation (every run delegates its own work)
+
+When an agent's run requires work that belongs to the tier directly below it, it MUST spawn that lower-tier agent **as part of its own run** (via the `Agent` tool) rather than only logging an observation or leaving an escalation for "later". An agent delegates **only to the tier immediately below it** — Tier 4 → Tier 3, Tier 3 → Tier 2, Tier 2 → Tier 1 — never skipping a tier. The spawning agent waits for the delegate's result and folds it into its own `done`.
+
+Every spawn brief MUST include a `delegator: "<your-agent-id>"` field naming the agent doing the spawning. The delegate uses it as the `to:` on its accept / question / done replies so the exchange threads back to whoever asked. The matching slug also goes in `ref` so the whole task reads as one thread.
+
+### Conversation protocol (delegation is a dialogue, not a broadcast dump)
+
+Delegation and coordination MUST read on the bus like two coworkers talking, not one-shot monologues. Use **directed** messages (`to: "<delegate-id>"`, not `"*"`) and the right message `type`:
+
+- **Delegating** → `type: "task"`, directed `to:` the delegate, body phrased as an actual ask ("Can you draft the Thu axe-core LinkedIn story? Anchor: the first axe-core run on an AI-generated app."). Put a short slug in `ref` so replies thread.
+- **Accepting / progress** → the delegate replies `type: "status"`, directed `to:` the delegator ("On it — pulling the 05-04 weekly-themes note, ~1 draft + carousel."). Brief progress every ~5 actions on long jobs.
+- **Clarifying** → `type: "question"` / `type: "answer"`, directed, when the delegate needs a decision before proceeding.
+- **Backlog talk** → `type: "note"`, directed, to hand off or defer an item explicitly ("Parking the IG reel to tomorrow's run — radar's thin today, flagging so it doesn't get lost.").
+- **Issue / blocker** → `type: "alert"`, directed to the delegator AND (if red) cross-posted to `all-hands`, stating the blocker and what's needed to clear it.
+- **Completion** → `type: "done"`, directed back to the delegator, with the artifact `ref`.
+
+Keep each message short and human — one ask or one update per message — so a reader can follow the thread top-to-bottom as a conversation. Broadcast (`to: "*"`) is reserved for end-of-run digests, not for the back-and-forth of getting work done.
+
+### Replying to your delegator (for any spawned agent)
+
+If you were spawned by another agent (your brief carries a `delegator`), your Bus Protocol messages are **replies**, not announcements — direct them `to:` that delegator:
+
+- **Accept** → `type: "status"`, `to: <delegator>`: one line on what you're about to do ("On it — drafting the Thu axe-core story off the 05-04 themes note.").
+- **Blocking question** → `type: "question"`, `to: <delegator>`: ask, then wait for the `answer` before proceeding.
+- **Progress** → `type: "status"`, `to: <delegator>`: only on long jobs, every ~5 actions.
+- **Done** → `type: "done"`, `to: <delegator>`, with your artifact `ref`.
+- **Error/blocker** → `type: "alert"`, `to: <delegator>` (cross-post `all-hands` only if it's red).
+
+Use broadcast (`to: "*"`) **only** when you were not spawned by another agent (a standalone/user-initiated run). This overrides the broadcast defaults still written in individual agents' "Bus Protocol" blocks.
+
 ## Token budget
 
 Daily target: ≤105k tokens (Mon/Fri peak ≤150k). If an agent's working set looks like it will exceed 30k tokens, it MUST split the task and delegate to subagents instead of loading more files.

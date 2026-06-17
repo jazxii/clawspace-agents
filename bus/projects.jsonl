@@ -11,3 +11,38 @@
 {"ts":"2026-05-23T07:37:03.343Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"Standup 2026-05-23 complete — a11yai-accessibility-defect-automation: WIP=1, blockers=0, oldest-in-progress=card-11 Phase 11 Figma ADA Notes Generator (~9 days since 2026-05-14 sync). No escalations needed.","ref":"logs/daily/2026-05-23.md"}
 {"ts":"2026-05-23T13:05:34.039Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: EOD 2026-05-23"}
 {"ts":"2026-05-23T13:06:08.958Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"EOD project digest 2026-05-23: 1 active project (a11yai-accessibility-defect-automation). No card movements today — card-11 (Phase 11: Figma ADA Notes Generator) remains In Progress (~9 days), Review empty, no new blockers.","ref":"logs/daily/2026-05-23.md"}
+{"ts":"2026-05-24T16:37:08.719Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: standup 2026-05-24"}
+{"ts":"2026-05-24T16:37:34.143Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"Standup 2026-05-24 complete — a11yai-accessibility-defect-automation: WIP=1, blockers=0, oldest-in-progress=card-11 \"Phase 11: Figma ADA Notes Generator\" (~10 days since 2026-05-14 sync). No overnight card movements. No escalations needed.","ref":"logs/daily/2026-05-24.md"}
+{"ts":"2026-05-24T16:43:36.268Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: EOD 2026-05-24"}
+{"ts":"2026-05-24T16:44:38.698Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"EOD project digest 2026-05-24 — 1 active project. a11yai-accessibility-defect-automation: no changes today (card-11 still sole In Progress since 2026-05-14, Review empty, Done unchanged at 10 cards, 0 blockers). Kanban file untouched since 2026-05-14; no card-movement traffic on bus today.","ref":"logs/daily/2026-05-24.md"}
+{"ts":"2026-05-28T09:00:00.000Z","from":"kanban-secretary","channel":"projects","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-05-30T09:47:46.794Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-05-31T04:26:04.309Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-02T04:18:41.247Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-03T04:40:11.671Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-04T04:17:35.865Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-05T04:48:01.181Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-06T15:25:13.205Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-07T04:30:23.184Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-07T13:06:36.622Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-08T04:57:51.347Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-08T13:05:56.212Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-09T04:25:33.574Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-09T13:07:17.303Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-10T05:14:42.269Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-13T04:43:09.479Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-13T13:06:28.521Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-14T04:36:46.092Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-14T13:34:40.681Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-15T04:19:02.370Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-15T13:33:47.969Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-16T04:55:41.725Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-16T13:06:19.460Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}
+{"ts":"2026-06-17T08:39:52.377Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: morning-sync"}
+{"ts":"2026-06-17T11:48:24.954Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: standup 2026-06-17"}
+{"ts":"2026-06-17T11:48:55.571Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"Standup 2026-06-17 complete — a11yai-accessibility-defect-automation: WIP=1, blockers=0, oldest-in-progress=card-11 \"Phase 11: Figma ADA Notes Generator\" (~34d, In Progress since 2026-05-14). Backlog=17, Review=0, Done=10. No overnight card movements (bus = kanban-secretary sync heartbeats only). No ⚠ blockers → no escalation.","ref":"logs/daily/2026-06-17.md"}
+{"ts":"2026-06-17T11:50:40.343Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: EOD 2026-06-17"}
+{"ts":"2026-06-17T11:51:15.113Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"EOD project digest 2026-06-17 — a11yai-accessibility-defect-automation: no changes (In Progress=1, Review=0, Done=10, Backlog=17, unchanged vs morning standup). No card movements today (bus = kanban-secretary morning-sync heartbeat only), no new ⚠ blockers, no escalation.","ref":"logs/daily/2026-06-17.md"}
+{"ts":"2026-06-17T13:33:19.555Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"status","body":"Started: EOD 2026-06-17"}
+{"ts":"2026-06-17T13:33:44.522Z","ch":"projects","from":"daily-project-supervisor","to":"*","type":"done","body":"EOD project digest 2026-06-17 (re-run — duplicate trigger; primary EOD already completed 11:51). No change: a11yai-accessibility-defect-automation unchanged (In Progress=1 card-11, Review=0, Done=10, Backlog=17, 0 ⚠ blockers). EOD section already present in log; not re-appending to avoid duplication.","ref":"logs/daily/2026-06-17.md"}
+{"ts":"2026-06-17T13:37:14.445Z","ch":"projects","from":"kanban-secretary","to":"*","type":"status","body":"Started: EOD-sync"}

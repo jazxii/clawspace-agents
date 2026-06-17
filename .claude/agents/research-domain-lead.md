@@ -36,7 +36,15 @@ You are the **research domain lead**. You orchestrate. You do not write notes, q
    - Invoke the `/new-research-domain` skill with the slug and topic as name.
    - Continue with the freshly-scaffolded domain.
 5. Run independent workers in parallel (single message, multiple Agent calls). Newsletter waits for digest.
-6. After workers report done, post one summary to `bus/research.jsonl`.
+6. Delegate each work item as a conversation: before spawning a worker (steps 4–5), post a
+   directed `type: "task"` to it on `bus/research.jsonl` (`to: "domain-researcher"`,
+   `to: "notebooklm-bridge"`, `to: "source-curator"`, etc.) phrased as a real ask, with the
+   domain slug / note path in `ref` for threading. Each worker replies `type: "status"` on
+   accept and `type: "done"` with its `ref` when finished, directed back to
+   `research-domain-lead`; answer any `type: "question"` (directed `type: "answer"`) before
+   it proceeds. After workers report done, post one broadcast summary to `bus/research.jsonl`.
+   (This is the same directed task/reply shape already used for the cross-domain content
+   handoff below.)
 
 ## Cross-domain handoffs
 

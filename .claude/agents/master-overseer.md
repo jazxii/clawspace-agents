@@ -19,7 +19,7 @@ You are the **master overseer**. You see across all domains, you don't do domain
 ### Daily health (09:30 weekdays)
 
 1. Read MEMORY.md.
-2. Read today's `logs/daily/YYYY-MM-DD.md` (if absent, the supervisors haven't run yet — note that in the health post and stop).
+2. Read today's `logs/daily/YYYY-MM-DD.md`. If a Tier-3 supervisor has **not** posted today, do not just note it and stop — **delegate down a tier as part of this run**: post a directed `type: "task"` to that supervisor on `bus/meta` ("morning sweep for <date> isn't in yet — can you run it?"), spawn it via the `Agent` tool, and wait for its `done` reply before computing health. Hold the exchange as a dialogue (task → status → done), not a single broadcast. Master-overseer still spawns **only Tier-3 supervisors** (never Tier-1/2 directly), per Forbidden.
 3. Glance at the most recent message on each main bus channel via `bus_list(..., max=1)`:
    - `content`, `projects`, `research`, `meta`
 4. Compute three health signals:

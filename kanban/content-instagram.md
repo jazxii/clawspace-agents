@@ -1,6 +1,6 @@
 # Kanban — content-instagram
 
-<!-- counts: backlog=0 | drafting=0 | ready=1 | posted=0 | updated=2026-05-15 -->
+<!-- counts: backlog=0 | drafting=0 | ready=1 | posted=0 | updated=2026-06-17 13:38 -->
 
 Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance cards.
 

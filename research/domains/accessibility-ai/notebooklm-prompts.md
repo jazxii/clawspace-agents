@@ -42,6 +42,6 @@ OpenAI.com was documented using aria-hidden on visible content and ARIA roles fo
 The "vibe fixing" counter-practice coined by Deque — what is the evidence base for AI-assisted remediation workflows being faster or more reliable than manual axe-core review? Are there controlled comparisons?  [answered 2026-05-23]
 
 # Staged 2026-05-23 — Fresh signal open threads (broad sweep follow-ups)
-The WCAG 3.0 March 2026 174-outcome WD's "disability information privacy" clause — what is the verbatim outcome text, and does it specifically name third-party algorithmic processing of disability indicators? Which overlay vendors would be in scope?  [staged]
-Are any HHS-funded healthcare entities publicly stating they will miss the May 11, 2026 web accessibility deadline (which the DOJ IFR did NOT extend)? Any disclosed remediation roadmaps that admit slippage?  [staged]
-WebAccessBench's 19-model digital accessibility evaluation (Feb 2026) — which specific models had the steepest "Unguided → Expert" deltas, and which models were the worst absolute performers regardless of guidance level?  [staged]
+The WCAG 3.0 March 2026 174-outcome WD's "disability information privacy" clause — what is the verbatim outcome text, and does it specifically name third-party algorithmic processing of disability indicators? Which overlay vendors would be in scope?  [answered 2026-05-28]
+Are any HHS-funded healthcare entities publicly stating they will miss the May 11, 2026 web accessibility deadline (which the DOJ IFR did NOT extend)? Any disclosed remediation roadmaps that admit slippage?  [answered 2026-05-28]
+WebAccessBench's 19-model digital accessibility evaluation (Feb 2026) — which specific models had the steepest "Unguided → Expert" deltas, and which models were the worst absolute performers regardless of guidance level?  [answered 2026-05-28]

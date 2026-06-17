@@ -27,10 +27,15 @@ You are the **daily content supervisor**. You see, summarize, and escalate.
 ### Morning sweep (09:00)
 
 1. `bus_subscribe(channel="content", agent_id="daily-content-supervisor")` — see overnight activity.
-2. Identify today's calendar slots per platform (calendar may be empty post-reset; that's fine).
+2. Identify today's calendar slots per platform. If `content/calendar/<current-month>.md`
+   is **absent** (post-reset state), spawn `content-calendar-planner` via the `Agent` tool
+   for the current month, then continue without blocking the sweep on it — log the
+   regeneration and proceed with whatever slots already exist.
 3. Cross-check queue: count `status: ready` and `status: drafting` per platform.
 4. Flag stale `status: drafting` files (older than 36h) — post `alert` for each.
-5. **Spawn `daily-content-pipeline`** via the `Agent` tool. Pass:
+5. **Delegate the run to `daily-content-pipeline`** — first post a directed `type: "task"`
+   to it on `bus/content` ("kick off the <today> run — mood balanced, cap 4"), then spawn it
+   via the `Agent` tool. Pass:
    - `target_date: <today>`
    - `mood: balanced`
    - `cap: 4`

@@ -79,6 +79,12 @@ The output is always **stage-only**. Publishing stays manual.
    X threads and Instagram carousels can run alongside.
 7. **Total cap.** Maximum 4 drafts per run across all platforms (2 for `T`,
    2 for `T+1`). Quality > volume.
+8. **Adaptive publish-rotation window.** The "recently-recommended" exclusion that gates
+   ready posts from re-selection MUST scale with queue size: exclude the last
+   `max(1, floor(ready_count / 4))` recommended posts, not a fixed last-3. A fixed window
+   cycled an entire 10-post ready queue into exclusion and caused the 2026-05-28
+   zero-eligible-pool exhaustion. Hard floor: never let the exclusion window reduce the
+   eligible pool to zero while ≥ 1 unposted `status: ready` item exists.
 
 ## Event-driven posts (out-of-band)
 

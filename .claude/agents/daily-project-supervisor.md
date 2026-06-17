@@ -30,7 +30,11 @@ You are the **daily project supervisor**. You see across all projects and report
 ```
 
 5. `bus_post(channel="projects", from="daily-project-supervisor", type="status", body="<one-line per project>", ref="logs/daily/...")`.
-6. If any project has blockers → spawn `project-domain-lead` for that slug ONLY (one Agent call per blocked project).
+6. If any project has blockers → **delegate down a tier as a dialogue**: post a directed
+   `type: "task"` to `project-domain-lead` on `bus/projects.jsonl` ("card-NN on <slug> is
+   blocked on <reason> — can you take it?"), then spawn it via the `Agent` tool for that slug
+   ONLY (one call per blocked project) and wait for its `type: "done"` reply before closing
+   the standup. One re-dispatch per project per run.
 
 ### EOD (18:00)
 
