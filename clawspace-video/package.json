@@ -1,0 +1,24 @@
+{
+  "name": "clawspace-video",
+  "version": "1.0.0",
+  "description": "Remotion showcase animation for the Clawspace personal AI workforce UI",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "render": "remotion render ClawspaceShowcase out/clawspace-showcase.mp4",
+    "still": "remotion still ClawspaceShowcase out/frame.png",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/transitions": "^4.0.394",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.394"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.394",
+    "@types/react": "19.0.0",
+    "typescript": "5.8.2"
+  }
+}
