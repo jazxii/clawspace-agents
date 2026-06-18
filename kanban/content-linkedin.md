@@ -1,6 +1,6 @@
 # Kanban — content-linkedin
 
-<!-- counts: backlog=0 | drafting=0 | ready=8 | posted=4 | updated=2026-06-17 13:38 -->
+<!-- counts: backlog=0 | drafting=0 | ready=10 | posted=4 | updated=2026-06-18 09:00 -->
 
 Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance cards. Card line format: `- [<id>] <title> — <metadata>`.
 
@@ -13,6 +13,10 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 ## Drafting
 
 ## Ready
+
+- [card-13] AI codegen defaults to inaccessible — contrast = 89% of WCAG fails — short, contrarian-analyst, humanized ✓, `content/queue/linkedin/2026-06-18-ai-codegen-contrast-89pct.md`
+
+- [card-14] GenA11y — LLM checker extends into the manual WCAG layer — short, researcher-news, humanized ✓, `content/queue/linkedin/2026-06-19-gena11y-beats-scanners-manual.md`
 
 - [card-11] Cognitive surrender + human-in-the-loop ADA SDLC — short, researcher-news, humanized ✓, `content/queue/linkedin/2026-06-02-cognitive-surrender-wcag-audits.md`
 
