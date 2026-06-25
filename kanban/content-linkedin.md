@@ -1,6 +1,6 @@
 # Kanban — content-linkedin
 
-<!-- counts: backlog=0 | drafting=0 | ready=10 | posted=4 | updated=2026-06-18 09:00 -->
+<!-- counts: backlog=0 | drafting=0 | ready=10 | posted=5 | updated=2026-06-25 -->
 
 Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance cards. Card line format: `- [<id>] <title> — <metadata>`.
 
@@ -14,6 +14,8 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 
 ## Ready
 
+- [card-15] EAA first court ruling misread — Auchan won on a revenue threshold, not on access — authority, contrarian-analyst, humanized ✓, `content/queue/linkedin/2026-06-25-eaa-first-court-ruling-misread.md`
+
 - [card-13] AI codegen defaults to inaccessible — contrast = 89% of WCAG fails — short, contrarian-analyst, humanized ✓, `content/queue/linkedin/2026-06-18-ai-codegen-contrast-89pct.md`
 
 - [card-14] GenA11y — LLM checker extends into the manual WCAG layer — short, researcher-news, humanized ✓, `content/queue/linkedin/2026-06-19-gena11y-beats-scanners-manual.md`
@@ -23,8 +25,6 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 - [card-3] DOJ Title II IFR six-week review — authority, contrarian-analyst, humanized ✓, `content/queue/linkedin/2026-05-23-doj-title2-ifr-six-week-review.md`
 
 - [card-4] Axe MCP Server bundled free — authority, practitioner-builder, humanized ✓, `content/queue/linkedin/2026-05-24-axe-mcp-server-bundled-free.md`
-
-- [card-5] Web for All 2026 prompt ceiling — authority, forensic-investigator, humanized ✓, `content/queue/linkedin/2026-05-24-web4all-2026-prompt-ceiling.md`
 
 - [card-6] Claude Code blamed users — a11y-ai-engineer, humanized ✓, `content/queue/linkedin/2026-05-29-claude-code-blamed-users.md`
 
@@ -43,3 +43,5 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 - [card-1] HHS Section 504 deadline extension — the honest version — short / contrarian-analyst, humanized ✓, `content/queue/linkedin/2026-05-15-hhs-deadline-extension-honest-version.md`
 
 - [card-10] Opus 4.8 most honest a11y — a11y-ai-engineer, humanized ✓, `content/queue/linkedin/2026-05-29-opus-4-8-most-honest-a11y.md`
+
+- [card-5] Web for All 2026 prompt ceiling — authority, forensic-investigator, humanized ✓, `content/queue/linkedin/2026-05-24-web4all-2026-prompt-ceiling.md`

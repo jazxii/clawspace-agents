@@ -1,6 +1,6 @@
 # Kanban — content-x
 
-<!-- counts: backlog=0 | drafting=0 | ready=6 | posted=0 | updated=2026-06-18 07:25 -->
+<!-- counts: backlog=0 | drafting=0 | ready=7 | posted=0 | updated=2026-06-25 13:05 -->
 
 Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance cards.
 
@@ -25,5 +25,7 @@ Columns: Backlog | Drafting | Ready | Posted. Use `/kanban-move` to advance card
 - [card-5] LLM a11y auditors hallucinate ~70% of flags (Delnevo et al.) — thread (7 tweets), forensic-investigator, humanized ✓, `content/queue/x/2026-06-18-llm-audit-hallucination-70pct.md`
 
 - [card-6] First systematic map of LLMs-for-web-a11y (38 studies, arXiv 2605.13873) — thread (5 tweets), researcher-news, humanized ✓, `content/queue/x/2026-06-19-llm-a11y-slr-38-studies.md`
+
+- [card-7] AI-assisted alt text beats human-only on expert ratings, one epistemic-fragility caveat (arXiv 2602.08937) — thread (7 tweets), researcher-news, humanized ✓, `content/queue/x/2026-06-25-ai-alt-text-beats-human-caveat.md`
 
 ## Posted
